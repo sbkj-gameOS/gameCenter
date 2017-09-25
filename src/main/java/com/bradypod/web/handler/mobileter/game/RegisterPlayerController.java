@@ -1,5 +1,6 @@
 package com.bradypod.web.handler.mobileter.game;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bradypod.web.model.PlayUser;
+import com.bradypod.web.model.RoomRechargeRecord;
 import com.bradypod.web.service.repository.jpa.PlayUserRepository;
+import com.bradypod.web.service.repository.jpa.RoomRechargeRecordRepository;
 import com.google.gson.Gson;
 
 /**
@@ -30,6 +33,9 @@ public class RegisterPlayerController {
 
 	@Autowired
 	private PlayUserRepository playUserRes;
+
+	@Autowired
+	private RoomRechargeRecordRepository roomRechargeRecordRepository;
 
 	@ResponseBody
 	@RequestMapping("/wxLogin")
@@ -48,6 +54,17 @@ public class RegisterPlayerController {
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
 					String time = formatter.format(new Date());
 					playUser.setInvitationcode(time);
+					playUser.setRoomcordnum(10);
+					RoomRechargeRecord roomRechargeRecord = new RoomRechargeRecord();
+					roomRechargeRecord.setUserName(playUser.getNickname());
+					roomRechargeRecord.setInvitationCode(playUser.getInvitationcode());
+					roomRechargeRecord.setRoomCount(10);
+					roomRechargeRecord.setOriginalPrice(BigDecimal.valueOf(30.00));
+					roomRechargeRecord.setPreferentialAmount(BigDecimal.valueOf(0.00));
+					roomRechargeRecord.setPayAmount(BigDecimal.valueOf(30.00));
+					roomRechargeRecord.setDirectlyTheLastAmount(BigDecimal.valueOf(0.00));
+					roomRechargeRecord.setIndirectTheLastAmount(BigDecimal.valueOf(0.00));
+					roomRechargeRecordRepository.saveAndFlush(roomRechargeRecord);
 					playUserRes.saveAndFlush(playUser);
 					session.setAttribute("mgPlayUser", playUser);
 					dataMap.put("mgPlayUser", playUser);
