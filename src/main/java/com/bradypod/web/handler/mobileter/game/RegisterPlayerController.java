@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bradypod.web.handler.Handler;
 import com.bradypod.web.model.PlayUser;
 import com.bradypod.web.model.RoomRechargeRecord;
 import com.bradypod.web.service.repository.jpa.PlayUserRepository;
@@ -29,7 +30,7 @@ import com.google.gson.Gson;
  */
 @Controller
 @RequestMapping("/registerPlayer")
-public class RegisterPlayerController {
+public class RegisterPlayerController extends Handler {
 
 	@Autowired
 	private PlayUserRepository playUserRes;
@@ -64,8 +65,9 @@ public class RegisterPlayerController {
 					roomRechargeRecord.setPayAmount(BigDecimal.valueOf(30.00));
 					roomRechargeRecord.setDirectlyTheLastAmount(BigDecimal.valueOf(0.00));
 					roomRechargeRecord.setIndirectTheLastAmount(BigDecimal.valueOf(0.00));
-					roomRechargeRecordRepository.saveAndFlush(roomRechargeRecord);
+					playUser.setTrtProfit(BigDecimal.valueOf(0.00));
 					playUserRes.saveAndFlush(playUser);
+					roomRechargeRecordRepository.saveAndFlush(roomRechargeRecord);
 					session.setAttribute("mgPlayUser", playUser);
 					dataMap.put("mgPlayUser", playUser);
 				} else {

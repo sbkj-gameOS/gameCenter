@@ -1,5 +1,6 @@
 package com.bradypod.web.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -91,6 +92,9 @@ public class PlayUser implements UserEvent, java.io.Serializable {
 	private String invitationcode;// 个人邀请码
 	private String pinvitationcode;// 他人邀请码
 	private Integer roomcordnum;// 房卡数量表
+
+	@Column(name = "TRT_PROFIT")
+	private BigDecimal trtProfit;// 分润剩余总额
 
 	/**
 	 * 对金币+房卡+id进行RSA签名 ， 任何对ID,cards ， goldcoins 进行修改之前，都需要做签名验证， 签名验证通过后才能进行修改，修改之后，重新签名
@@ -534,6 +538,14 @@ public class PlayUser implements UserEvent, java.io.Serializable {
 
 	public void setRoomcordnum(Integer roomcordnum) {
 		this.roomcordnum = roomcordnum;
+	}
+
+	public BigDecimal getTrtProfit() {
+		return trtProfit;
+	}
+
+	public void setTrtProfit(BigDecimal trtProfit) {
+		this.trtProfit = trtProfit;
 	}
 
 }
