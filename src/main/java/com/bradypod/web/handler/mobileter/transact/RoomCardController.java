@@ -1,4 +1,4 @@
-package com.bradypod.web.handler.transact;
+package com.bradypod.web.handler.mobileter.transact;
 
 import com.bradypod.web.handler.Handler;
 import org.springframework.stereotype.Controller;
