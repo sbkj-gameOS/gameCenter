@@ -1,5 +1,6 @@
 package com.bradypod.web.handler.mobileter.transact;
 
+import com.bradypod.util.Menu;
 import com.bradypod.web.handler.Handler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +20,7 @@ public class RoomCardController extends Handler {
      */
     @RequestMapping({"/rechargeRecord"})
     public ModelAndView rechargeRecord(){
-        ModelAndView mv = new ModelAndView("/apps/platform/room/recharge/index");
-        return mv;
+        return request(super.createAppsTempletResponse("/apps/business/platform/room/recharge/index"));
     }
 
     /**
@@ -29,7 +29,7 @@ public class RoomCardController extends Handler {
      */
     @RequestMapping({"/toUseRecord"})
     public ModelAndView toUseRecord(){
-        ModelAndView mv = new ModelAndView("/apps/platform/use/index");
+        ModelAndView mv = new ModelAndView("/apps/business/platform/room/use/index");
         return mv;
     }
 }
