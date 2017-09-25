@@ -16,24 +16,45 @@ public class RoomTouseRecord implements java.io.Serializable{
     @Id
     private Integer id;
 
+    /**
+     * 用户名
+     */
     @Column(name="user_name")
     private String userName;
 
+    /**
+     * 邀请码
+     */
     @Column(name="invitation_code")
     private String invitationCode;
 
+    /**
+     * 使用时间
+     */
     @Column(name="use_time")
     private Date useTime;
 
+    /**
+     * 使用房卡数量
+     */
     @Column(name="use_room_count")
     private Integer useRoomCount;
 
+    /**
+     * 剩余房卡数量
+     */
     @Column(name="surplus_room_count")
     private Integer surplusRoomCount;
 
+    /**
+     * 创建时间
+     */
     @Column(name="create_time")
     private Date createTime;
 
+    /**
+     * 是否删除  0：未删除  1：已删除
+     */
     @Column(name="is_Del")
     private Integer isDel;
 

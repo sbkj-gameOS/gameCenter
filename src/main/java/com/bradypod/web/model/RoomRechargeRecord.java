@@ -18,36 +18,69 @@ public class RoomRechargeRecord implements java.io.Serializable{
     @Id
     private Integer id;
 
+    /**
+     * 用户名
+     */
     @Column(name="user_name")
     private String userName;
 
+    /**
+     * 邀请码
+     */
     @Column(name="invitation_code")
     private String invitationCode;
 
+    /**
+     * 充值时间
+     */
     @Column(name="recharge_time")
     private Date rechargeTime;
 
+    /**
+     * 房卡数量
+     */
     @Column(name="room_count")
     private Integer roomCount;
 
+    /**
+     * 原价
+     */
     @Column(name="original_price")
     private BigDecimal originalPrice;
 
+    /**
+     * 优惠金额
+     */
     @Column(name="preferential_amount")
     private BigDecimal preferentialAmount;
 
+    /**
+     * 支付金额
+     */
     @Column(name="pay_amount")
     private BigDecimal payAmount;
 
+    /**
+     * 直接上家分润金额
+     */
     @Column(name="directly_the_last_amount")
     private BigDecimal directlyTheLastAmount;
 
+    /**
+     * 间接上家分润金额
+     */
     @Column(name="indirect_the_last_amount")
     private BigDecimal indirectTheLastAmount;
 
+    /**
+     * 创建时间
+     */
     @Column(name="create_time")
     private Date createTime;
 
+    /**
+     * 是否删除  0：未删除   1：已删除
+     */
     @Column(name="is_Del")
     private Integer isDel;
 
