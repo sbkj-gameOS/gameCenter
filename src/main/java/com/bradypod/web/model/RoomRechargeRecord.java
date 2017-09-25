@@ -1,182 +1,194 @@
 package com.bradypod.web.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.bradypod.util.UKTools;
+
 /**
- * 描述：房卡充值记录
- * 创建人：田帅
+ * 描述：房卡充值记录 创建人：田帅
  */
 @Entity
 @Table(name = "bm_room_recharge_record")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class RoomRechargeRecord implements java.io.Serializable{
-    @Id
-    private Integer id;
+public class RoomRechargeRecord implements java.io.Serializable {
 
-    /**
-     * 用户名
-     */
-    @Column(name="user_name")
-    private String userName;
+	private static final long serialVersionUID = 4221247375708688312L;
 
-    /**
-     * 邀请码
-     */
-    @Column(name="invitation_code")
-    private String invitationCode;
+	@Id
+	private String id = UKTools.getUUID().toLowerCase();
 
-    /**
-     * 充值时间
-     */
-    @Column(name="recharge_time")
-    private Date rechargeTime;
+	/**
+	 * 用户名
+	 */
+	@Column(name = "user_name")
+	private String userName;
 
-    /**
-     * 房卡数量
-     */
-    @Column(name="room_count")
-    private Integer roomCount;
+	/**
+	 * 邀请码
+	 */
+	@Column(name = "invitation_code")
+	private String invitationCode;
 
-    /**
-     * 原价
-     */
-    @Column(name="original_price")
-    private BigDecimal originalPrice;
+	/**
+	 * 充值时间
+	 */
+	@Column(name = "recharge_time")
+	private Date rechargeTime = new Date();
 
-    /**
-     * 优惠金额
-     */
-    @Column(name="preferential_amount")
-    private BigDecimal preferentialAmount;
+	/**
+	 * 房卡数量
+	 */
+	@Column(name = "room_count")
+	private Integer roomCount;
 
-    /**
-     * 支付金额
-     */
-    @Column(name="pay_amount")
-    private BigDecimal payAmount;
+	/**
+	 * 原价
+	 */
+	@Column(name = "original_price")
+	private BigDecimal originalPrice;
 
-    /**
-     * 直接上家分润金额
-     */
-    @Column(name="directly_the_last_amount")
-    private BigDecimal directlyTheLastAmount;
+	/**
+	 * 优惠金额
+	 */
+	@Column(name = "preferential_amount")
+	private BigDecimal preferentialAmount;
 
-    /**
-     * 间接上家分润金额
-     */
-    @Column(name="indirect_the_last_amount")
-    private BigDecimal indirectTheLastAmount;
+	/**
+	 * 支付金额
+	 */
+	@Column(name = "pay_amount")
+	private BigDecimal payAmount;
 
-    /**
-     * 创建时间
-     */
-    @Column(name="create_time")
-    private Date createTime;
+	/**
+	 * 直接上家分润金额
+	 */
+	@Column(name = "directly_the_last_amount")
+	private BigDecimal directlyTheLastAmount;
 
-    /**
-     * 是否删除  0：未删除   1：已删除
-     */
-    @Column(name="is_Del")
-    private Integer isDel;
+	/**
+	 * 间接上家分润金额
+	 */
+	@Column(name = "indirect_the_last_amount")
+	private BigDecimal indirectTheLastAmount;
 
-    public Integer getId() {
-        return id;
-    }
+	/**
+	 * 创建时间
+	 */
+	@Column(name = "create_time")
+	private Date createTime = new Date();
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	/**
+	 * 是否删除 0：未删除 1：已删除
+	 */
+	@Column(name = "is_Del")
+	private Integer isDel;
 
-    public String getUserName() {
-        return userName;
-    }
+	@Id
+	@Column(length = 32)
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	public String getId() {
+		return id;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getInvitationCode() {
-        return invitationCode;
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public void setInvitationCode(String invitationCode) {
-        this.invitationCode = invitationCode == null ? null : invitationCode.trim();
-    }
+	public void setUserName(String userName) {
+		this.userName = userName == null ? null : userName.trim();
+	}
 
-    public Date getRechargeTime() {
-        return rechargeTime;
-    }
+	public String getInvitationCode() {
+		return invitationCode;
+	}
 
-    public void setRechargeTime(Date rechargeTime) {
-        this.rechargeTime = rechargeTime;
-    }
+	public void setInvitationCode(String invitationCode) {
+		this.invitationCode = invitationCode == null ? null : invitationCode.trim();
+	}
 
-    public Integer getRoomCount() {
-        return roomCount;
-    }
+	public Date getRechargeTime() {
+		return rechargeTime;
+	}
 
-    public void setRoomCount(Integer roomCount) {
-        this.roomCount = roomCount;
-    }
+	public void setRechargeTime(Date rechargeTime) {
+		this.rechargeTime = rechargeTime;
+	}
 
-    public BigDecimal getOriginalPrice() {
-        return originalPrice;
-    }
+	public Integer getRoomCount() {
+		return roomCount;
+	}
 
-    public void setOriginalPrice(BigDecimal originalPrice) {
-        this.originalPrice = originalPrice;
-    }
+	public void setRoomCount(Integer roomCount) {
+		this.roomCount = roomCount;
+	}
 
-    public BigDecimal getPreferentialAmount() {
-        return preferentialAmount;
-    }
+	public BigDecimal getOriginalPrice() {
+		return originalPrice;
+	}
 
-    public void setPreferentialAmount(BigDecimal preferentialAmount) {
-        this.preferentialAmount = preferentialAmount;
-    }
+	public void setOriginalPrice(BigDecimal originalPrice) {
+		this.originalPrice = originalPrice;
+	}
 
-    public BigDecimal getPayAmount() {
-        return payAmount;
-    }
+	public BigDecimal getPreferentialAmount() {
+		return preferentialAmount;
+	}
 
-    public void setPayAmount(BigDecimal payAmount) {
-        this.payAmount = payAmount;
-    }
+	public void setPreferentialAmount(BigDecimal preferentialAmount) {
+		this.preferentialAmount = preferentialAmount;
+	}
 
-    public BigDecimal getDirectlyTheLastAmount() {
-        return directlyTheLastAmount;
-    }
+	public BigDecimal getPayAmount() {
+		return payAmount;
+	}
 
-    public void setDirectlyTheLastAmount(BigDecimal directlyTheLastAmount) {
-        this.directlyTheLastAmount = directlyTheLastAmount;
-    }
+	public void setPayAmount(BigDecimal payAmount) {
+		this.payAmount = payAmount;
+	}
 
-    public BigDecimal getIndirectTheLastAmount() {
-        return indirectTheLastAmount;
-    }
+	public BigDecimal getDirectlyTheLastAmount() {
+		return directlyTheLastAmount;
+	}
 
-    public void setIndirectTheLastAmount(BigDecimal indirectTheLastAmount) {
-        this.indirectTheLastAmount = indirectTheLastAmount;
-    }
+	public void setDirectlyTheLastAmount(BigDecimal directlyTheLastAmount) {
+		this.directlyTheLastAmount = directlyTheLastAmount;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public BigDecimal getIndirectTheLastAmount() {
+		return indirectTheLastAmount;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public void setIndirectTheLastAmount(BigDecimal indirectTheLastAmount) {
+		this.indirectTheLastAmount = indirectTheLastAmount;
+	}
 
-    public Integer getIsDel() {
-        return isDel;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public void setIsDel(Integer isDel) {
-        this.isDel = isDel;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Integer getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
+	}
 }

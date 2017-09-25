@@ -1,124 +1,133 @@
 package com.bradypod.web.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+
+import com.bradypod.util.UKTools;
+
+import javax.persistence.*;
 import java.util.Date;
+
 /**
- * 描述：房卡使用记录
- * 创建人：田帅
+ * 描述：房卡使用记录 创建人：田帅
  */
 @Entity
 @Table(name = "bm_room_touse_record")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class RoomTouseRecord implements java.io.Serializable{
-    @Id
-    private Integer id;
+public class RoomTouseRecord implements java.io.Serializable {
 
-    /**
-     * 用户名
-     */
-    @Column(name="user_name")
-    private String userName;
+	private static final long serialVersionUID = -9129265144867143069L;
 
-    /**
-     * 邀请码
-     */
-    @Column(name="invitation_code")
-    private String invitationCode;
+	@Id
+	private String id = UKTools.getUUID().toLowerCase();
 
-    /**
-     * 使用时间
-     */
-    @Column(name="use_time")
-    private Date useTime;
+	/**
+	 * 用户名
+	 */
+	@Column(name = "user_name")
+	private String userName;
 
-    /**
-     * 使用房卡数量
-     */
-    @Column(name="use_room_count")
-    private Integer useRoomCount;
+	/**
+	 * 邀请码
+	 */
+	@Column(name = "invitation_code")
+	private String invitationCode;
 
-    /**
-     * 剩余房卡数量
-     */
-    @Column(name="surplus_room_count")
-    private Integer surplusRoomCount;
+	/**
+	 * 使用时间
+	 */
+	@Column(name = "use_time")
+	private Date useTime = new Date();
 
-    /**
-     * 创建时间
-     */
-    @Column(name="create_time")
-    private Date createTime;
+	/**
+	 * 使用房卡数量
+	 */
+	@Column(name = "use_room_count")
+	private Integer useRoomCount;
 
-    /**
-     * 是否删除  0：未删除  1：已删除
-     */
-    @Column(name="is_Del")
-    private Integer isDel;
+	/**
+	 * 剩余房卡数量
+	 */
+	@Column(name = "surplus_room_count")
+	private Integer surplusRoomCount;
 
-    public Integer getId() {
-        return id;
-    }
+	/**
+	 * 创建时间
+	 */
+	@Column(name = "create_time")
+	private Date createTime = new Date();
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	/**
+	 * 是否删除 0：未删除 1：已删除
+	 */
+	@Column(name = "is_Del")
+	private Integer isDel;
 
-    public String getUserName() {
-        return userName;
-    }
+	@Id
+	@Column(length = 32)
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
 
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getInvitationCode() {
-        return invitationCode;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setInvitationCode(String invitationCode) {
-        this.invitationCode = invitationCode == null ? null : invitationCode.trim();
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public Date getUseTime() {
-        return useTime;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName == null ? null : userName.trim();
+	}
 
-    public void setUseTime(Date useTime) {
-        this.useTime = useTime;
-    }
+	public String getInvitationCode() {
+		return invitationCode;
+	}
 
-    public Integer getUseRoomCount() {
-        return useRoomCount;
-    }
+	public void setInvitationCode(String invitationCode) {
+		this.invitationCode = invitationCode == null ? null : invitationCode.trim();
+	}
 
-    public void setUseRoomCount(Integer useRoomCount) {
-        this.useRoomCount = useRoomCount;
-    }
+	public Date getUseTime() {
+		return useTime;
+	}
 
-    public Integer getSurplusRoomCount() {
-        return surplusRoomCount;
-    }
+	public void setUseTime(Date useTime) {
+		this.useTime = useTime;
+	}
 
-    public void setSurplusRoomCount(Integer surplusRoomCount) {
-        this.surplusRoomCount = surplusRoomCount;
-    }
+	public Integer getUseRoomCount() {
+		return useRoomCount;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public void setUseRoomCount(Integer useRoomCount) {
+		this.useRoomCount = useRoomCount;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public Integer getSurplusRoomCount() {
+		return surplusRoomCount;
+	}
 
-    public Integer getIsDel() {
-        return isDel;
-    }
+	public void setSurplusRoomCount(Integer surplusRoomCount) {
+		this.surplusRoomCount = surplusRoomCount;
+	}
 
-    public void setIsDel(Integer isDel) {
-        this.isDel = isDel;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Integer getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Integer isDel) {
+		this.isDel = isDel;
+	}
 }
