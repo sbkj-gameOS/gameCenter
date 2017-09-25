@@ -1,7 +1,9 @@
 package com.bradypod.web.handler.mobileter.transact;
 
-import com.bradypod.util.Menu;
 import com.bradypod.web.handler.Handler;
+import com.bradypod.web.service.repository.jpa.RoomRechargeRecordRepository;
+import com.bradypod.web.service.repository.jpa.RoomTouseRecordRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,12 +16,18 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/roomCard")
 public class RoomCardController extends Handler {
 
+    @Autowired
+    private RoomRechargeRecordRepository roomRechargeRecordRepository;
+
+    @Autowired
+    private RoomTouseRecordRepository roomTouseRecordRepository;
     /**
      * 房卡充值记录跳转
      * @return
      */
     @RequestMapping({"/rechargeRecord"})
     public ModelAndView rechargeRecord(){
+        roomRechargeRecordRepository.findByUserNameAndInvitationCode(null,null,null);
         return request(super.createAppsTempletResponse("/apps/business/platform/room/recharge/index"));
     }
 
@@ -29,6 +37,7 @@ public class RoomCardController extends Handler {
      */
     @RequestMapping({"/toUseRecord"})
     public ModelAndView toUseRecord(){
+        roomTouseRecordRepository.findByUserNameAndInvitationCode(null,null,null);
         ModelAndView mv = new ModelAndView("/apps/business/platform/room/use/index");
         return mv;
     }
