@@ -40,7 +40,7 @@ public class RoomCardController extends Handler {
      */
     @RequestMapping({"/toUseRecord"})
     public ModelAndView toUseRecord(ModelMap map , HttpServletRequest request){
-        roomTouseRecordRepository.findByUserNameAndInvitationCode(null,null,null);
+        roomTouseRecordRepository.findByUserNameAndInvitationCode("t","123");
         return request(super.createAppsTempletResponse("/apps/business/platform/room/use/index"));
     }
 }
