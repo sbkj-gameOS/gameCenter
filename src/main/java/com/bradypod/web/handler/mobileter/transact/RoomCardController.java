@@ -5,8 +5,11 @@ import com.bradypod.web.service.repository.jpa.RoomRechargeRecordRepository;
 import com.bradypod.web.service.repository.jpa.RoomTouseRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 房卡记录
@@ -26,7 +29,7 @@ public class RoomCardController extends Handler {
      * @return
      */
     @RequestMapping({"/rechargeRecord"})
-    public ModelAndView rechargeRecord(){
+    public ModelAndView rechargeRecord(ModelMap map , HttpServletRequest request){
         roomRechargeRecordRepository.findByUserNameAndInvitationCode(null,null,null);
         return request(super.createAppsTempletResponse("/apps/business/platform/room/recharge/index"));
     }
@@ -36,9 +39,8 @@ public class RoomCardController extends Handler {
      * @return
      */
     @RequestMapping({"/toUseRecord"})
-    public ModelAndView toUseRecord(){
+    public ModelAndView toUseRecord(ModelMap map , HttpServletRequest request){
         roomTouseRecordRepository.findByUserNameAndInvitationCode(null,null,null);
-        ModelAndView mv = new ModelAndView("/apps/business/platform/room/use/index");
-        return mv;
+        return request(super.createAppsTempletResponse("/apps/business/platform/room/use/index"));
     }
 }
