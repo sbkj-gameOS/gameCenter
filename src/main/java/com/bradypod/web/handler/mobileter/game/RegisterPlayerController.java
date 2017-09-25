@@ -45,15 +45,15 @@ public class RegisterPlayerController {
 				PlayUser playUser = gson.fromJson(result, PlayUser.class);
 				PlayUser newPlayUser = playUserRes.findByOpenid(playUser.getOpenid());
 				if (null == newPlayUser) {
-					SimpleDateFormat formatter = new SimpleDateFormat("yyyyHHmmssSSS");
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
 					String time = formatter.format(new Date());
 					playUser.setInvitationcode(time);
 					playUserRes.saveAndFlush(playUser);
-					session.setAttribute("playUser", playUser);
-					dataMap.put("playUser", playUser);
+					session.setAttribute("mgPlayUser", playUser);
+					dataMap.put("mgPlayUser", playUser);
 				} else {
-					session.setAttribute("playUser", newPlayUser);
-					dataMap.put("playUser", newPlayUser);
+					session.setAttribute("mgPlayUser", newPlayUser);
+					dataMap.put("mgPlayUser", newPlayUser);
 				}
 				dataMap.put("success", true);
 			} else {
