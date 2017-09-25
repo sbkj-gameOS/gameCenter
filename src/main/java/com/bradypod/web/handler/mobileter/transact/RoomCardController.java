@@ -30,7 +30,7 @@ public class RoomCardController extends Handler {
      */
     @RequestMapping({"/rechargeRecord"})
     public ModelAndView rechargeRecord(ModelMap map , HttpServletRequest request){
-        roomRechargeRecordRepository.findByUserNameAndInvitationCode(null,null,null);
+        map.addAttribute("RoomRechargeRecord",roomRechargeRecordRepository.findByUserNameAndInvitationCode(null,null,null));
         return request(super.createAppsTempletResponse("/apps/business/platform/room/recharge/index"));
     }
 
@@ -40,7 +40,7 @@ public class RoomCardController extends Handler {
      */
     @RequestMapping({"/toUseRecord"})
     public ModelAndView toUseRecord(ModelMap map , HttpServletRequest request){
-        roomTouseRecordRepository.findByUserNameAndInvitationCode("t","123");
+        map.addAttribute("RoomTouseRecord",roomTouseRecordRepository.findByUserNameAndInvitationCode("t","123"));
         return request(super.createAppsTempletResponse("/apps/business/platform/room/use/index"));
     }
 }
