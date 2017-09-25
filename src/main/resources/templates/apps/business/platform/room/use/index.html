@@ -7,7 +7,7 @@
         <div class="layui-side-scroll">
             <div class="row">
                 <h1 class="site-h1" style="background-color:#FFFFFF;">
-                    房卡充值
+                    房卡使用界面
                 </h1>
                 <div class="col-lg-12">
                     <div class="user_online" style="height:60px;">
@@ -61,56 +61,73 @@
                 </div>
             </div>
         </div>
+        <div id="demo7" style="position: absolute;bottom:50px;left:150px;">
+            <div class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-10">
+                <span class="layui-laypage-count">共 100 条</span>
+                <a href="javascript:;" class="layui-laypage-prev"
+                   data-page="6">
+                    上一页
+                </a>
+                <a href="javascript:;" class="layui-laypage-first" data-page="1" title="首页">
+                    1
+                </a>
+                <span class="layui-laypage-spr">…</span>
+                <a href="javascript:;" data-page="5">5</a>
+                <a href="javascript:;" data-page="6">6</a>
+                    <span class="layui-laypage-curr">
+                        <em class="layui-laypage-em"></em>
+                        <em>7</em>
+                    </span>
+                <a href="javascript:;" data-page="8">8</a>
+                <a href="javascript:;" data-page="9">9</a>
+                <a href="javascript:;" class="layui-laypage-last" title="尾页" data-page="10">10</a>
+                <a href="javascript:;" class="layui-laypage-next" data-page="8">下一页</a>
+                    <span class="layui-laypage-limits">
+                        <select lay-ignore="">
+                            <option value="10" selected="">10 条/页</option>
+                            <option value="20">20 条/页</option>
+                            <option value="30">30 条/页</option>
+                            <option value="40">40 条/页</option>
+                            <option value="50">50 条/页</option>
+                        </select>
+                    </span>
+                    <span class="layui-laypage-skip">到第
+                        <input type="text" min="1" value="7" class="layui-input">页
+                        <button type="button" class="layui-laypage-btn">确定</button>
+                    </span>
+            </div>
+        </div>
     </div>
 </div>
-<!--<script src="/static/layui.js"></script>-->
+<script src="" charset="utf-8"></script>
 <script>
     layui.use('element', function() {
         var element = layui.element;
     });
 
-
+//日期表
     layui.use('laydate', function(){
         var laydate = layui.laydate;
 
-        //执行一个laydate实例
         laydate.render({
-            elem: '#test1' //指定元素
+            element: '#test1' //指定元素
         });
     });
 
-    $.ajax({
-        url: ".......",
-        success: function (data) {
-            data = JSON.parse(data);
-            render(data);
-        }
+//分页功能
+    layui.use(['laypage', 'layer'], function(){
+        var laypage = layui.laypage
+                ,layer = layui.layer;
+        //完整功能
+        laypage.render({
+            element: 'demo7'
+            ,count: 100
+            ,layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
+            ,jump: function(obj){
+                console.log(obj)
+            }
+        });
     });
-    function render(data) {
-        $("tbody").empty();
-        $.each(data, function (i, v) {
-            let html =
-                    `
-                <tr>
-                    <td>s</td>
-                    <td>s</td>
-                    <td>s</td>
-                    <td>s</td>
-                    <td>s</td>
-                    <td>s</td>
-                    <td>s</td>
-                    <td>s</td>
-                    <td>s</td>
-                    <td>s</td>
-                    <td style="white-space:nowrap;width:1%;" nowrap="nowrap">
-                         <a href="/apps/platform/online/gameusers/edit.html?id=${player.id!''}" data-toggle="ajax" data-width="550" data-height="400" data-title="编辑用户信息"> <i class="layui-icon">&#xe642;</i>
-                              编辑
-                         </a>
-                    </td>
-                </tr>
-                `
-            $(html).appendTo($("tbody"));
-        })
-    }
 </script>
+
 
