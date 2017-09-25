@@ -1,9 +1,8 @@
 package com.bradypod.web.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.util.Date;
 /**
  * 描述：房卡使用记录
@@ -57,6 +56,11 @@ public class RoomTouseRecord implements java.io.Serializable{
      */
     @Column(name="is_Del")
     private Integer isDel;
+
+    @Id
+    @Column(length = 32)
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
 
     public Integer getId() {
         return id;

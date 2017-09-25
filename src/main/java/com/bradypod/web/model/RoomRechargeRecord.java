@@ -1,9 +1,8 @@
 package com.bradypod.web.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -15,7 +14,6 @@ import java.util.Date;
 @Table(name = "bm_room_recharge_record")
 @org.hibernate.annotations.Proxy(lazy = false)
 public class RoomRechargeRecord implements java.io.Serializable{
-    @Id
     private Integer id;
 
     /**
@@ -84,6 +82,10 @@ public class RoomRechargeRecord implements java.io.Serializable{
     @Column(name="is_Del")
     private Integer isDel;
 
+    @Id
+    @Column(length = 32)
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     public Integer getId() {
         return id;
     }
