@@ -37,11 +37,26 @@
 			<dd  <#if subtype?? && subtype == 'gameusers'>class="layui-this"</#if>>
 				<a href="/apps/platform/gameusers.html">注册玩家</a>
 			</dd>
-			<dd  <#if subtype?? && subtype == 'onlinegameusers'>class="layui-this"</#if>>
-				<a href="/apps/platform/online/gameusers.html">在线玩家</a>
+			<!--<dd  <#if subtype?? && subtype == 'onlinegameusers'>class="layui-this"</#if>>-->
+				<!--<a href="/apps/platform/online/gameusers.html">在线玩家</a>-->
+			<!--</dd>-->
+		</dl>
+	</li>
+
+	<li class="layui-nav-item layui-nav-itemed">
+		<a class="layui-nav-title" href="javascript:;">交易管理</a>
+		<dl class="layui-nav-child">
+			<dd  <#if subtype?? && subtype == 'recharge'>class="layui-this"</#if>>
+				<a href="/apps/platform/room/recharge/index.html">房卡充值记录</a>
 			</dd>
-			<dd  <#if subtype?? && subtype == 'gameroom'>class="layui-this"</#if>>
-				<a href="/apps/platform/gameroom.html">游戏房间</a>
+			<dd  <#if subtype?? && subtype == 'use'>class="layui-this"</#if>>
+			<a href="/apps/platform/use/index.html">房卡使用记录</a>
+			</dd>
+			<dd  <#if subtype?? && subtype == 'approvel'>class="layui-this"</#if>>
+			<a href="/apps/platform/room/approvel/index.html">体现审批</a>
+			</dd>
+			<dd  <#if subtype?? && subtype == 'management'>class="layui-this"</#if>>
+			<a href="/apps/platform/room/management/index.html">分润管理</a>
 			</dd>
 		</dl>
 	</li>
