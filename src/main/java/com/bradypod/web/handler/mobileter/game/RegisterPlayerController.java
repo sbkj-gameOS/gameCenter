@@ -1,6 +1,8 @@
 package com.bradypod.web.handler.mobileter.game;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.bradypod.util.UKTools;
 import com.bradypod.web.model.PlayUser;
 import com.bradypod.web.model.RoomRechargeRecord;
 import com.bradypod.web.service.repository.jpa.PlayUserRepository;
@@ -50,7 +51,9 @@ public class RegisterPlayerController {
 				PlayUser playUser = gson.fromJson(result, PlayUser.class);
 				PlayUser newPlayUser = playUserRes.findByOpenid(playUser.getOpenid());
 				if (null == newPlayUser) {
-					playUser.setInvitationcode(UKTools.getUUID());
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
+					String time = formatter.format(new Date());
+					playUser.setInvitationcode(time);
 					playUser.setRoomcordnum(10);
 					RoomRechargeRecord roomRechargeRecord = new RoomRechargeRecord();
 					roomRechargeRecord.setUserName(playUser.getNickname());
