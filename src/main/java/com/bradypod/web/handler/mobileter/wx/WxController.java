@@ -212,4 +212,11 @@ public class WxController {
 	public String wxCodeTxt(){
 		return "V4mcS82aXhi5ivFV";
 	}
+	
+	@ResponseBody
+	@RequestMapping("/")
+	public String rechargeManagement(){
+		
+		return null;
+	}
 }
