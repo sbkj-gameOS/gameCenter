@@ -1,5 +1,6 @@
 package com.bradypod.web.service.repository.jpa;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -44,4 +45,9 @@ public abstract interface PlayUserRepository extends JpaRepository<PlayUser, Str
 	@Modifying
 	@Transactional
 	public abstract void setCardsById(int cards, String id);
+
+	@Query(value = "update bm_playuser set TRT_PROFIT = :trtProfit,UPDATETIME = now() where id = :id", nativeQuery = true)
+	@Modifying
+	@Transactional
+	public abstract void setTrtProfitById(BigDecimal trtProfit, String id);
 }
