@@ -45,11 +45,11 @@ public class RegisterPlayerController extends Handler {
 	private RoomRechargeRecordRepository roomRechargeRecordRepository;
 
 	@RequestMapping("/wxLogin")
-	public String wxLogin(ModelMap map,String code, HttpSession session) {
-		System.out.println("-------------------code-------------------:"+code);
+	public String wxLogin(ModelMap map, String code, HttpSession session) {
+		System.out.println("-------------------code-------------------:" + code);
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		/** 请求结果 */
-		String result = WxUserInfo.getWxUserInfo(code);//根据code获取微信用户信息
+		String result = WxUserInfo.getWxUserInfo(code);// 根据code获取微信用户信息
 		JSONObject jsonObject = (JSONObject) JSON.parse(result);
 		Gson gson = new Gson();
 		try {
@@ -143,5 +143,25 @@ public class RegisterPlayerController extends Handler {
 		// 该手机号已注册
 		// 先查询该手机号是否已绑定微信openid
 		return json;
+	}
+
+	/**
+	 * @Title: buildPinvitationcode
+	 * @Description: TODO(添加邀请码)
+	 * @param playUser
+	 * @return 设定文件 JSONObject 返回类型
+	 */
+	@ResponseBody
+	@RequestMapping("/buildPinvitationcode")
+	public JSONObject buildPinvitationcode(PlayUser playUser) {
+		Map<Object, Object> dataMap = new HashMap<Object, Object>();
+		try {
+			playUserRes.setPinvitationcodeById(playUser.getPinvitationcode(),playUser.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataMap.put("success", false);
+			dataMap.put("msg", "添加邀请码失败");
+		}
+		return (JSONObject) JSONObject.toJSON(dataMap);
 	}
 }

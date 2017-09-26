@@ -1,8 +1,13 @@
 package com.bradypod.web.service.repository.jpa;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.bradypod.web.model.PlayUser;
 
@@ -20,11 +25,12 @@ public abstract interface PlayUserRepository extends JpaRepository<PlayUser, Str
 
 	public abstract Page<PlayUser> findByDatastatusAndUsername(boolean datastatus, String orgi, String username, Pageable paramPageable);
 
-	/**
-	 * @Title: findByOpenid
-	 * @Description: TODO(通过openid查询用户信息)
-	 * @param openid
-	 * @return 设定文件 PlayUser 返回类型
-	 */
 	public abstract PlayUser findByOpenid(String openid);
+
+	public abstract Page<PlayUser> findByNicknameLike(String username, Pageable pageable);
+
+	@Query(value = "update bm_playuser set pinvitationcode = :pinvitationcode,UPDATETIME = now() where id = :id", nativeQuery = true)
+	@Modifying
+	@Transactional
+	public abstract void setPinvitationcodeById(@Param("pinvitationcode") String pinvitationcode, @Param("id") String id);
 }
