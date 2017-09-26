@@ -208,7 +208,7 @@ public class WxController {
 	@RequestMapping("checkDownPlayer")
 	public boolean checkDownPlayer(PlayUser playUser) {
 		boolean flag = true;
-		List<PlayUser> playUserList = playUserRes.findbyPinvitationcode(playUser.getInvitationcode());
+		List<PlayUser> playUserList = playUserRes.findByPinvitationcode(playUser.getInvitationcode());
 		if(playUserList.isEmpty()){
 			flag = false;
 		}

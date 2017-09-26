@@ -38,5 +38,5 @@ public abstract interface PlayUserRepository extends JpaRepository<PlayUser, Str
 
 	public abstract PlayUser findByInvitationcode(String pinvitationcode);
 
-	public abstract List<PlayUser> findbyPinvitationcode(String invitationcode);
+	public abstract List<PlayUser> findByPinvitationcode(String invitationcode);
 }
