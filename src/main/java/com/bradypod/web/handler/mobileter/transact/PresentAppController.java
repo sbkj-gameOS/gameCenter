@@ -71,4 +71,22 @@ public class PresentAppController extends Handler {
 		}
 		return (JSONObject) JSONObject.toJSON(dataMap);
 	}
+	
+	@ResponseBody
+	@RequestMapping("/testapp")
+	public JSONObject testapp(PresentApp presentApp, Integer page, Integer limit) {
+		Map<Object, Object> dataMap = new HashMap<Object, Object>();
+		try {
+			Pageable pageable = new PageRequest(page, limit);
+			Page<PresentApp> p = presentAppRepository.findByUserNameLikeAndInvitationCodeLike(presentApp.getUserName(),presentApp.getInvitationCode(),pageable);
+			dataMap.put("data", p.getContent());
+			dataMap.put("count", p.getTotalElements());
+			dataMap.put("code", 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataMap.put("success", false);
+			dataMap.put("msg", "查询失败");
+		}
+		return (JSONObject) JSONObject.toJSON(dataMap);
+	}
 }

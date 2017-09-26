@@ -1,5 +1,7 @@
 package com.bradypod.web.service.repository.jpa;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.bradypod.web.model.PresentApp;
@@ -12,4 +14,5 @@ import com.bradypod.web.model.PresentApp;
  */
 public interface PresentAppRepository extends JpaRepository<PresentApp, String>{
 
+	public Page<PresentApp> findByUserNameLikeAndInvitationCodeLike(String userName, String invitationCode,Pageable pageable);
 }

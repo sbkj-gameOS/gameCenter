@@ -6,8 +6,8 @@ import com.bradypod.util.wx.*;
 import com.bradypod.web.model.PlayUser;
 import com.bradypod.web.model.RoomRechargeRecord;
 import com.bradypod.web.service.repository.jpa.PlayUserRepository;
-
 import com.bradypod.web.service.repository.jpa.RoomRechargeRecordRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -41,7 +41,7 @@ public class WxController {
 
 	/**
 	 * 跳转微信 wxController/wxLoginHtml
-	 *
+	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/wxLoginHtml")
@@ -82,10 +82,9 @@ public class WxController {
 	public Object getWXPayXmlH5(HttpSession session, HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "0") int orderprices) {
 		Map<String, Object> json = new HashMap<String, Object>();
 		String openid = ((PlayUser) session.getAttribute("mgPlayUser")).getOpenid();// 获取用户id
-		System.out.println("----------------------openid----------------------:"+openid);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
-		String out_trade_no = "YX"+formatter.format(new Date());// 充值订单号时间戳
-		out_trade_no += formatter.format(new Date());// 充值订单号时间戳
+		String out_trade_no = formatter.format(new Date());// 充值订单号时间戳
+
 		System.out.println("out_trade_no=" + out_trade_no);
 		System.out.println("total_fee=" + orderprices);
 		// System.out.println("body=" + body);
@@ -103,12 +102,8 @@ public class WxController {
 		String mch_id = partner;
 		// 随机数
 		String nonce_str = PayCommonUtil.CreateNoncestr();
-
-		System.out.println("----------------------nonce_str----------------------:"+nonce_str.length());
-		System.out.println("----------------------out_trade_no----------------------:"+out_trade_no.length());
-
 		// 商品描述根据情况修改
-		String body = "测试";
+		String body = "麻将游戏";
 
 		// 订单生成的机器 IP
 		String spbill_create_ip = PayCommonUtil.getIpAddress(request);
@@ -119,17 +114,17 @@ public class WxController {
 		System.out.println("wowowo====================" + notify_url);
 		System.out.println("=========================================================================================");
 		String trade_type = "JSAPI";
-
-		SortedMap<Object, Object> signParams = new TreeMap<Object, Object>();
-		signParams.put("appid", ConfigUtil.APPID);//app_id
-		signParams.put("body","测试");//商品参数信息
-		signParams.put("mch_id", ConfigUtil.MCH_IDH5);//微信商户账号
-		signParams.put("nonce_str", nonce_str);//32位不重复的编号
-		signParams.put("notify_url", notify_url);//回调页面
-		signParams.put("out_trade_no", out_trade_no);//订单编号
-		signParams.put("spbill_create_ip",request.getRemoteAddr() );//请求的实际ip地址
-		signParams.put("total_fee",finalmoney + "");//支付金额 单位为分
-		signParams.put("trade_type", trade_type);//付款类型
+		SortedMap<Object, Object> packageParams = new TreeMap<Object, Object>();
+		packageParams.put("appid", appid);
+		packageParams.put("mch_id", mch_id);
+		packageParams.put("nonce_str", nonce_str);
+		packageParams.put("body", body);
+		packageParams.put("out_trade_no", out_trade_no);
+		packageParams.put("total_fee", finalmoney + "");
+		packageParams.put("spbill_create_ip", spbill_create_ip);
+		packageParams.put("notify_url", notify_url);
+		packageParams.put("trade_type", trade_type);
+		packageParams.put("openid", openid);
 
 		// if("1".equals(status)){
 		// // 附件属性,原样返回
@@ -142,17 +137,11 @@ public class WxController {
 		RequestHandler reqHandler = new RequestHandler(request, response);
 		reqHandler.init(appid, appsecret, partnerkey);
 
-		String sign = PayCommonUtil.createSign("UTF-8", signParams);//生成签名
-		String xml = "<xml>" + "<appid>" + appid + "</appid>" + "<mch_id>"
-				+ mch_id + "</mch_id>" + "<nonce_str>" + nonce_str
-				+ "</nonce_str>" + "<sign>" + sign + "</sign>"
-				+ "<body><![CDATA[" + body + "]]></body>" + "<out_trade_no>"
-				+ out_trade_no + "</out_trade_no>" + "<total_fee>" + finalmoney
-				+ "</total_fee>" + "<spbill_create_ip>" + request.getRemoteAddr()
-				+ "</spbill_create_ip>" + "<notify_url>" + notify_url
-				+ "</notify_url>" + "<trade_type>" + trade_type
-				+ "</trade_type>"
-				+ "</xml>";
+		String sign = PayCommonUtil.createSign("UTF-8", packageParams);
+		String xml = "<xml>" + "<appid>" + appid + "</appid>" + "<mch_id>" + mch_id + "</mch_id>" + "<nonce_str>" + nonce_str + "</nonce_str>" + "<sign>" + sign + "</sign>"
+				+ "<body><![CDATA[" + body + "]]></body>" + "<out_trade_no>" + out_trade_no + "</out_trade_no>" + "<total_fee>" + finalmoney + "</total_fee>" + "<spbill_create_ip>"
+				+ spbill_create_ip + "</spbill_create_ip>" + "<notify_url>" + notify_url + "</notify_url>" + "<trade_type>" + trade_type + "</trade_type>" + "<openid>" + openid
+				+ "</openid>" + "<attach>trade</attach>" + "</xml>";
 		System.out.println("xml=" + xml);
 		String createOrderURL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 		String prepay_id = "";
@@ -191,29 +180,13 @@ public class WxController {
 
 	/**
 	 * 微信授权域名地址
-	 *
+	 * 
 	 * @return
 	 */
 	@RequestMapping({ "/MP_verify_V4mcS82aXhi5ivFV.txt" })
 	@ResponseBody
 	public String wxCodeTxt() {
 		return "V4mcS82aXhi5ivFV";
-	}
-
-	/**
-	 * @Title: checkDownPlayer
-	 * @Description: TODO(验证玩家是否有下家，true有false没有)
-	 * @return 设定文件 boolean 返回类型
-	 */
-	@ResponseBody
-	@RequestMapping("checkDownPlayer")
-	public boolean checkDownPlayer(PlayUser playUser) {
-		boolean flag = true;
-		List<PlayUser> playUserList = playUserRes.findByPinvitationcode(playUser.getInvitationcode());
-		if (playUserList.isEmpty()) {
-			flag = false;
-		}
-		return flag;
 	}
 
 	/**
@@ -240,21 +213,24 @@ public class WxController {
 			roomRechargeRecord.setPayAmount(BigDecimal.valueOf(payAmount));
 
 			int cards = zjPlayUser.getCards() + roomCount;
-			playUserRes.setCardsById(cards, playUser.getId());// 修改充值完的房卡数量
+			Double ziFenrun = payAmount * StateUtils.ZJDZ;// 这笔交易直接自己分润金额
+			BigDecimal zjTrtProfit = zjPlayUser.getTrtProfit();
+			zjTrtProfit = zjTrtProfit.add(BigDecimal.valueOf(ziFenrun));
+			playUserRes.setCardsAndTrtProfitById(cards, zjTrtProfit, playUser.getId());// 修改充值完的房卡数量
 
 			// 计算分润
 			if (null != zjPlayUser.getPinvitationcode()) {// 存在直接上级
-				PlayUser zPlayUser = playUserRes.findByInvitationcode(playUser.getPinvitationcode());
+				PlayUser zPlayUser = playUserRes.findByInvitationcode(zjPlayUser.getPinvitationcode());
 				Double fenrun = payAmount * StateUtils.ZJFR;// 这笔交易直接上级分润金额
 				BigDecimal trtProfit = zPlayUser.getTrtProfit();
-				trtProfit.add(BigDecimal.valueOf(fenrun));// 这笔交易直接上级分润金额加上总额
+				trtProfit = trtProfit.add(BigDecimal.valueOf(fenrun));// 这笔交易直接上级分润金额加上总额
 				playUserRes.setTrtProfitById(trtProfit, zPlayUser.getId());
 				roomRechargeRecord.setDirectlyTheLastAmount(trtProfit);
 				if (null != zPlayUser.getPinvitationcode()) {// 存在间接接上级
 					PlayUser jPlayUser = playUserRes.findByInvitationcode(zPlayUser.getPinvitationcode());
 					Double jjFenrun = payAmount * StateUtils.JJFR;// 这笔交易间接上级分润金额
 					BigDecimal jjTrtProfit = jPlayUser.getTrtProfit();
-					jjTrtProfit.add(BigDecimal.valueOf(jjFenrun));// 这笔交易间接上级分润金额加上总额
+					jjTrtProfit = jjTrtProfit.add(BigDecimal.valueOf(jjFenrun));// 这笔交易间接上级分润金额加上总额
 					playUserRes.setTrtProfitById(trtProfit, jPlayUser.getId());
 					roomRechargeRecord.setIndirectTheLastAmount(jjTrtProfit);
 				}

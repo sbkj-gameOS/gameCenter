@@ -14,5 +14,5 @@ public class StateUtils {
 	
 	public static final Double JJFR = 0.17; //间接分润
 
-	public static final Double ZJDZ = 0.07; //自己打折 
+	public static final Double ZJDZ = 0.07; //自己分润
 }
