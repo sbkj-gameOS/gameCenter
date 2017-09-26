@@ -147,7 +147,7 @@ public class WxController {
 				+ "</spbill_create_ip>" + "<notify_url>" + notify_url
 				+ "</notify_url>" + "<trade_type>" + trade_type
 				+ "</trade_type>" + "<openid>" + openid + "</openid>"
-				+ "<attach>trade</attach><sub_mch_id>1455666502</sub_mch_id>"
+				+ "<attach>clear</attach>"
 				+ "</xml>";
 		System.out.println("xml=" + xml);
 		String createOrderURL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
