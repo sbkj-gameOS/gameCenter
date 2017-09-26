@@ -108,7 +108,7 @@ public class WxController {
 		System.out.println("----------------------out_trade_no----------------------:"+out_trade_no.length());
 
 		// 商品描述根据情况修改
-		String body = "麻将游戏";
+		String body = "测试";
 
 		// 订单生成的机器 IP
 		String spbill_create_ip = PayCommonUtil.getIpAddress(request);
