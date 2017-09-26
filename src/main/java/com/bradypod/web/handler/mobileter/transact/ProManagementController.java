@@ -2,8 +2,12 @@ package com.bradypod.web.handler.mobileter.transact;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bradypod.web.handler.Handler;
+import com.bradypod.web.model.PlayUser;
 import com.bradypod.web.model.ProManagement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,11 +45,13 @@ public class ProManagementController extends Handler {
 	 */
 	@ResponseBody
 	@RequestMapping("/findProManagementList")
-	public JSONObject findProManagementList(ProManagement proManagement) {
+	public JSONObject findProManagementList(ProManagement proManagement, Integer page, Integer limit) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			dataMap.put("data", proManagementRepository.findByUserNameAndInvitationCode(proManagement.getUserName(),proManagement.getInvitationCode(),0));
-			dataMap.put("count", 0);
+			Pageable Pageable = new PageRequest(page, limit);
+			Page<ProManagement> p = proManagementRepository.findByUserNameAndInvitationCode(proManagement.getUserName(), proManagement.getInvitationCode(), Pageable);
+			dataMap.put("data", p.getContent());
+			dataMap.put("count", p.getTotalElements());
 			dataMap.put("code", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,12 +60,14 @@ public class ProManagementController extends Handler {
 		}
 		return (JSONObject) JSONObject.toJSON(dataMap);
 	}
+
 	/**
 	 * 分润管理首页
+	 * 
 	 * @return
 	 */
-	@RequestMapping({"/index"})
-	public ModelAndView rechargeRecord(ModelMap map , HttpServletRequest request){
+	@RequestMapping({ "/index" })
+	public ModelAndView rechargeRecord(ModelMap map, HttpServletRequest request) {
 		return request(super.createAppsTempletResponse("/apps/business/platform/room/management/index"));
 	}
 

@@ -9,6 +9,10 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -95,11 +99,13 @@ public class RegisterPlayerController extends Handler {
 	 */
 	@ResponseBody
 	@RequestMapping("/findRegisterPlayerList")
-	public JSONObject findRegisterPlayerList(PlayUser playUser) {
+	public JSONObject findRegisterPlayerList(PlayUser playUser, Integer page, Integer limit) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			dataMap.put("data", playUserRes.findAll());
-			dataMap.put("count", 222);
+			Pageable Pageable = new PageRequest(page, limit, Sort.Direction.DESC, "roomcordnum");
+			Page<PlayUser> p = playUserRes.findAll(Pageable);
+			dataMap.put("data", p.getContent());
+			dataMap.put("count", p.getTotalElements());
 			dataMap.put("code", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
