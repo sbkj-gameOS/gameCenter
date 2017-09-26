@@ -1,0 +1,101 @@
+<div class="layui-layout layui-layout-content">
+    <div class="layui-side layui-beimi-left">
+        <div class="layui-side-scroll">
+            <#include "/apps/business/platform/include/left.html"/>
+        </div>
+    </div>
+    <div class="layui-body">
+        <div class="layui-side-scroll">
+            <div class="row">
+                <h1 class="site-h1" style="background-color:#FFFFFF;">
+                    提现审批后台管理界面
+                </h1>
+                <div class="col-lg-12">
+                    <div class="user_online" style="height:60px;">
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item" style="position: relative">
+                                <label class="layui-form-label " style="display: block;margin-top:10px; text-align: center;width:50px">
+                                    用户名:
+                                </label>
+                                <div class="layui-input-block col-lg-2 col-md-2 col-sm-2 col-xs-1" style="width:200px; display: block;float:left;">
+                                    <input type="text" name="title" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="margin-left: 20px;">
+                                </div>
+                                <div class="layui-inline" style="margin-top: 10px;margin-left: -30px;">
+                                    <label class="layui-form-label">金额:</label>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="text" name="price_min" placeholder="" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid">-</div>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="text" name="price_max" placeholder="" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-inline" style="margin-top: 10px;margin-left: -40px;">
+                                    <label class="layui-form-label">申请时间:</label>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="text" name="price_min" placeholder="" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid">-</div>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="text" name="price_max" placeholder="" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item" style="position: absolute;left:880px;top:10px">
+                                    <label class="layui-form-label">状态</label>
+                                    <div class="layui-input-inline">
+                                        <select name="quiz1">
+                                            <option value="全部" selected="">全部</option>
+                                            <option value="审核">审核</option>
+                                            <option value="未审核">未审核</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="boxs col-lg-2 col-md-2 col-sm-2 col-xs-1" style="width: 100px;height:40px;float:right;">
+                                    <button class="layui-btn layui-btn-radius layui-btn-normal" type="button" style="display: block; float:left; width:100px; height:40px;margin-top: 10px;margin-left: -230px;border-radius: 3px">
+                                        查询
+                                    </button>
+                                </div>
+                                <div class="boxs col-lg-2 col-md-2 col-sm-2 col-xs-1" style="width: 100px;height:40px;float:right;">
+                                    <button class="layui-btn layui-btn-radius layui-btn-normal" type="button" style="display: block; float:left; width:100px; height:40px;margin-top: 10px;border-radius: 3px">
+                                        审核通过
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row" style="padding:5px;">
+                        <div class="col-lg-12">
+                            <table class="layui-table" lay-data="{height:640,url:'/presentapp/findPresentappList', page:true, id:'test'}" lay-filter="test">
+                                <thead style="width: 100%">
+                                <tr>
+                                    <th lay-data="{field:'id', width:140}">序号</th>
+                                    <th lay-data="{field:'applicationNum',width:140}">申请单号</th>
+                                    <th lay-data="{field:'userName',width:140}">用户名</th>
+                                    <th lay-data="{field:'invitationCode',width:160}">邀请码</th>
+                                    <th lay-data="{field:'presentAppTime',width:160}">申请提现时间</th>
+                                    <th lay-data="{field:'amountMoney',width:140}">金额</th>
+                                    <th lay-data="{field:'preState',width:160}">状态</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+
+    //后台数据
+    layui.use('table', function(){
+        var table = layui.table;
+    });
+
+</script>
+
