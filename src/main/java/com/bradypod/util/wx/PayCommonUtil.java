@@ -21,7 +21,7 @@ public class PayCommonUtil {
 	public static String CreateNoncestr() {
 		String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		String res = "";
-		for (int i = 0; i < 16; i++) {
+		for (int i = 0; i < 32; i++) {
 			Random rd = new Random();
 			res += chars.charAt(rd.nextInt(chars.length() - 1));
 		}
