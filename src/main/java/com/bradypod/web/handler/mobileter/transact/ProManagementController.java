@@ -40,8 +40,7 @@ public class ProManagementController {
 	public JSONObject findProManagementList(ProManagement proManagement) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			//dataMap.put("data", proManagementRepository.findByUserNameAndInvitationCode(proManagement.getUserName(),proManagement.getInvitationCode(),0));
-			dataMap.put("data", proManagementRepository.findAll());
+			dataMap.put("data", proManagementRepository.findByUserNameAndInvitationCode(proManagement.getUserName(),proManagement.getInvitationCode(),0));
 			dataMap.put("count", 0);
 			dataMap.put("code", 0);
 		} catch (Exception e) {
