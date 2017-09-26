@@ -39,4 +39,9 @@ public abstract interface PlayUserRepository extends JpaRepository<PlayUser, Str
 	public abstract PlayUser findByInvitationcode(String pinvitationcode);
 
 	public abstract List<PlayUser> findByPinvitationcode(String invitationcode);
+
+	@Query(value = "update bm_playuser set cards = :cards,UPDATETIME = now() where id = :id", nativeQuery = true)
+	@Modifying
+	@Transactional
+	public abstract void setCardsById(int cards, String id);
 }

@@ -229,7 +229,8 @@ public class WxController {
 	@RequestMapping("/rechargeManagement")
 	public String rechargeManagement(PlayUser playUser,Double preferentialAmount,Double payAmount, Double originalPrice,int roomCount) {
 		PlayUser zjPlayUser = playUserRes.findById(playUser.getId());
-		int cords = zjPlayUser.getCards() + roomCount;
+		int cards = zjPlayUser.getCards() + roomCount;
+		playUserRes.setCardsById(cards,playUser.getId());//修改充值完的房卡数量
 		if(null != playUser.getPinvitationcode()){
 			PlayUser jozPlayUser = playUserRes.findByInvitationcode(playUser.getPinvitationcode());
 			
