@@ -1,7 +1,5 @@
 package com.bradypod.web.handler.mobileter.wx;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.bradypod.util.wx.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,11 +31,12 @@ public class WxController {
 
 	/**
 	 * 跳转微信
+	 * wxController/wxLoginHtml
 	 * @return
      */
 	@RequestMapping(value = "/wxLoginHtml")
 	public String wxMain(ModelMap map){
-		map.addAttribute("userName","123");
+		map.addAttribute("userName","");
 		return "/apps/business/platform/game/wxGetCode/main";
 	}
 

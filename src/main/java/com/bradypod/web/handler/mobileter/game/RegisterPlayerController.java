@@ -8,12 +8,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.bradypod.util.wx.WxUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -42,18 +44,18 @@ public class RegisterPlayerController extends Handler {
 	@Autowired
 	private RoomRechargeRecordRepository roomRechargeRecordRepository;
 
-	@ResponseBody
 	@RequestMapping("/wxLogin")
-	public String wxLogin(String code, HttpSession session) {
+	public String wxLogin(ModelMap map,String code, HttpSession session) {
+		System.out.println("-------------------code-------------------:"+code);
 		Map<String, Object> dataMap = new HashMap<String, Object>();
 		/** 请求结果 */
-		String result = "{\"subscribe\": 1,\"openid\":\"o6_bmjrPTlm6_2sgVt7hMZOPfL2M\",\"nickname\": \"Band\",\"sex\": 1,\"language\": \"zh_CN\",\"city\":\"广州\",\"province\": \"广东\",\"country\":\"中国\",\"headimgurl\":\"\",\"subscribe_time\": 1382694957,\"unionid\": \"o6_bmasdasdsad6_2sgVt7hMZOPfL\",\"remark\": \"\",\"groupid\":0,  \"tagid_list\":[128,2]}";
-		// String result = WxUserInfo.getWxUserInfo(code);//根据code获取微信用户信息
+		String result = WxUserInfo.getWxUserInfo(code);//根据code获取微信用户信息
 		JSONObject jsonObject = (JSONObject) JSON.parse(result);
 		Gson gson = new Gson();
 		try {
 			if (null != jsonObject.get("openid")) {
 				PlayUser playUser = gson.fromJson(result, PlayUser.class);
+				map.addAttribute("userName",playUser.getNickname());
 				PlayUser newPlayUser = playUserRes.findByOpenid(playUser.getOpenid());
 				if (null == newPlayUser) {
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
@@ -88,7 +90,7 @@ public class RegisterPlayerController extends Handler {
 			dataMap.put("success", false);
 			dataMap.put("msg", "授权失败");
 		}
-		return gson.toJson(dataMap);
+		return "/apps/business/platform/game/wxGetCode/main";
 	}
 
 	/**
