@@ -1,17 +1,21 @@
 package com.bradypod.web.handler.mobileter.transact;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSONObject;
+import com.bradypod.web.handler.Handler;
+import com.bradypod.web.model.ProManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONObject;
-import com.bradypod.web.model.ProManagement;
 import com.bradypod.web.service.repository.jpa.PresentAppRepository;
 import com.bradypod.web.service.repository.jpa.ProManagementRepository;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ClassName: ProManagementController
@@ -20,8 +24,8 @@ import com.bradypod.web.service.repository.jpa.ProManagementRepository;
  * @date 2017年9月26日 上午9:38:18
  */
 @Controller
-@RequestMapping("/promanagement")
-public class ProManagementController {
+@RequestMapping("promanagement")
+public class ProManagementController extends Handler {
 
 	@Autowired
 	private ProManagementRepository proManagementRepository;
@@ -50,4 +54,13 @@ public class ProManagementController {
 		}
 		return (JSONObject) JSONObject.toJSON(dataMap);
 	}
+	/**
+	 * 分润管理首页
+	 * @return
+	 */
+	@RequestMapping({"/index"})
+	public ModelAndView rechargeRecord(ModelMap map , HttpServletRequest request){
+		return request(super.createAppsTempletResponse("/apps/business/platform/room/management/index"));
+	}
+
 }

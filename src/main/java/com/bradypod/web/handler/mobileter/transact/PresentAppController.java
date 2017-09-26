@@ -1,18 +1,21 @@
 package com.bradypod.web.handler.mobileter.transact;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSONObject;
+import com.bradypod.web.model.PresentApp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bradypod.web.handler.Handler;
-import com.bradypod.web.model.PresentApp;
 import com.bradypod.web.service.repository.jpa.PresentAppRepository;
 import com.bradypod.web.service.repository.jpa.ProManagementRepository;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ClassName: PresentAppController
@@ -30,6 +33,14 @@ public class PresentAppController extends Handler {
 	@Autowired
 	private PresentAppRepository presentAppRepository;
 
+	/**
+	 * 提现审批
+	 * @return
+	 */
+	@RequestMapping({"/index"})
+	public ModelAndView index(ModelMap map , HttpServletRequest request){
+		return request(super.createAppsTempletResponse("/apps/business/platform/room/approvel/index"));
+	}
 	/**
 	 * @Title: findRegisterPlayerList
 	 * @Description: TODO(提现记录)
