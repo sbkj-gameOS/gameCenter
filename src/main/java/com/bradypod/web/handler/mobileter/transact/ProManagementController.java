@@ -1,9 +1,10 @@
 package com.bradypod.web.handler.mobileter.transact;
 
-import com.alibaba.fastjson.JSONObject;
-import com.bradypod.web.handler.Handler;
-import com.bradypod.web.model.PlayUser;
-import com.bradypod.web.model.ProManagement;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,15 +12,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.bradypod.web.service.repository.jpa.PresentAppRepository;
-import com.bradypod.web.service.repository.jpa.ProManagementRepository;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
+import com.alibaba.fastjson.JSONObject;
+import com.bradypod.web.handler.Handler;
+import com.bradypod.web.model.ProManagement;
+import com.bradypod.web.service.repository.jpa.PresentAppRepository;
+import com.bradypod.web.service.repository.jpa.ProManagementRepository;
 
 /**
  * @ClassName: ProManagementController
@@ -48,8 +48,9 @@ public class ProManagementController extends Handler {
 	public JSONObject findProManagementList(ProManagement proManagement, Integer page, Integer limit) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			Pageable Pageable = new PageRequest(page, limit);
-			Page<ProManagement> p = proManagementRepository.findByUserNameAndInvitationCode(proManagement.getUserName(), proManagement.getInvitationCode(), Pageable);
+			Pageable pageable = new PageRequest(page, limit);
+			// Page<ProManagement> p = proManagementRepository.findByUserNameLikeAndInvitationCode(proManagement.getUserName(), proManagement.getInvitationCode(), Pageable);
+			Page<ProManagement> p = proManagementRepository.findAll(pageable);
 			dataMap.put("data", p.getContent());
 			dataMap.put("count", p.getTotalElements());
 			dataMap.put("code", 0);
