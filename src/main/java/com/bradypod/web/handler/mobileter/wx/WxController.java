@@ -141,7 +141,7 @@ public class WxController {
 		RequestHandler reqHandler = new RequestHandler(request, response);
 		reqHandler.init(appid, appsecret, partnerkey);
 
-		String sign = PayCommonUtil.createSign("",packageParams);
+		String sign = PayCommonUtil.createSign("UTF-8",packageParams);
 		String xml = "<xml>" + "<appid>" + appid + "</appid>" + "<mch_id>"
 				+ mch_id + "</mch_id>" + "<nonce_str>" + nonce_str
 				+ "</nonce_str>" + "<sign>" + sign + "</sign>"
