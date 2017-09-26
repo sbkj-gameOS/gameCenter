@@ -8,35 +8,36 @@
         <div class="layui-side-scroll">
             <div class="row">
                 <h1 class="site-h1" style="background-color:#FFFFFF;">
-                    房卡充值
+                    房卡充值后台管理界面
                 </h1>
                 <div class="col-lg-12">
                     <div class="user_online" style="height:60px;">
                         <form class="layui-form" action="">
                             <div class="layui-form-item" style="position: relative">
-                                <label class="layui-form-label "
-                                       style="display: block;margin-top:10px; text-align: center;width:50px">用户名:</label>
-                                <div class="layui-input-block col-lg-2 col-md-2 col-sm-2 col-xs-1"
-                                     style="width:200px; display: block;float:left;">
-                                    <input type="text" name="title" required lay-verify="required" placeholder=""
-                                           autocomplete="off" class="layui-input" style="margin-left: 20px;">
+                                <label class="layui-form-label " style="display: block;margin-top:10px; text-align: center;width:50px">
+                                    用户名:
+                                </label>
+                                <div class="layui-input-block col-lg-2 col-md-2 col-sm-2 col-xs-1" style="width:200px; display: block;float:left;">
+                                    <input type="text" name="title" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="margin-left: 20px;">
                                 </div>
-                                <label class="layui-form-label"
-                                       style="display: block;margin-top:10px; text-align: center;width:80px">邀请码:</label>
-                                <div class="layui-input-block col-lg-2 col-md-2 col-sm-2 col-xs-1"
-                                     style="width:200px; display: block;float:left;">
-                                    <input type="text" name="title" required lay-verify="required" placeholder=""
-                                           autocomplete="off" class="layui-input" style="margin-left: 20px;">
+                                <label class="layui-form-label" style="display: block;margin-top:10px; text-align:center;width:80px;">
+                                    邀请码:
+                                </label>
+                                <div class="layui-input-block col-lg-2 col-md-2 col-sm-2 col-xs-1" style="width:200px; display: block;float:left;">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="margin-left: 20px;">
                                 </div>
-                                <label class="layui-form-label"
-                                       style="display: block;margin-top:10px; text-align: center;width:100px">购买时间:</label>
-                                <div class="layui-inline col-lg-2 col-md-2 col-sm-2 col-xs-1">
-                                    <input type="text" class="layui-input" id="test1" style="margin-top: 10px;">
+                                <div class="layui-inline" style="margin-top: 10px;">
+                                    <label class="layui-form-label">购买时间:</label>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="text" name="price_min" placeholder="" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid">-</div>
+                                    <div class="layui-input-inline" style="width: 100px;">
+                                        <input type="text" name="price_max" placeholder="" autocomplete="off" class="layui-input">
+                                    </div>
                                 </div>
-                                <div class="boxs col-lg-2 col-md-2 col-sm-2 col-xs-1"
-                                     style="width: 100px;height:40px;float:right;">
-                                    <button class="layui-btn layui-btn-radius layui-btn-normal"
-                                            style="display: block; float:left; width:100px; height:40px;margin-top: 10px;border-radius: 3px">
+                                <div class="boxs col-lg-2 col-md-2 col-sm-2 col-xs-1" style="width: 100px;height:40px;float:right;">
+                                    <button class="layui-btn layui-btn-radius layui-btn-normal" type="button" style="display: block; float:left; width:100px; height:40px;margin-top: 10px;margin-left:-400px;border-radius: 3px">
                                         查询
                                     </button>
                                 </div>
@@ -45,19 +46,19 @@
                     </div>
                     <div class="row" style="padding:5px;">
                         <div class="col-lg-12">
-                            <table class="layui-table" lay-data="{height:315, url:'/roomCard/getRechargeJson', page:true, id:'test'}" lay-filter="test">
-                                <thead>
+                            <table class="layui-table" lay-data="{url:'/roomCard/getRechargeJson', page:true, id:'test'}" lay-filter="test">
+                                <thead style="width: 100%">
                                 <tr>
                                     <th lay-data="{field:'id', width:140}">序号</th>
                                     <th lay-data="{field:'userName',width:140}">用户名</th>
                                     <th lay-data="{field:'invitationCode',width:140}">邀请码</th>
-                                    <th lay-data="{field:'rechargeTime',width:150}">充值时间</th>
-                                    <th lay-data="{field:'roomCount',width:150}">房卡数量</th>
+                                    <th lay-data="{field:'rechargeTime',width:160}">充值时间</th>
+                                    <th lay-data="{field:'roomCount',width:160}">房卡数量</th>
                                     <th lay-data="{field:'originalPrice',width:140}">原价</th>
-                                    <th lay-data="{field:'preferentialAmount',width:150}">优惠金额</th>
-                                    <th lay-data="{field:'payAmount',width:150}">支付金额</th>
-                                    <th lay-data="{field:'directlyTheLastAmount', width:150}">直接上家分润金额</th>
-                                    <th lay-data="{field:'indirectTheLastAmount', width:150}">间接上家分润金额</th>
+                                    <th lay-data="{field:'preferentialAmount',width:160}">优惠金额</th>
+                                    <th lay-data="{field:'payAmount',width:160}">支付金额</th>
+                                    <th lay-data="{field:'directlyTheLastAmount', width:179}">直接上家分润金额</th>
+                                    <th lay-data="{field:'indirectTheLastAmount', width:180}">间接上家分润金额</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -65,42 +66,6 @@
                             </table>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div id="demo7" style="position: absolute;bottom:50px;left:150px;">
-                <div class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-10">
-                    <span class="layui-laypage-count">共 100 条</span>
-                    <a href="javascript:;" class="layui-laypage-prev"
-                       data-page="6">
-                        上一页
-                    </a>
-                    <a href="javascript:;" class="layui-laypage-first" data-page="1" title="首页">
-                        1
-                    </a>
-                    <span class="layui-laypage-spr">…</span>
-                    <a href="javascript:;" data-page="5">5</a>
-                    <a href="javascript:;" data-page="6">6</a>
-                    <span class="layui-laypage-curr">
-                        <em class="layui-laypage-em"></em>
-                        <em>7</em>
-                    </span>
-                    <a href="javascript:;" data-page="8">8</a>
-                    <a href="javascript:;" data-page="9">9</a>
-                    <a href="javascript:;" class="layui-laypage-last" title="尾页" data-page="10">10</a>
-                    <a href="javascript:;" class="layui-laypage-next" data-page="8">下一页</a>
-                    <span class="layui-laypage-limits">
-                        <select lay-ignore="">
-                            <option value="5" selected="">5 条/页</option>
-                            <option value="15">15 条/页</option>
-                            <option value="20">20 条/页</option>
-                            <option value="25">25 条/页</option>
-                            <option value="30">30 条/页</option>
-                        </select>
-                    </span>
-                    <span class="layui-laypage-skip">到第
-                        <input type="text" min="1" value="7" class="layui-input">页
-                        <button type="button" class="layui-laypage-btn">确定</button>
-                    </span>
                 </div>
             </div>
         </div>
@@ -111,29 +76,9 @@
         var element = layui.element;
     });
 
-//日期表格
-    layui.use('laydate', function () {
-        var laydate = layui.laydate;
-        laydate.render({
-            elem: '#test1' //指定元素
-        });
-    });
-
-//表格
+//后台数据
     layui.use('table', function(){
         var table = layui.table;
-    });
-
-//分页
-    laypage.render({
-        elem: 'pageDemo'
-        ,count: 100
-        ,skin: '#1E9FFF'
-        ,jump: function(obj, first){
-            if(!first){
-                layer.msg('第'+ obj.curr +'页');
-            }
-        }
     });
 
 </script>
