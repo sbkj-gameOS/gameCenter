@@ -257,7 +257,7 @@ public class WxController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			dataMap.put("success", false);
-			dataMap.put("msg", "查询失败");
+			dataMap.put("msg", "存档失败");
 		}
 		return (JSONObject) JSONObject.toJSON(dataMap);
 	}
