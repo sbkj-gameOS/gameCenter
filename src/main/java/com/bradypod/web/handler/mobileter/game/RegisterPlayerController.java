@@ -62,7 +62,7 @@ public class RegisterPlayerController extends Handler {
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
 					String time = formatter.format(new Date());
 					playUser.setInvitationcode(time);
-					playUser.setRoomcordnum(10);
+					playUser.setCards(10);;
 					RoomRechargeRecord roomRechargeRecord = new RoomRechargeRecord();
 					roomRechargeRecord.setUserName(playUser.getNickname());
 					roomRechargeRecord.setInvitationCode(playUser.getInvitationcode());
@@ -105,7 +105,7 @@ public class RegisterPlayerController extends Handler {
 	public JSONObject findRegisterPlayerList(PlayUser playUser, Integer page, Integer limit) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			Pageable Pageable = new PageRequest(page, limit, Sort.Direction.DESC, "roomcordnum");
+			Pageable Pageable = new PageRequest(page, limit, Sort.Direction.DESC, "cards");
 			Page<PlayUser> p = playUserRes.findAll(Pageable);
 			dataMap.put("data", p.getContent());
 			dataMap.put("count", p.getTotalElements());

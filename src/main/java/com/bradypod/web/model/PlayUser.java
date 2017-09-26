@@ -91,7 +91,6 @@ public class PlayUser implements UserEvent, java.io.Serializable {
 	private String headimgurl;// 头像
 	private String invitationcode;// 个人邀请码
 	private String pinvitationcode;// 他人邀请码
-	private Integer roomcordnum;// 房卡数量表
 
 	@Column(name = "TRT_PROFIT")
 	private BigDecimal trtProfit;// 分润剩余总额
@@ -530,14 +529,6 @@ public class PlayUser implements UserEvent, java.io.Serializable {
 
 	public void setPinvitationcode(String pinvitationcode) {
 		this.pinvitationcode = pinvitationcode;
-	}
-
-	public Integer getRoomcordnum() {
-		return roomcordnum;
-	}
-
-	public void setRoomcordnum(Integer roomcordnum) {
-		this.roomcordnum = roomcordnum;
 	}
 
 	public BigDecimal getTrtProfit() {

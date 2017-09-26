@@ -2,6 +2,9 @@ package com.bradypod.web.handler.mobileter.wx;
 
 import com.bradypod.util.wx.*;
 import com.bradypod.web.model.PlayUser;
+import com.bradypod.web.service.repository.jpa.PlayUserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,9 @@ import java.util.*;
 @Controller
 @RequestMapping(value = "/wxController")
 public class WxController {
+
+	@Autowired
+	private PlayUserRepository playUserRes;
 
 	/**
 	 * 跳转微信
@@ -183,9 +189,51 @@ public class WxController {
 
 	}
 
+	/**
+	 * 微信授权域名地址
+	 * @return
+     */
+	@RequestMapping({"/MP_verify_V4mcS82aXhi5ivFV.txt"})
 	@ResponseBody
-	@RequestMapping("/")
-	public String rechargeManagement(){
+	public String wxCodeTxt(){
+		return "V4mcS82aXhi5ivFV";
+	}
+	
+	@ResponseBody
+	@RequestMapping("checkDownPlayer")
+	public boolean checkDownPlayer(PlayUser playUser) {
+		boolean flag = true;
+		List<PlayUser> playUserList = playUserRes.findByPinvitationcode(playUser.getInvitationcode());
+		if(playUserList.isEmpty()){
+			flag = false;
+		}
+		return flag;
+	}
+
+	/**
+	 *
+	* @Title: rechargeManagement
+	* @Description: TODO(支付完成后调整数据库)
+	* @param playUser 用户信息
+	* @param preferentialAmount 优惠金额
+	* @param payAmount 支付金额
+	* @return    设定文件
+	* String    返回类型
+	 */
+	@ResponseBody
+	@RequestMapping("/rechargeManagement")
+	public String rechargeManagement(PlayUser playUser,Double preferentialAmount,Double payAmount, Double originalPrice,int roomCount) {
+		PlayUser zjPlayUser = playUserRes.findById(playUser.getId());
+		int cards = zjPlayUser.getCards() + roomCount;
+		playUserRes.setCardsById(cards,playUser.getId());//修改充值完的房卡数量
+		if(null != playUser.getPinvitationcode()){
+			PlayUser jozPlayUser = playUserRes.findByInvitationcode(playUser.getPinvitationcode());
+
+			if(null != jozPlayUser.getPinvitationcode()){
+				PlayUser zPlayUser = playUserRes.findByInvitationcode(jozPlayUser.getPinvitationcode());
+			}
+		}
+
 		
 		return null;
 	}

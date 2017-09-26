@@ -1,5 +1,7 @@
 package com.bradypod.web.service.repository.jpa;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
@@ -33,4 +35,13 @@ public abstract interface PlayUserRepository extends JpaRepository<PlayUser, Str
 	@Modifying
 	@Transactional
 	public abstract void setPinvitationcodeById(@Param("pinvitationcode") String pinvitationcode, @Param("id") String id);
+
+	public abstract PlayUser findByInvitationcode(String pinvitationcode);
+
+	public abstract List<PlayUser> findByPinvitationcode(String invitationcode);
+
+	@Query(value = "update bm_playuser set cards = :cards,UPDATETIME = now() where id = :id", nativeQuery = true)
+	@Modifying
+	@Transactional
+	public abstract void setCardsById(int cards, String id);
 }
