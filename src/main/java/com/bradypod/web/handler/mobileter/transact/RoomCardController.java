@@ -36,18 +36,25 @@ public class RoomCardController extends Handler {
      */
     @RequestMapping({"/rechargeRecord"})
     public ModelAndView rechargeRecord(ModelMap map , HttpServletRequest request){
-        map.addAttribute("data",roomRechargeRecordRepository.findByUserNameAndInvitationCode(null,null));
         return request(super.createAppsTempletResponse("/apps/business/platform/room/recharge/index"));
     }
 
+    /**
+     * 房卡充值记录数据
+     * @return
+     */
     @RequestMapping({"/getRechargeJson"})
     @ResponseBody
     public JSONObject getRecharge(){
         Map<Object,Object> dataMap = new HashMap<Object,Object>();
-        dataMap.put("data",roomRechargeRecordRepository.findByUserNameAndInvitationCode("",""));
-        dataMap.put("count",2);
-        dataMap.put("code",0);
-        dataMap.put("msg","");
+        try{
+            dataMap.put("data",roomRechargeRecordRepository.findByUserNameAndInvitationCode("",""));
+            dataMap.put("count",2);
+            dataMap.put("code",0);
+        }catch(Exception e){
+            dataMap.put("code",1);
+            dataMap.put("msg","网络异常");
+        }
         return (JSONObject) JSONObject.toJSON(dataMap);
     }
 
@@ -57,7 +64,26 @@ public class RoomCardController extends Handler {
      */
     @RequestMapping({"/toUseRecord"})
     public ModelAndView toUseRecord(ModelMap map , HttpServletRequest request){
-        map.addAttribute("RoomTouseRecord",roomTouseRecordRepository.findByUserNameAndInvitationCode("t","123"));
         return request(super.createAppsTempletResponse("/apps/business/platform/room/use/index"));
     }
+
+    /**
+     * 房卡使用记录数据
+     * @return
+     */
+    @RequestMapping({"/getToUseJson"})
+    @ResponseBody
+    public JSONObject getToUseJson(){
+        Map<Object,Object> dataMap = new HashMap<Object,Object>();
+        try{
+            dataMap.put("data",roomTouseRecordRepository.findByUserNameAndInvitationCode("t","123"));
+            dataMap.put("count",2);
+            dataMap.put("code",0);
+        }catch(Exception e){
+            dataMap.put("code",1);
+            dataMap.put("msg","网络异常");
+        }
+        return (JSONObject) JSONObject.toJSON(dataMap);
+    }
+
 }

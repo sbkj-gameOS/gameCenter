@@ -21,7 +21,7 @@ import java.util.TreeMap;
 /**
  * 
  * 
- * 类描述：微信授权登录等action <br>
+ * 类描述：微信授权登录 <br>
  * 作者：田帅 <br>
  * 创建时间：2017-09-16 <br>
  * 版本：V1.0
@@ -247,5 +247,15 @@ public class WxController {
 		json.put("status", 200);
 		return json;
 
+	}
+
+	/**
+	 * 微信授权域名地址
+	 * @return
+     */
+	@RequestMapping({"/MP_verify_V4mcS82aXhi5ivFV.txt"})
+	@ResponseBody
+	public String wxCodeTxt(){
+		return "V4mcS82aXhi5ivFV";
 	}
 }
