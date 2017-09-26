@@ -19,10 +19,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
 /**
- * 
- * 
  * 类描述：微信授权登录 <br>
  * 作者：田帅 <br>
  * 创建时间：2017-09-16 <br>
@@ -35,19 +32,21 @@ public class WxController {
 	@Autowired
 	private PlayUserRepository playUserRes;
 
+	@Autowired
+	private RoomRechargeRecordRepository roomRechargeRecordRepository;
+
 	/**
-	 * 跳转微信
-	 * wxController/wxLoginHtml
+	 * 跳转微信 wxController/wxLoginHtml
+	 *
 	 * @return
-     */
+	 */
 	@RequestMapping(value = "/wxLoginHtml")
-	public String wxMain(ModelMap map){
-		map.addAttribute("userName","");
+	public String wxMain(ModelMap map) {
+		map.addAttribute("userName", "");
 		return "/apps/business/platform/game/wxGetCode/main";
 	}
 
 	/**
-	 * 
 	 * 方法描述: 跳转到h5微信支付<br>
 	 * 作者：田帅 <br>
 	 * 创建时间：2017-09-16 <br>
@@ -58,24 +57,17 @@ public class WxController {
 		System.out.println("out_trade_no=" + out_trade_no);
 		System.out.println("total_fee=" + total_fee);
 		System.out.println("body=" + body);
-		String backUri = "";//微信授权后跳转的支付界面
-		backUri = backUri + "?out_trade_no=" + out_trade_no + "&total_fee="
-				+ total_fee + "&body=" + body;
+		String backUri = "";// 微信授权后跳转的支付界面
+		backUri = backUri + "?out_trade_no=" + out_trade_no + "&total_fee=" + total_fee + "&body=" + body;
 		// URLEncoder.encode 后可以在backUri 的url里面获取传递的所有参数
 		backUri = URLEncoder.encode(backUri);
 		// scope 参数视各自需求而定，这里用scope=snsapi_base 不弹出授权页面直接授权目的只获取统一支付接口的openid
-		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?"
-				+ "appid="
-				+ ConfigUtil.APPIDH5
-				+ "&redirect_uri="
-				+ backUri
+		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" + "appid=" + ConfigUtil.APPIDH5 + "&redirect_uri=" + backUri
 				+ "&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
 		return "redirect:" + url;
 	}
 
-
 	/**
-	 *
 	 * 方法描述: H5向微信请求支付信息<br>
 	 * 作者：田帅 <br>
 	 * 创建时间：2017-09-16 <br>
@@ -83,11 +75,11 @@ public class WxController {
 	 */
 	@RequestMapping(value = "/getWXPayXmlH5")
 	@ResponseBody
-	public Object getWXPayXmlH5(HttpSession session,HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "0") int orderprices) {
+	public Object getWXPayXmlH5(HttpSession session, HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "0") int orderprices) {
 		Map<String, Object> json = new HashMap<String, Object>();
-		String openid = ((PlayUser) session.getAttribute("mgPlayUser")).getOpenid();//获取用户id
+		String openid = ((PlayUser) session.getAttribute("mgPlayUser")).getOpenid();// 获取用户id
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
-		String out_trade_no = formatter.format(new Date());//充值订单号时间戳
+		String out_trade_no = formatter.format(new Date());// 充值订单号时间戳
 
 		System.out.println("out_trade_no=" + out_trade_no);
 		System.out.println("total_fee=" + orderprices);
@@ -113,9 +105,9 @@ public class WxController {
 		String spbill_create_ip = PayCommonUtil.getIpAddress(request);
 		// 这里notify_url是 支付完成后微信发给该链接信息，可以判断会员是否支付成功，改变订单状态等。
 		String notify_url = ConfigUtil.NOTIFY_URL;
-		System.out.println("wowowo===================="+notify_url);
+		System.out.println("wowowo====================" + notify_url);
 		System.out.println("=========================================================================================");
-		System.out.println("wowowo===================="+notify_url);
+		System.out.println("wowowo====================" + notify_url);
 		System.out.println("=========================================================================================");
 		String trade_type = "JSAPI";
 		SortedMap<Object, Object> packageParams = new TreeMap<Object, Object>();
@@ -130,13 +122,13 @@ public class WxController {
 		packageParams.put("trade_type", trade_type);
 		packageParams.put("openid", openid);
 
-//		if("1".equals(status)){
-//			// 附件属性,原样返回
-//			packageParams.put("attach", "clear");
-//		}else {
-//			// 附件属性,原样返回
-//			packageParams.put("attach", "trade");
-//		}
+		// if("1".equals(status)){
+		// // 附件属性,原样返回
+		// packageParams.put("attach", "clear");
+		// }else {
+		// // 附件属性,原样返回
+		// packageParams.put("attach", "trade");
+		// }
 
 		RequestHandler reqHandler = new RequestHandler(request, response);
 		reqHandler.init(appid, appsecret, partnerkey);
@@ -191,50 +183,82 @@ public class WxController {
 
 	/**
 	 * 微信授权域名地址
+	 *
 	 * @return
-     */
-	@RequestMapping({"/MP_verify_V4mcS82aXhi5ivFV.txt"})
+	 */
+	@RequestMapping({ "/MP_verify_V4mcS82aXhi5ivFV.txt" })
 	@ResponseBody
-	public String wxCodeTxt(){
+	public String wxCodeTxt() {
 		return "V4mcS82aXhi5ivFV";
 	}
-	
+
+	/**
+	 * @Title: checkDownPlayer
+	 * @Description: TODO(验证玩家是否有下家，true有false没有)
+	 * @return 设定文件 boolean 返回类型
+	 */
 	@ResponseBody
 	@RequestMapping("checkDownPlayer")
 	public boolean checkDownPlayer(PlayUser playUser) {
 		boolean flag = true;
 		List<PlayUser> playUserList = playUserRes.findByPinvitationcode(playUser.getInvitationcode());
-		if(playUserList.isEmpty()){
+		if (playUserList.isEmpty()) {
 			flag = false;
 		}
 		return flag;
 	}
 
 	/**
-	 *
-	* @Title: rechargeManagement
-	* @Description: TODO(支付完成后调整数据库)
-	* @param playUser 用户信息
-	* @param preferentialAmount 优惠金额
-	* @param payAmount 支付金额
-	* @return    设定文件
-	* String    返回类型
+	 * @Title: rechargeManagement
+	 * @Description: TODO(支付完成后调整数据库)
+	 * @param playUser 用户信息
+	 * @param preferentialAmount 优惠金额
+	 * @param payAmount 支付金额
+	 * @return 设定文件 String 返回类型
 	 */
 	@ResponseBody
 	@RequestMapping("/rechargeManagement")
-	public String rechargeManagement(PlayUser playUser,Double preferentialAmount,Double payAmount, Double originalPrice,int roomCount) {
-		PlayUser zjPlayUser = playUserRes.findById(playUser.getId());
-		int cards = zjPlayUser.getCards() + roomCount;
-		playUserRes.setCardsById(cards,playUser.getId());//修改充值完的房卡数量
-		if(null != playUser.getPinvitationcode()){
-			PlayUser jozPlayUser = playUserRes.findByInvitationcode(playUser.getPinvitationcode());
+	public JSONObject rechargeManagement(PlayUser playUser, Double preferentialAmount, Double payAmount, Double originalPrice, int roomCount) {
+		Map<Object, Object> dataMap = new HashMap<Object, Object>();
+		RoomRechargeRecord roomRechargeRecord = new RoomRechargeRecord();
+		try {
+			PlayUser zjPlayUser = playUserRes.findById(playUser.getId());
 
-			if(null != jozPlayUser.getPinvitationcode()){
-				PlayUser zPlayUser = playUserRes.findByInvitationcode(jozPlayUser.getPinvitationcode());
+			roomRechargeRecord.setUserName(zjPlayUser.getNickname());
+			roomRechargeRecord.setInvitationCode(zjPlayUser.getInvitationcode());
+			roomRechargeRecord.setRoomCount(roomCount);
+			roomRechargeRecord.setOriginalPrice(BigDecimal.valueOf(originalPrice));
+			roomRechargeRecord.setPreferentialAmount(BigDecimal.valueOf(preferentialAmount));
+			roomRechargeRecord.setPayAmount(BigDecimal.valueOf(payAmount));
+
+			int cards = zjPlayUser.getCards() + roomCount;
+			playUserRes.setCardsById(cards, playUser.getId());// 修改充值完的房卡数量
+
+			// 计算分润
+			if (null != zjPlayUser.getPinvitationcode()) {// 存在直接上级
+				PlayUser zPlayUser = playUserRes.findByInvitationcode(playUser.getPinvitationcode());
+				Double fenrun = payAmount * StateUtils.ZJFR;// 这笔交易直接上级分润金额
+				BigDecimal trtProfit = zPlayUser.getTrtProfit();
+				trtProfit.add(BigDecimal.valueOf(fenrun));// 这笔交易直接上级分润金额加上总额
+				playUserRes.setTrtProfitById(trtProfit, zPlayUser.getId());
+				roomRechargeRecord.setDirectlyTheLastAmount(trtProfit);
+				if (null != zPlayUser.getPinvitationcode()) {// 存在间接接上级
+					PlayUser jPlayUser = playUserRes.findByInvitationcode(zPlayUser.getPinvitationcode());
+					Double jjFenrun = payAmount * StateUtils.JJFR;// 这笔交易间接上级分润金额
+					BigDecimal jjTrtProfit = jPlayUser.getTrtProfit();
+					jjTrtProfit.add(BigDecimal.valueOf(jjFenrun));// 这笔交易间接上级分润金额加上总额
+					playUserRes.setTrtProfitById(trtProfit, jPlayUser.getId());
+					roomRechargeRecord.setIndirectTheLastAmount(jjTrtProfit);
+				}
 			}
-		}
 
-		
-		return null;
+			// 保存房卡充值历史
+			roomRechargeRecordRepository.saveAndFlush(roomRechargeRecord);
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataMap.put("success", false);
+			dataMap.put("msg", "查询失败");
+		}
+		return (JSONObject) JSONObject.toJSON(dataMap);
 	}
 }
