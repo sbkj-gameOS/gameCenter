@@ -84,8 +84,8 @@ public class WxController {
 		String openid = ((PlayUser) session.getAttribute("mgPlayUser")).getOpenid();// 获取用户id
 		System.out.println("----------------------openid----------------------:"+openid);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
-		String out_trade_no = formatter.format(new Date());// 充值订单号时间戳
-
+		String out_trade_no = "YX"+formatter.format(new Date());// 充值订单号时间戳
+		out_trade_no += formatter.format(new Date());// 充值订单号时间戳
 		System.out.println("out_trade_no=" + out_trade_no);
 		System.out.println("total_fee=" + orderprices);
 		// System.out.println("body=" + body);
@@ -105,6 +105,8 @@ public class WxController {
 		String nonce_str = PayCommonUtil.CreateNoncestr();
 
 		System.out.println("----------------------nonce_str----------------------:"+nonce_str.length());
+		System.out.println("----------------------out_trade_no----------------------:"+out_trade_no.length());
+
 		// 商品描述根据情况修改
 		String body = "麻将游戏";
 
@@ -117,17 +119,6 @@ public class WxController {
 		System.out.println("wowowo====================" + notify_url);
 		System.out.println("=========================================================================================");
 		String trade_type = "JSAPI";
-		SortedMap<Object, Object> packageParams = new TreeMap<Object, Object>();
-		packageParams.put("appid", appid);
-		packageParams.put("mch_id", mch_id);
-		packageParams.put("nonce_str", nonce_str);
-		packageParams.put("body", body);
-		packageParams.put("out_trade_no", out_trade_no);
-		packageParams.put("total_fee", finalmoney + "");
-		packageParams.put("spbill_create_ip", spbill_create_ip);
-		packageParams.put("notify_url", notify_url);
-		packageParams.put("trade_type", trade_type);
-		packageParams.put("openid", openid);
 
 		SortedMap<Object, Object> signParams = new TreeMap<Object, Object>();
 		signParams.put("appid", ConfigUtil.APPID);//app_id
