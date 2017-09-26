@@ -88,6 +88,28 @@ public class RegisterPlayerController extends Handler {
 	}
 
 	/**
+	 * @Title: findRegisterPlayerList
+	 * @Description: TODO(查询玩家信息)
+	 * @param playUser
+	 * @return 设定文件 JSONObject 返回类型
+	 */
+	@ResponseBody
+	@RequestMapping("/findRegisterPlayerList")
+	public JSONObject findRegisterPlayerList(PlayUser playUser) {
+		Map<Object, Object> dataMap = new HashMap<Object, Object>();
+		try {
+			dataMap.put("data", playUserRes.findAll());
+			dataMap.put("count", 222);
+			dataMap.put("code", 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataMap.put("success", false);
+			dataMap.put("msg", "查询失败");
+		}
+		return (JSONObject) JSONObject.toJSON(dataMap);
+	}
+
+	/**
 	 * 方法描述: 微信绑定平台的用户手机号<br>
 	 * 作者：田帅 <br>
 	 * 创建时间：2017-09-16 <br>
