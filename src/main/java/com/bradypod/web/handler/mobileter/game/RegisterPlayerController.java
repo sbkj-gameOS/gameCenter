@@ -55,7 +55,8 @@ public class RegisterPlayerController extends Handler {
 		try {
 			if (null != jsonObject.get("openid")) {
 				PlayUser playUser = gson.fromJson(result, PlayUser.class);
-				map.addAttribute("userName",playUser.getNickname());
+				map.addAttribute("userName",playUser.getNickname());//回显用户名
+				map.addAttribute("userId",playUser.getNickname());//回显用户名
 				PlayUser newPlayUser = playUserRes.findByOpenid(playUser.getOpenid());
 				if (null == newPlayUser) {
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");

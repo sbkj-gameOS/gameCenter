@@ -9,6 +9,7 @@
 <body>
 <button id="btnWx">微信授权</button>
 <div id="userName"></div>
+支付金额：<input type="number" id="money"/>
 <button id="btnWxPay">微信支付</button>
 <script src="../../../js/mui.min.js?v=1.1"></script>
 <script type="text/javascript" charset="utf-8">
@@ -30,15 +31,16 @@
     //微信支付
     btnWxPay.addEventListener('tap',function(event){
         //转换为 分 单位
-        orderprices = Number(vm.orderprices) * 100;
+        var orderprices = Number(mui("#money")[0].value) * 100;
         //判断支付金额
         if(!orderprices > 0) {
             mui.toast("支付金额异常!请联系客服人员");
             return false;
         }
         //调用后台
-        mui.getJSON(baseURL +'/wxController/getWXPayXmlH5', GetJsonDateWx(), function(data) {
+        mui.getJSON('/wxController/getWXPayXmlH5',{orderprices:orderprices}, function(data) {
             if(data.status == 200) {
+                console.log(JSON.stringify(data));
                 var appid = data.appid;
                 var timestamp = data.timeStamp;
                 var nonceStr = data.nonceStr;
@@ -105,16 +107,6 @@
         });
     });
 
-    function GetJsonDateWx() {
-        var json = {
-            "out_trade_no": orderNo,
-            "userId": localStorage.getItem("userId"),
-            "status":type
-        };
-        if(orderNo != 0) {
-            return json;
-        }
-    }
 </script>
 </body>
 </html>

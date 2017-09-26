@@ -1,6 +1,7 @@
 package com.bradypod.web.handler.mobileter.wx;
 
 import com.bradypod.util.wx.*;
+import com.bradypod.web.model.PlayUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,12 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -77,37 +77,18 @@ public class WxController {
 	 */
 	@RequestMapping(value = "/getWXPayXmlH5")
 	@ResponseBody
-	public Object getWXPayXmlH5(HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "0") int userId, String out_trade_no, String status) {
+	public Object getWXPayXmlH5(HttpSession session,HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "0") int orderprices) {
 		Map<String, Object> json = new HashMap<String, Object>();
-		String openid = null;
-		String total_fee;
-		try {
-			// 查询用户信息
-			System.out.println("openid:"+openid);
-			// 查询应交金额
-			BigDecimal payment = null;
-			if (payment == null) {
-				json.put("status", "202");
-				json.put("message", "没有根据该订单查询到应交金额");
-				return json;
-			}
+		String openid = ((PlayUser) session.getAttribute("mgPlayUser")).getOpenid();//获取用户id
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
+		String out_trade_no = formatter.format(new Date());//充值订单号时间戳
 
-			total_fee = String.valueOf(payment);
-		} catch (Exception e) {
-			json.put("status", "500");
-			json.put("message", "服务器内部异常");
-			System.out.println("未知异常：" + e.getLocalizedMessage());
-			return json;
-		}
-
-		//HttpServletRequest request = ServletActionContext.getRequest();
-		System.out.println("userId=" + userId);
 		System.out.println("out_trade_no=" + out_trade_no);
-		System.out.println("total_fee=" + total_fee);
+		System.out.println("total_fee=" + orderprices);
 		// System.out.println("body=" + body);
 		System.out.println("openid=" + openid);
 		// 金额转化为分为单位
-		int finalmoney = (int) (Double.valueOf(total_fee) * 100);
+		int finalmoney = orderprices;
 
 		String appid = ConfigUtil.APPID;
 		String appsecret = ConfigUtil.APP_SECRECTH5;
@@ -143,13 +124,13 @@ public class WxController {
 		packageParams.put("trade_type", trade_type);
 		packageParams.put("openid", openid);
 
-		if("1".equals(status)){
-			// 附件属性,原样返回
-			packageParams.put("attach", "clear");
-		}else {
-			// 附件属性,原样返回
-			packageParams.put("attach", "trade");
-		}
+//		if("1".equals(status)){
+//			// 附件属性,原样返回
+//			packageParams.put("attach", "clear");
+//		}else {
+//			// 附件属性,原样返回
+//			packageParams.put("attach", "trade");
+//		}
 
 		RequestHandler reqHandler = new RequestHandler(request, response);
 		reqHandler.init(appid, appsecret, partnerkey);
