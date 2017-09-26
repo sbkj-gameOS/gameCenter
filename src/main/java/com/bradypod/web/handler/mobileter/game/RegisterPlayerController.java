@@ -62,7 +62,7 @@ public class RegisterPlayerController extends Handler {
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
 					String time = formatter.format(new Date());
 					playUser.setInvitationcode(time);
-					playUser.setRoomcordnum(10);
+					playUser.setCards(10);;
 					RoomRechargeRecord roomRechargeRecord = new RoomRechargeRecord();
 					roomRechargeRecord.setUserName(playUser.getNickname());
 					roomRechargeRecord.setInvitationCode(playUser.getInvitationcode());
