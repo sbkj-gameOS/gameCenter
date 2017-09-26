@@ -30,7 +30,7 @@ public class ConfigUtil {
 	/** API密钥用户自己设置 */
 	public final static String API_KEYH5 = "C50E092772003E8BAFAD8FB7D453888C";
 	/** 微信支付统一接口的回调d */
-	public final static String NOTIFY_URL = "";
+	public final static String NOTIFY_URL = "http://game.bizpartner.cn/wxController/wxLoginHtml";
 	/** 微信支付成功支付后跳转的地址 */
 	public final static String SUCCESS_URL = "";
 	/** oauth2授权时回调action */
