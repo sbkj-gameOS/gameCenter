@@ -35,7 +35,7 @@
                     </div>
                     <div class="row" style="padding:5px;">
                         <div class="col-lg-12">
-                            <table class="layui-table" lay-data="{height:640,url:'/promanagement/findProManagementList', page:true, id:'test'}" lay-filter="test" id="box">
+                            <table class="layui-table" lay-data="{height:640,url:'/promanagement/findProManagementList?page=0&limit=20', page:true, id:'test'}" lay-filter="test" id="box">
                                 <thead>
                                 <tr>
                                     <th lay-data="{field:'id', width:260}">序号</th>
@@ -76,13 +76,14 @@
         document.getElementById("managesnames").value = userName;
         document.getElementById("codes").value = invitationCode;
         var tablebox =document.getElementById("box").getAttribute("lay-data");
-        var tableboxUrl = "/promanagement/findProManagementList?userName="+userName+"&invitationCode="+invitationCode;
+        var tableboxUrl = "/promanagement/findProManagementList?page=0&limit=20&userName="+userName+"&invitationCode="+invitationCode;
         document.getElementById("box").setAttribute("lay-data","{height:640,url:'"+tableboxUrl+"', page:true, id:'test'}");
     }
 
     //搜索框代码
     $(function(){
         $("#btn").click(function(){
+            alert(1)
             var txt=$("#managesnames").val();
             var txtserach=$("#codes").val();
             var userName = sessionStorage.setItem("managesnames",txt);
