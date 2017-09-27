@@ -119,12 +119,12 @@ public class WxController {
 
 		SortedMap<Object, Object> signParams = new TreeMap<Object, Object>();
 		signParams.put("appid", ConfigUtil.APPID);//app_id
-		signParams.put("body","测试");//商品参数信息
+		signParams.put("body",body);//商品参数信息
 		signParams.put("mch_id", ConfigUtil.MCH_IDH5);//微信商户账号
 		signParams.put("nonce_str", nonce_str);//32位不重复的编号
 		signParams.put("notify_url", notify_url);//回调页面
 		signParams.put("out_trade_no", out_trade_no);//订单编号
-		signParams.put("spbill_create_ip",request.getRemoteAddr() );//请求的实际ip地址
+		signParams.put("spbill_create_ip",spbill_create_ip);//请求的实际ip地址
 		signParams.put("total_fee",finalmoney + "");//支付金额 单位为分
 		signParams.put("trade_type", trade_type);//付款类型
 
@@ -140,15 +140,17 @@ public class WxController {
 		reqHandler.init(appid, appsecret, partnerkey);
 
 		String sign = PayCommonUtil.createSign("UTF-8", signParams);//生成签名
-		String xml = "<xml>" + "<appid>" + appid + "</appid>" + "<mch_id>"
-				+ mch_id + "</mch_id>" + "<nonce_str>" + nonce_str
-				+ "</nonce_str>" + "<sign>" + sign + "</sign>"
-				+ "<body><![CDATA[" + body + "]]></body>" + "<out_trade_no>"
-				+ out_trade_no + "</out_trade_no>" + "<total_fee>" + finalmoney
-				+ "</total_fee>" + "<spbill_create_ip>" + request.getRemoteAddr()
-				+ "</spbill_create_ip>" + "<notify_url>" + notify_url
-				+ "</notify_url>" + "<trade_type>" + trade_type
-				+ "</trade_type>"
+		String xml = "<xml>"
+				+ "<appid>" + appid + "</appid>"
+				+ "<body><![CDATA[" + body + "]]></body>"
+				+ "<mch_id>"+ mch_id + "</mch_id>"
+				+ "<nonce_str>" + nonce_str + "</nonce_str>"
+				+ "<notify_url>" + notify_url + "</notify_url>"
+				+ "<out_trade_no>" + out_trade_no + "</out_trade_no>"
+				+ "<spbill_create_ip>" + spbill_create_ip + "</spbill_create_ip>"
+				+ "<total_fee>" + finalmoney + "</total_fee>"
+				+ "<trade_type>" + trade_type + "</trade_type>"
+				+ "<sign>" + sign + "</sign>"
 				+ "</xml>";
 		System.out.println("xml=" + xml);
 		String createOrderURL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
