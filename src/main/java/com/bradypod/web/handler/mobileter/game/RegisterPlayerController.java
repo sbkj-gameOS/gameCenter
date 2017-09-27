@@ -11,10 +11,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +26,7 @@ import com.bradypod.web.model.RoomRechargeRecord;
 import com.bradypod.web.model.mobileter.murecharge.vo.PlayUserVo;
 import com.bradypod.web.service.repository.jpa.PlayUserRepository;
 import com.bradypod.web.service.repository.jpa.RoomRechargeRecordRepository;
+import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 
 /**
@@ -108,10 +105,13 @@ public class RegisterPlayerController extends Handler {
 	public JSONObject findRegisterPlayerList(PlayUser playUser, Integer page, Integer limit) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			Pageable Pageable = new PageRequest(page, limit, Sort.Direction.DESC, "cards");
-			Page<PlayUser> p = playUserRes.findAll(Pageable);
-			List<PlayUserVo> list = new ArrayList<PlayUserVo>();
-			for (PlayUser pu : p.getContent()) {
+			if (null == playUser.getNickname()) {
+				playUser.setNickname("");
+			}
+			List<PlayUser> list = playUserRes.findByNickname(playUser.getNickname(), page, limit);
+			PageInfo<PlayUser> pageInfo = new PageInfo<PlayUser>(list);
+			List<PlayUserVo> puolist = new ArrayList<PlayUserVo>();
+			for (PlayUser pu : list) {
 				PlayUserVo puv = new PlayUserVo();
 				BeanUtils.copyProperties(pu, puv);
 				if (null != puv.getPinvitationcode()) {
@@ -120,10 +120,10 @@ public class RegisterPlayerController extends Handler {
 				}
 				int subCount = playUserRes.countByPinvitationcode(puv.getInvitationcode());
 				puv.setSubCount(subCount);
-				list.add(puv);
+				puolist.add(puv);
 			}
-			dataMap.put("data", list);
-			dataMap.put("count", p.getTotalElements());
+			dataMap.put("data", puolist);
+			dataMap.put("count", pageInfo.getPages());
 			dataMap.put("code", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -172,6 +172,28 @@ public class RegisterPlayerController extends Handler {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
 			playUserRes.setPinvitationcodeById(playUser.getPinvitationcode(), playUser.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataMap.put("success", false);
+			dataMap.put("msg", "添加邀请码失败");
+		}
+		return (JSONObject) JSONObject.toJSON(dataMap);
+	}
+
+	@ResponseBody
+	@RequestMapping("/test")
+	public JSONObject test(PlayUser playUser) {
+		Map<Object, Object> dataMap = new HashMap<Object, Object>();
+		try {
+			if (null == playUser.getNickname()) {
+				playUser.setNickname("");
+			}
+			List<PlayUser> list = playUserRes.findByNickname(playUser.getNickname(), 0, 20);
+
+			PageInfo<PlayUser> pageInfo = new PageInfo<PlayUser>(list);
+			dataMap.put("data", list);
+			dataMap.put("count", pageInfo.getPages());
+			dataMap.put("code", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 			dataMap.put("success", false);

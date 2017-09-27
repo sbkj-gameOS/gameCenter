@@ -30,8 +30,6 @@ public abstract interface PlayUserRepository extends JpaRepository<PlayUser, Str
 
 	public abstract PlayUser findByOpenid(String openid);
 
-	public abstract Page<PlayUser> findByNicknameLike(String username, Pageable pageable);
-
 	@Query(value = "update bm_playuser set pinvitationcode = :pinvitationcode,UPDATETIME = now() where id = :id", nativeQuery = true)
 	@Modifying
 	@Transactional
@@ -52,4 +50,7 @@ public abstract interface PlayUserRepository extends JpaRepository<PlayUser, Str
 	public abstract void setTrtProfitById(@Param("trtProfit") BigDecimal trtProfit, @Param("id") String id);
 
 	public abstract int countByPinvitationcode(String invitationcode);
+	
+	@Query(value = "select * from bm_playuser where 1 = 1 and NICKNAME like %:nickname% limit :page,:limit", nativeQuery = true)
+	public abstract List<PlayUser> findByNickname(@Param("nickname") String nickname, @Param("page") int page, @Param("limit") int limit);
 }
