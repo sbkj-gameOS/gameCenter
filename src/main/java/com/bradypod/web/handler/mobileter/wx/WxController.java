@@ -82,9 +82,10 @@ public class WxController {
 	public Object getWXPayXmlH5(HttpSession session, HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "0") int orderprices) {
 		Map<String, Object> json = new HashMap<String, Object>();
 		String openid = ((PlayUser) session.getAttribute("mgPlayUser")).getOpenid();// 获取用户id
+		System.out.println("----------------------openid----------------------:"+openid);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
-		String out_trade_no = formatter.format(new Date());// 充值订单号时间戳
-
+		String out_trade_no = "YX"+formatter.format(new Date());// 充值订单号时间戳
+		out_trade_no += formatter.format(new Date());// 充值订单号时间戳
 		System.out.println("out_trade_no=" + out_trade_no);
 		System.out.println("total_fee=" + orderprices);
 		// System.out.println("body=" + body);
@@ -102,8 +103,12 @@ public class WxController {
 		String mch_id = partner;
 		// 随机数
 		String nonce_str = PayCommonUtil.CreateNoncestr();
+
+		System.out.println("----------------------nonce_str----------------------:"+nonce_str.length());
+		System.out.println("----------------------out_trade_no----------------------:"+out_trade_no.length());
+
 		// 商品描述根据情况修改
-		String body = "麻将游戏";
+		String body = "测试";
 
 		// 订单生成的机器 IP
 		String spbill_create_ip = PayCommonUtil.getIpAddress(request);
@@ -111,17 +116,17 @@ public class WxController {
 		String notify_url = ConfigUtil.NOTIFY_URL;
 		System.out.println("wowowo====================" + notify_url);
 		String trade_type = "JSAPI";
-		SortedMap<Object, Object> packageParams = new TreeMap<Object, Object>();
-		packageParams.put("appid", appid);
-		packageParams.put("mch_id", mch_id);
-		packageParams.put("nonce_str", nonce_str);
-		packageParams.put("body", body);
-		packageParams.put("out_trade_no", out_trade_no);
-		packageParams.put("total_fee", finalmoney + "");
-		packageParams.put("spbill_create_ip", spbill_create_ip);
-		packageParams.put("notify_url", notify_url);
-		packageParams.put("trade_type", trade_type);
-		packageParams.put("openid", openid);
+
+		SortedMap<Object, Object> signParams = new TreeMap<Object, Object>();
+		signParams.put("appid", ConfigUtil.APPID);//app_id
+		signParams.put("body","测试");//商品参数信息
+		signParams.put("mch_id", ConfigUtil.MCH_IDH5);//微信商户账号
+		signParams.put("nonce_str", nonce_str);//32位不重复的编号
+		signParams.put("notify_url", notify_url);//回调页面
+		signParams.put("out_trade_no", out_trade_no);//订单编号
+		signParams.put("spbill_create_ip",request.getRemoteAddr() );//请求的实际ip地址
+		signParams.put("total_fee",finalmoney + "");//支付金额 单位为分
+		signParams.put("trade_type", trade_type);//付款类型
 
 		// if("1".equals(status)){
 		// // 附件属性,原样返回
@@ -134,11 +139,17 @@ public class WxController {
 		RequestHandler reqHandler = new RequestHandler(request, response);
 		reqHandler.init(appid, appsecret, partnerkey);
 
-		String sign = PayCommonUtil.createSign("UTF-8", packageParams);
-		String xml = "<xml>" + "<appid>" + appid + "</appid>" + "<mch_id>" + mch_id + "</mch_id>" + "<nonce_str>" + nonce_str + "</nonce_str>" + "<sign>" + sign + "</sign>"
-				+ "<body><![CDATA[" + body + "]]></body>" + "<out_trade_no>" + out_trade_no + "</out_trade_no>" + "<total_fee>" + finalmoney + "</total_fee>" + "<spbill_create_ip>"
-				+ spbill_create_ip + "</spbill_create_ip>" + "<notify_url>" + notify_url + "</notify_url>" + "<trade_type>" + trade_type + "</trade_type>" + "<openid>" + openid
-				+ "</openid>" + "<attach>trade</attach>" + "</xml>";
+		String sign = PayCommonUtil.createSign("UTF-8", signParams);//生成签名
+		String xml = "<xml>" + "<appid>" + appid + "</appid>" + "<mch_id>"
+				+ mch_id + "</mch_id>" + "<nonce_str>" + nonce_str
+				+ "</nonce_str>" + "<sign>" + sign + "</sign>"
+				+ "<body><![CDATA[" + body + "]]></body>" + "<out_trade_no>"
+				+ out_trade_no + "</out_trade_no>" + "<total_fee>" + finalmoney
+				+ "</total_fee>" + "<spbill_create_ip>" + request.getRemoteAddr()
+				+ "</spbill_create_ip>" + "<notify_url>" + notify_url
+				+ "</notify_url>" + "<trade_type>" + trade_type
+				+ "</trade_type>"
+				+ "</xml>";
 		System.out.println("xml=" + xml);
 		String createOrderURL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 		String prepay_id = "";
