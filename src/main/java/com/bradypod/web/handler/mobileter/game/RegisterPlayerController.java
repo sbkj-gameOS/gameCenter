@@ -2,13 +2,14 @@ package com.bradypod.web.handler.mobileter.game;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import com.bradypod.util.wx.WxUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,9 +22,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bradypod.util.BeanUtils;
+import com.bradypod.util.wx.WxUserInfo;
 import com.bradypod.web.handler.Handler;
 import com.bradypod.web.model.PlayUser;
 import com.bradypod.web.model.RoomRechargeRecord;
+import com.bradypod.web.model.mobileter.murecharge.vo.PlayUserVo;
 import com.bradypod.web.service.repository.jpa.PlayUserRepository;
 import com.bradypod.web.service.repository.jpa.RoomRechargeRecordRepository;
 import com.google.gson.Gson;
@@ -55,14 +59,15 @@ public class RegisterPlayerController extends Handler {
 		try {
 			if (null != jsonObject.get("openid")) {
 				PlayUser playUser = gson.fromJson(result, PlayUser.class);
-				map.addAttribute("userName",playUser.getNickname());//回显用户名
-				map.addAttribute("userId",playUser.getNickname());//回显用户名
+				map.addAttribute("userName", playUser.getNickname());// 回显用户名
+				map.addAttribute("userId", playUser.getNickname());// 回显用户名
 				PlayUser newPlayUser = playUserRes.findByOpenid(playUser.getOpenid());
 				if (null == newPlayUser) {
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
 					String time = formatter.format(new Date());
 					playUser.setInvitationcode(time);
-					playUser.setCards(10);;
+					playUser.setCards(10);
+					;
 					RoomRechargeRecord roomRechargeRecord = new RoomRechargeRecord();
 					roomRechargeRecord.setUserName(playUser.getNickname());
 					roomRechargeRecord.setInvitationCode(playUser.getInvitationcode());
@@ -105,7 +110,19 @@ public class RegisterPlayerController extends Handler {
 		try {
 			Pageable Pageable = new PageRequest(page, limit, Sort.Direction.DESC, "cards");
 			Page<PlayUser> p = playUserRes.findAll(Pageable);
-			dataMap.put("data", p.getContent());
+			List<PlayUserVo> list = new ArrayList<PlayUserVo>();
+			for (PlayUser pu : p.getContent()) {
+				PlayUserVo puv = new PlayUserVo();
+				BeanUtils.copyProperties(pu, puv);
+				if (null != puv.getPinvitationcode()) {
+					String supAccount = playUserRes.findByInvitationcode(puv.getPinvitationcode()).getNickname();
+					puv.setSupAccount(supAccount);
+				}
+				int subCount = playUserRes.countByInvitationcode(puv.getInvitationcode());
+				puv.setSubCount(subCount);
+				list.add(puv);
+			}
+			dataMap.put("data", list);
 			dataMap.put("count", p.getTotalElements());
 			dataMap.put("code", 0);
 		} catch (Exception e) {
@@ -154,7 +171,7 @@ public class RegisterPlayerController extends Handler {
 	public JSONObject buildPinvitationcode(PlayUser playUser) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			playUserRes.setPinvitationcodeById(playUser.getPinvitationcode(),playUser.getId());
+			playUserRes.setPinvitationcodeById(playUser.getPinvitationcode(), playUser.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 			dataMap.put("success", false);

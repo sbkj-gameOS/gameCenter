@@ -50,4 +50,6 @@ public abstract interface PlayUserRepository extends JpaRepository<PlayUser, Str
 	@Modifying
 	@Transactional
 	public abstract void setTrtProfitById(@Param("trtProfit") BigDecimal trtProfit, @Param("id") String id);
+
+	public abstract int countByInvitationcode(String invitationcode);
 }

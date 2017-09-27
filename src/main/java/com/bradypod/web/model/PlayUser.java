@@ -538,5 +538,4 @@ public class PlayUser implements UserEvent, java.io.Serializable {
 	public void setTrtProfit(BigDecimal trtProfit) {
 		this.trtProfit = trtProfit;
 	}
-
 }
