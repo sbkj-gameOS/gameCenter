@@ -3,10 +3,15 @@ package com.bradypod.web.handler.mobileter.transact;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bradypod.web.handler.Handler;
+import com.bradypod.web.model.RoomRechargeRecord;
+import com.bradypod.web.model.RoomTouseRecord;
 import com.bradypod.web.service.repository.jpa.RoomRechargeRecordRepository;
 import com.bradypod.web.service.repository.jpa.RoomTouseRecordRepository;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,8 +53,10 @@ public class RoomCardController extends Handler {
     public JSONObject getRecharge(){
         Map<Object,Object> dataMap = new HashMap<Object,Object>();
         try{
-            dataMap.put("data",roomRechargeRecordRepository.findByUserNameAndInvitationCode("",""));
-            dataMap.put("count",2);
+            Pageable Pageable = new PageRequest(1,30);
+            Page<RoomRechargeRecord> recharge = roomRechargeRecordRepository.findByUserNameLikeOrInvitationCodeLike("t","1",Pageable);
+            dataMap.put("data",recharge.getContent());
+            dataMap.put("count",recharge.getTotalElements());
             dataMap.put("code",0);
         }catch(Exception e){
             dataMap.put("code",1);
@@ -76,8 +83,10 @@ public class RoomCardController extends Handler {
     public JSONObject getToUseJson(){
         Map<Object,Object> dataMap = new HashMap<Object,Object>();
         try{
-            dataMap.put("data",roomTouseRecordRepository.findByUserNameAndInvitationCode("t","123"));
-            dataMap.put("count",2);
+            Pageable Pageable = new PageRequest(1,30);
+            Page<RoomTouseRecord> touse = roomTouseRecordRepository.findByUserNameLikeAndInvitationCodeLike("t","123",Pageable);
+            dataMap.put("data",touse.getContent());
+            dataMap.put("count",touse.getTotalElements());
             dataMap.put("code",0);
         }catch(Exception e){
             dataMap.put("code",1);

@@ -1,6 +1,8 @@
 package com.bradypod.web.service.repository.jpa;
 
 import com.bradypod.web.model.RoomTouseRecord;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,6 +20,5 @@ public abstract interface RoomTouseRecordRepository extends JpaRepository<RoomTo
      * @param invitationCode
      * @return
      */
-    @Query(value = "select * from bm_room_recharge_record where USER_NAME LIKE  CONCAT('%',:userName,'%') and INVITATION_CODE LIKE CONCAT('%',:invitationCode,'%')",nativeQuery = true)
-    public abstract List<RoomTouseRecord> findByUserNameAndInvitationCode(@Param("userName") String userName, @Param("invitationCode") String invitationCode);
+    public abstract Page<RoomTouseRecord> findByUserNameLikeAndInvitationCodeLike(String userName, String invitationCode, Pageable Pageable);
 }
