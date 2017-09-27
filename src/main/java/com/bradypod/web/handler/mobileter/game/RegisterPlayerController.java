@@ -67,8 +67,6 @@ public class RegisterPlayerController extends Handler {
 					roomRechargeRecord.setUserName(playUser.getNickname());
 					roomRechargeRecord.setInvitationCode(playUser.getInvitationcode());
 					roomRechargeRecord.setRoomCount(10);
-					roomRechargeRecord.setOriginalPrice(BigDecimal.valueOf(30.00));
-					roomRechargeRecord.setPreferentialAmount(BigDecimal.valueOf(0.00));
 					roomRechargeRecord.setPayAmount(BigDecimal.valueOf(30.00));
 					roomRechargeRecord.setDirectlyTheLastAmount(BigDecimal.valueOf(0.00));
 					roomRechargeRecord.setIndirectTheLastAmount(BigDecimal.valueOf(0.00));

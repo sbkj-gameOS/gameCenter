@@ -190,13 +190,13 @@ public class WxController {
 	 * @Title: rechargeManagement
 	 * @Description: TODO(支付完成后调整数据库)
 	 * @param playUser 用户信息
-	 * @param preferentialAmount 优惠金额
 	 * @param payAmount 支付金额
+	 * @param roomCount 房卡数量
 	 * @return 设定文件 String 返回类型
 	 */
 	@ResponseBody
 	@RequestMapping("/rechargeManagement")
-	public JSONObject rechargeManagement(PlayUser playUser, Double preferentialAmount, Double payAmount, Double originalPrice, int roomCount) {
+	public JSONObject rechargeManagement(PlayUser playUser, Double payAmount, int roomCount) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		RoomRechargeRecord roomRechargeRecord = new RoomRechargeRecord();
 		try {
@@ -205,8 +205,6 @@ public class WxController {
 			roomRechargeRecord.setUserName(zjPlayUser.getNickname());
 			roomRechargeRecord.setInvitationCode(zjPlayUser.getInvitationcode());
 			roomRechargeRecord.setRoomCount(roomCount);
-			roomRechargeRecord.setOriginalPrice(BigDecimal.valueOf(originalPrice));
-			roomRechargeRecord.setPreferentialAmount(BigDecimal.valueOf(preferentialAmount));
 			roomRechargeRecord.setPayAmount(BigDecimal.valueOf(payAmount));
 
 			int cards = zjPlayUser.getCards() + roomCount;

@@ -51,18 +51,6 @@ public class RoomRechargeRecord implements java.io.Serializable {
 	private Integer roomCount;
 
 	/**
-	 * 原价
-	 */
-	@Column(name = "original_price")
-	private BigDecimal originalPrice;
-
-	/**
-	 * 优惠金额
-	 */
-	@Column(name = "preferential_amount")
-	private BigDecimal preferentialAmount;
-
-	/**
 	 * 支付金额
 	 */
 	@Column(name = "pay_amount")
@@ -134,22 +122,6 @@ public class RoomRechargeRecord implements java.io.Serializable {
 
 	public void setRoomCount(Integer roomCount) {
 		this.roomCount = roomCount;
-	}
-
-	public BigDecimal getOriginalPrice() {
-		return originalPrice;
-	}
-
-	public void setOriginalPrice(BigDecimal originalPrice) {
-		this.originalPrice = originalPrice;
-	}
-
-	public BigDecimal getPreferentialAmount() {
-		return preferentialAmount;
-	}
-
-	public void setPreferentialAmount(BigDecimal preferentialAmount) {
-		this.preferentialAmount = preferentialAmount;
 	}
 
 	public BigDecimal getPayAmount() {
