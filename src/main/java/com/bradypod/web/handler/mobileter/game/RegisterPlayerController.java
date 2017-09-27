@@ -118,7 +118,7 @@ public class RegisterPlayerController extends Handler {
 					String supAccount = playUserRes.findByInvitationcode(puv.getPinvitationcode()).getNickname();
 					puv.setSupAccount(supAccount);
 				}
-				int subCount = playUserRes.countByInvitationcode(puv.getInvitationcode());
+				int subCount = playUserRes.countByPinvitationcode(puv.getInvitationcode());
 				puv.setSubCount(subCount);
 				list.add(puv);
 			}
