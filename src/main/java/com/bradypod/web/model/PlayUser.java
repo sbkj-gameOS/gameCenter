@@ -22,7 +22,7 @@ import com.bradypod.util.event.UserEvent;
 @Entity
 @Table(name = "bm_playuser")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class PlayUser implements UserEvent, java.io.Serializable {
+public class  PlayUser implements UserEvent, java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id

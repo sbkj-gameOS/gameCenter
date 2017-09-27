@@ -49,16 +49,16 @@
                             <table class="layui-table" lay-data="{height:640,url:'/roomCard/getRechargeJson', page:true, id:'test'}" lay-filter="test">
                                 <thead style="width: 100%">
                                 <tr>
-                                    <th lay-data="{field:'id', width:140}">序号</th>
-                                    <th lay-data="{field:'userName',width:140}">用户名</th>
-                                    <th lay-data="{field:'invitationCode',width:140}">邀请码</th>
-                                    <th lay-data="{field:'rechargeTime',width:160}">充值时间</th>
-                                    <th lay-data="{field:'roomCount',width:160}">房卡数量</th>
-                                    <th lay-data="{field:'originalPrice',width:140}">原价</th>
-                                    <th lay-data="{field:'preferentialAmount',width:160}">优惠金额</th>
-                                    <th lay-data="{field:'payAmount',width:160}">支付金额</th>
-                                    <th lay-data="{field:'directlyTheLastAmount', width:179}">直接上家分润金额</th>
-                                    <th lay-data="{field:'indirectTheLastAmount', width:180}">间接上家分润金额</th>
+                                    <th lay-data="{field:'id', width:180}">序号</th>
+                                    <th lay-data="{field:'userName',width:200}">用户名</th>
+                                    <th lay-data="{field:'invitationCode',width:200}">邀请码</th>
+                                    <th lay-data="{field:'rechargeTime',width:180}">充值时间</th>
+                                    <th lay-data="{field:'roomCount',width:180}">房卡数量</th>
+                                    <!--<th lay-data="{field:'originalPrice',width:140}">原价</th>-->
+                                    <!--<th lay-data="{field:'preferentialAmount',width:160}">优惠金额</th>-->
+                                    <th lay-data="{field:'payAmount',width:180}">支付金额</th>
+                                    <th lay-data="{field:'directlyTheLastAmount', width:220}">直接上家分润金额</th>
+                                    <th lay-data="{field:'indirectTheLastAmount', width:220}">间接上家分润金额</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -81,5 +81,26 @@
         var table = layui.table;
     });
 
+//搜索框代码
+    var userName = sessionStorage.getItem("recharge");
+    var invitationCode = sessionStorage.getItem("invitationCode");
+    if(userName !="" && invitationCode !=""){
+        document.getElementById("txtNames").value = userName;
+        document.getElementById("search").value = invitationCode;
+        var tablebox =document.getElementById("box").getAttribute("lay-data");
+        var tableboxUrl = "/roomCard/getToUseJson?userName="+userName+"&invitationCode="+invitationCode;
+        document.getElementById("box").setAttribute("lay-data","{height:640,url:'"+tableboxUrl+"', page:true, id:'test'}");
+    }
+
+
+    $(function(){
+        $("button[type=button]").click(function(){
+            var txt=$("#txtNames").val();
+            var txtserach=$("#search").val();
+            var userName = sessionStorage.setItem("recharge",txt);
+            var invitationCode=sessionStorage.setItem("invitationCode",txtserach);
+            location.reload();
+        });
+    })
 </script>
 
