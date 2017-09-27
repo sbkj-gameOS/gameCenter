@@ -8,6 +8,7 @@ import com.bradypod.web.model.RoomRechargeRecord;
 import com.bradypod.web.service.repository.jpa.PlayUserRepository;
 import com.bradypod.web.service.repository.jpa.RoomRechargeRecordRepository;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -32,6 +33,8 @@ import java.util.*;
 @Controller
 @RequestMapping(value = "/wxController")
 public class WxController {
+
+	private static final Logger logger = Logger.getLogger(WxController.class);
 
 	@Autowired
 	private PlayUserRepository playUserRes;
@@ -82,14 +85,14 @@ public class WxController {
 	public Object getWXPayXmlH5(HttpSession session, HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "0") int orderprices) {
 		Map<String, Object> json = new HashMap<String, Object>();
 		String openid = ((PlayUser) session.getAttribute("mgPlayUser")).getOpenid();// 获取用户id
-		System.out.println("----------------------openid----------------------:"+openid);
+		logger.info("----------------------openid----------------------:"+openid);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
 		String out_trade_no = "YX"+formatter.format(new Date());// 充值订单号时间戳
 		out_trade_no += formatter.format(new Date());// 充值订单号时间戳
-		System.out.println("out_trade_no=" + out_trade_no);
-		System.out.println("total_fee=" + orderprices);
-		// System.out.println("body=" + body);
-		System.out.println("openid=" + openid);
+		logger.info("out_trade_no=" + out_trade_no);
+		logger.info("total_fee=" + orderprices);
+		// logger.info("body=" + body);
+		logger.info("openid=" + openid);
 		// 金额转化为分为单位
 		int finalmoney = orderprices;
 
@@ -104,8 +107,8 @@ public class WxController {
 		// 随机数
 		String nonce_str = PayCommonUtil.CreateNoncestr();
 
-		System.out.println("----------------------nonce_str----------------------:"+nonce_str.length());
-		System.out.println("----------------------out_trade_no----------------------:"+out_trade_no.length());
+		logger.info("----------------------nonce_str----------------------:"+nonce_str.length());
+		logger.info("----------------------out_trade_no----------------------:"+out_trade_no.length());
 
 		// 商品描述根据情况修改
 		String body = "测试";
@@ -114,7 +117,7 @@ public class WxController {
 		String spbill_create_ip = PayCommonUtil.getIpAddress(request);
 		// 这里notify_url是 支付完成后微信发给该链接信息，可以判断会员是否支付成功，改变订单状态等。
 		String notify_url = ConfigUtil.NOTIFY_URL;
-		System.out.println("wowowo====================" + notify_url);
+		logger.info("wowowo====================" + notify_url);
 		String trade_type = "JSAPI";
 
 		SortedMap<Object, Object> signParams = new TreeMap<Object, Object>();
@@ -152,7 +155,7 @@ public class WxController {
 				+ "<trade_type>" + trade_type + "</trade_type>"
 				+ "<sign>" + sign + "</sign>"
 				+ "</xml>";
-		System.out.println("xml=" + xml);
+		logger.info("xml=" + xml);
 		String createOrderURL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 		String prepay_id = "";
 		try {
