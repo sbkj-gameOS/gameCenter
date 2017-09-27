@@ -8,12 +8,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.bradypod.web.handler.mobileter.wx.WxController;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -28,10 +30,10 @@ public class GetWxOrderno
     httpclient = new DefaultHttpClient();
     httpclient = (DefaultHttpClient)HttpClientConnectionManager.getSSLInstance(httpclient);
   }
-
+	private static final Logger logger = Logger.getLogger(GetWxOrderno.class);
 
   public static String getPayNo(String url,String xmlParam){
-	  System.out.println("xml是:"+xmlParam);
+	  logger.info("xml是:"+xmlParam);
 	  DefaultHttpClient client = new DefaultHttpClient();
 	  client.getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
 	  HttpPost httpost= HttpClientConnectionManager.getPostMethod(url);
@@ -41,7 +43,7 @@ public class GetWxOrderno
 		 HttpResponse response = httpclient.execute(httpost);
 	     String jsonStr = EntityUtils.toString(response.getEntity(), "UTF-8");
 	     Map<String, Object> dataMap = new HashMap<String, Object>();
-	     System.out.println("json是:"+jsonStr);
+	     logger.info("json是:"+jsonStr);
 	     
 	    if(jsonStr.indexOf("FAIL")!=-1){
 	    	return prepay_id;
