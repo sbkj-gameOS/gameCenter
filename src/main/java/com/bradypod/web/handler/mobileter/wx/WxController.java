@@ -54,6 +54,20 @@ public class WxController {
 	}
 
 	/**
+	 * 微信授权用户信息返回code地址拼接
+	 * @return
+     */
+	@RequestMapping(value = "/getLoginCode")
+	@ResponseBody
+	public String getLoginCode(){
+		String oauth2 = ConfigUtil.OAUTH2_URL;
+		String appid = ConfigUtil.APPID;//公众号appid
+		String redirect_uri = ConfigUtil.CODE_URL;//返回code值地址
+		String wxLogin = oauth2+"?appid="+appid+"&redirect_uri="+redirect_uri+"&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+		return wxLogin;
+	}
+
+	/**
 	 * 方法描述: 跳转到h5微信支付<br>
 	 * 作者：田帅 <br>
 	 * 创建时间：2017-09-16 <br>

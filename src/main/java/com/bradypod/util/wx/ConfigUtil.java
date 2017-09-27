@@ -40,8 +40,9 @@ public class ConfigUtil {
 	 */
 	/** 获取token接口(GET) */
 	public final static String TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+	public final static String CODE_URL = "http%3a%2f%2fgame.bizpartner.cn%2fregisterPlayer%2fwxLogin";
 	/** oauth2授权接口(GET) */
-	public final static String OAUTH2_URL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+	public final static String OAUTH2_URL = "https://open.weixin.qq.com/connect/oauth2/authorize";
 	/** 刷新access_token接口（GET） */
 	public final static String REFRESH_TOKEN_URL = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN";
 	/**

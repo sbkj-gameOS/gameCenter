@@ -22,11 +22,10 @@
     }
     //微信授权登录
     btnWx.addEventListener('tap',function(event){
-        var oauth2 = "https://open.weixin.qq.com/connect/oauth2/authorize";//微信获取code请求地址
-        var appid = "wx97f93285af090c3e";//公众号appid
-        var redirect_uri = "http%3a%2f%2fgame.bizpartner.cn%2fregisterPlayer%2fwxLogin";//返回code值地址
-        var wxLogin = oauth2+"?appid="+appid+"&redirect_uri="+redirect_uri+"&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-        window.location.href=wxLogin;
+        //请求授权地址
+        mui.post("getLoginCode",function(data){
+            window.location.href = data;
+        });
     });
 
     //微信支付
