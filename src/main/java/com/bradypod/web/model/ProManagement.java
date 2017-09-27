@@ -59,6 +59,12 @@ public class ProManagement implements java.io.Serializable {
 	private BigDecimal amountMoney;
 
 	/**
+	 * 来源人姓名
+	 */
+	@Column(name = "NICK_NAME")
+	private String nickName;
+
+	/**
 	 * 提现时间
 	 */
 	@Column(name = "APP_TIME")
@@ -164,6 +170,14 @@ public class ProManagement implements java.io.Serializable {
 
 	public void setIsDel(int isDel) {
 		this.isDel = isDel;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
 }
