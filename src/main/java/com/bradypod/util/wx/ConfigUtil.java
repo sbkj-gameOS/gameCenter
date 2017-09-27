@@ -14,7 +14,7 @@ public class ConfigUtil {
 	public final static String APP_SECRECT = "1f9470d9289615b41e0a6b487bbe5b85";
 	public final static String TOKEN = "weixinCourse";// 服务号的配置token
 	/** app商户号 */
-	public final static String MCH_ID = "1453450802";
+	public final static String MCH_ID = "1455666502";
 	/** API密钥用户自己设置 */
 	public final static String API_KEY = "C50E092772003E8BAFAD8FB7D453888C";
 	/** 签名加密方式*/
@@ -26,7 +26,7 @@ public class ConfigUtil {
 	/** 微信公众号的应用密码 */
 	public final static String APP_SECRECTH5 = "1f9470d9289615b41e0a6b487bbe5b85";
 	/** 微信公众号商户号 */
-	public final static String MCH_IDH5 = "1453450802";
+	public final static String MCH_IDH5 = "1455666502";
 	/** API密钥用户自己设置 */
 	public final static String API_KEYH5 = "C50E092772003E8BAFAD8FB7D453888C";
 	/** 微信支付统一接口的回调d */
