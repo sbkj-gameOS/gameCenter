@@ -126,6 +126,7 @@ public class WxController {
 		signParams.put("mch_id", ConfigUtil.MCH_IDH5);//微信商户账号
 		signParams.put("nonce_str", nonce_str);//32位不重复的编号
 		signParams.put("notify_url", notify_url);//回调页面
+		signParams.put("openid", openid);//openid
 		signParams.put("out_trade_no", out_trade_no);//订单编号
 		signParams.put("spbill_create_ip",spbill_create_ip);//请求的实际ip地址
 		signParams.put("total_fee",finalmoney + "");//支付金额 单位为分
@@ -149,6 +150,7 @@ public class WxController {
 				+ "<mch_id>"+ mch_id + "</mch_id>"
 				+ "<nonce_str>" + nonce_str + "</nonce_str>"
 				+ "<notify_url>" + notify_url + "</notify_url>"
+				+ "<openid>" + openid + "</openid>"
 				+ "<out_trade_no>" + out_trade_no + "</out_trade_no>"
 				+ "<spbill_create_ip>" + spbill_create_ip + "</spbill_create_ip>"
 				+ "<total_fee>" + finalmoney + "</total_fee>"
