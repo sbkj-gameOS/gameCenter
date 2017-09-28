@@ -83,7 +83,7 @@
         table = layui.table;
         tableIns = table.render({
             elem:'#recharge_table',
-            url:'/presentapp/findPresentappList?userName=',
+            url : '/presentapp/findPresentappList?userName=',
             page:true,
             id:'test',
             cols:  [[ //标题栏
@@ -94,7 +94,21 @@
                 {field:'presentAppTime',width:220 , title:'申请提现时间'},
                 {field:'amountMoney',width:220 , title:'金额'},
                 {field:'preState',width:220 , title:'状态'}
-            ]]
+            ]],
+            done:  function(res, curr, count){
+                //获取界面table中每个tr行元素
+                var tableTr = document.getElementsByClassName("layui-table")[1].children[0].getElementsByTagName("tr");
+                for(var i = 0; i < tableTr.length; i++){
+                    //获取请求数据审核状态回显界面值
+                    if(res.data[i].preState == 0){
+                        //tr行元素 状态td位置  子元素内容
+                        tableTr[i].children[6].children[0].innerHTML = '未审核';
+                    }else{
+                        //tr行元素 状态td位置  子元素内容
+                        tableTr[i].children[6].children[0].innerHTML = '审核';
+                    }
+                }
+            }
         });
     });
     function queryTj(){
