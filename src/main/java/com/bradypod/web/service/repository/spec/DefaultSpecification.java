@@ -80,8 +80,6 @@ public class DefaultSpecification<T> implements Specification<T> {
 						Path<Date> path = root.get(s.getField());
 						pl.add(cb.lessThanOrEqualTo(path, getDate(s.getValue())));
 					}
-					Path<Number> path = root.get(s.getField());
-					pl.add(cb.le(path, n));
 				}
 			}
 			Predicate[] pa = new Predicate[pl.size()];

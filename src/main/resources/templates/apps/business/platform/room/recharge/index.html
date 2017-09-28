@@ -29,11 +29,11 @@
                                 <div class="layui-inline" style="margin-top: 10px;">
                                     <label class="layui-form-label" style="padding-left: 0px;width: 75px;">购买时间:</label>
                                     <div class="layui-input-inline" style="width: 100px;">
-                                        <input type="text" name="price_min" placeholder="" autocomplete="off" class="layui-input">
+                                        <input id="price_min" type="text" placeholder="" autocomplete="off" class="layui-input">
                                     </div>
                                     <div class="layui-form-mid">-</div>
                                     <div class="layui-input-inline" style="width: 100px;">
-                                        <input type="text" name="price_max" placeholder="" autocomplete="off" class="layui-input">
+                                        <input id="price_max" type="text" placeholder="" autocomplete="off" class="layui-input">
                                     </div>
                                 </div>
                                 <div class="layui-inline" style="margin-top: 10px;">
@@ -74,14 +74,14 @@
         //lay-data="{url:'/roomCard/getRechargeJson', page:true, id:'test'}" class="layui-table"
         tableIns = table.render({
             elem:'#recharge_table',
-            url:'/roomCard/getRechargeJson?userName=&invitationCode=',
+            url:'/roomCard/getRechargeJson',
             page:true,
             id:'test',
             cols:  [[ //标题栏
                 {field:'id', width:150 , title:'编码'},
                 {field:'userName',width:180 , title:'用户名'},
                 {field:'invitationCode',width:180 , title:'邀请码'},
-                {field:'rechangeTimes',width:180 , title:'充值时间'},
+                {field:'rechargeTimes',width:180 , title:'充值时间'},
                 {field:'roomCount',width:130 , title:'房卡数量'},
                 {field:'payAmount',width:130 , title:'支付金额'},
                 {field:'directlyTheLastAmount', width:180 , title:'直接上家分润金额'},
@@ -92,11 +92,15 @@
     function queryTj(){
         var txt=$("#rechange_name").val();
         var txtserach=$("#rechange_code").val();
+        var priceMin = $("#price_min").val();
+        var priceMax = $("#price_max").val();
         tableIns.reload({
             url:'/roomCard/getRechargeJson',
             where: { //设定异步数据接口的额外参数，任意设
                 userName:txt,
-                invitationCode: txtserach
+                invitationCode: txtserach,
+                startTime:priceMin,
+                endTime:priceMax
             }
         });
     }
