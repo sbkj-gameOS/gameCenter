@@ -71,7 +71,6 @@
     //后台数据
     layui.use('table', function(){
         table = layui.table;
-        //lay-data="{url:'/roomCard/getRechargeJson', page:true, id:'test'}" class="layui-table"
         tableIns = table.render({
             elem:'#recharge_table',
             url:'/roomCard/getRechargeJson?userName=&invitationCode=',
