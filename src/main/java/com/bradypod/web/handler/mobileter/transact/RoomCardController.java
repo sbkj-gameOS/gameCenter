@@ -68,14 +68,7 @@ public class RoomCardController extends Handler {
             if (endTime != null && !endTime.equals("")) spec.setParams("rechargeTime", "<=", endTime);
 
             Page<RoomRechargeRecord> recharge = roomRechargeRecordRepository.findAll(spec, pageable);
-            List<RoomRechargeVo> rechargeVo = new ArrayList<RoomRechargeVo>();
-            for(RoomRechargeRecord rechargeList:recharge.getContent()){
-                RoomRechargeVo vo = new RoomRechargeVo();
-                BeanUtils.copyProperties(rechargeList, vo);
-                vo.setRechargeTimes(rechargeList.getRechargeTime().toString().substring(0,rechargeList.getRechargeTime().toString().length()-2));
-                rechargeVo.add(vo);
-            }
-            dataMap.put("data",rechargeVo);
+            dataMap.put("data",recharge.getContent());
             dataMap.put("count", recharge.getTotalElements());
             dataMap.put("code",0);
         }catch(Exception e){

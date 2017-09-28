@@ -28,11 +28,11 @@
                                 </div>
                                 <div class="layui-inline" style="margin-top: 10px;">
                                     <label class="layui-form-label" style="padding-left: 0px;width: 75px;">购买时间:</label>
-                                    <div class="layui-input-inline" style="width: 100px;">
+                                    <div class="layui-input-inline" style="width: auto;">
                                         <input id="price_min" type="text" placeholder="" autocomplete="off" class="layui-input">
                                     </div>
                                     <div class="layui-form-mid">-</div>
-                                    <div class="layui-input-inline" style="width: 100px;">
+                                    <div class="layui-input-inline" style="width: auto;">
                                         <input id="price_max" type="text" placeholder="" autocomplete="off" class="layui-input">
                                     </div>
                                 </div>
@@ -80,12 +80,18 @@
                 {field:'id', width:220 , title:'编码'},
                 {field:'userName',width:220 , title:'用户名'},
                 {field:'invitationCode',width:180 , title:'邀请码'},
-                {field:'rechangeTimes',width:180 , title:'充值时间'},
+                {field:'rechargeTime',width:180 , title:'充值时间'},
                 {field:'roomCount',width:180 , title:'房卡数量'},
                 {field:'payAmount',width:180 , title:'支付金额'},
                 {field:'directlyTheLastAmount', width:200 , title:'直接上家分润金额'},
                 {field:'indirectTheLastAmount', width:200 , title:'间接上家分润金额'}
-            ]]
+            ]],
+            done:  function(res, curr, count){
+                var tableTr = document.getElementsByClassName("layui-table")[1].children[0].getElementsByTagName("tr");
+                for(var i = 0; i < tableTr.length; i++){
+                    tableTr[i].children[3].children[0].innerHTML = formatDateTime(res.data[i].rechargeTime);
+                }
+            }
         });
     });
     function queryTj(){
@@ -103,6 +109,23 @@
             }
         });
     }
+
+    //时间转换js
+    function formatDateTime(inputTime) {
+        var date = new Date(inputTime);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+    };
 
 </script>
 
