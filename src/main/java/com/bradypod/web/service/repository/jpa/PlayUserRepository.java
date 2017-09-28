@@ -8,13 +8,14 @@ import javax.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.bradypod.web.model.PlayUser;
 
-public abstract interface PlayUserRepository extends JpaRepository<PlayUser, String> {
+public abstract interface PlayUserRepository extends JpaRepository<PlayUser, String>, JpaSpecificationExecutor<PlayUser> {
 
 	public abstract PlayUser findById(String paramString);
 
@@ -35,7 +36,7 @@ public abstract interface PlayUserRepository extends JpaRepository<PlayUser, Str
 	@Transactional
 	public abstract void setPinvitationcodeById(@Param("pinvitationcode") String pinvitationcode, @Param("id") String id);
 
-	public abstract PlayUser findByInvitationcode(@Param("invitationcode")String pinvitationcode);
+	public abstract PlayUser findByInvitationcode(@Param("invitationcode") String pinvitationcode);
 
 	public abstract List<PlayUser> findByPinvitationcode(String invitationcode);
 
@@ -50,7 +51,7 @@ public abstract interface PlayUserRepository extends JpaRepository<PlayUser, Str
 	public abstract void setTrtProfitById(@Param("trtProfit") BigDecimal trtProfit, @Param("id") String id);
 
 	public abstract int countByPinvitationcode(String invitationcode);
-	
+
 	@Query(value = "select * from bm_playuser where 1 = 1 and NICKNAME like %:nickname% limit :page,:limit", nativeQuery = true)
 	public abstract List<PlayUser> findByNickname(@Param("nickname") String nickname, @Param("page") int page, @Param("limit") int limit);
 }

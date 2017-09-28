@@ -11,6 +11,9 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,7 @@ import com.bradypod.web.model.RoomRechargeRecord;
 import com.bradypod.web.model.mobileter.murecharge.vo.PlayUserVo;
 import com.bradypod.web.service.repository.jpa.PlayUserRepository;
 import com.bradypod.web.service.repository.jpa.RoomRechargeRecordRepository;
+import com.bradypod.web.service.repository.spec.DefaultSpecification;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 
@@ -105,13 +109,12 @@ public class RegisterPlayerController extends Handler {
 	public JSONObject findRegisterPlayerList(PlayUser playUser, Integer page, Integer limit) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			if (null == playUser.getNickname()) {
-				playUser.setNickname("");
-			}
-			List<PlayUser> list = playUserRes.findByNickname(playUser.getNickname(), page, limit);
-			PageInfo<PlayUser> pageInfo = new PageInfo<PlayUser>(list);
+			Pageable pageable = new PageRequest(page, limit);
+			DefaultSpecification<PlayUser> spec = new DefaultSpecification<PlayUser>();
+			if (null != playUser.getNickname()) spec.setParams("nickname", "like", "%" + playUser.getNickname() + "%");
+			Page<PlayUser> p = playUserRes.findAll(spec, pageable);
 			List<PlayUserVo> puolist = new ArrayList<PlayUserVo>();
-			for (PlayUser pu : list) {
+			for (PlayUser pu : p.getContent()) {
 				PlayUserVo puv = new PlayUserVo();
 				BeanUtils.copyProperties(pu, puv);
 				if (null != puv.getPinvitationcode()) {
@@ -123,7 +126,7 @@ public class RegisterPlayerController extends Handler {
 				puolist.add(puv);
 			}
 			dataMap.put("data", puolist);
-			dataMap.put("count", pageInfo.getPages());
+			dataMap.put("count", p.getTotalElements());
 			dataMap.put("code", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
