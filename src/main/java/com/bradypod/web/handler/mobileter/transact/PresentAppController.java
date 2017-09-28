@@ -32,8 +32,9 @@ import com.bradypod.web.service.repository.spec.DefaultSpecification;
 @RequestMapping("/presentapp")
 public class PresentAppController extends Handler {
 
-/*	@Autowired
-	private ProManagementRepository proManagementRepository;*/
+	/*
+	 * @Autowired private ProManagementRepository proManagementRepository;
+	 */
 
 	@Autowired
 	private PresentAppRepository presentAppRepository;
@@ -65,7 +66,7 @@ public class PresentAppController extends Handler {
 	public JSONObject findPresentappList(PresentApp presentApp, Integer page, Integer limit, Double firstParms, Double endParms, Date startDate, Date endDate) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			Pageable pageable = new PageRequest(page, limit);
+			Pageable pageable = new PageRequest(page - 1, limit);
 			DefaultSpecification<PresentApp> spec = new DefaultSpecification<PresentApp>();
 			if (null != presentApp.getUserName()) spec.setParams("userName", "like", "%" + presentApp.getUserName() + "%");
 

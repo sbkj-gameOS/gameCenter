@@ -109,7 +109,7 @@ public class RegisterPlayerController extends Handler {
 	public JSONObject findRegisterPlayerList(PlayUser playUser, Integer page, Integer limit) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			Pageable pageable = new PageRequest(page, limit);
+			Pageable pageable = new PageRequest(page - 1, limit);
 			DefaultSpecification<PlayUser> spec = new DefaultSpecification<PlayUser>();
 			if (null != playUser.getNickname()) spec.setParams("nickname", "like", "%" + playUser.getNickname() + "%");
 			Page<PlayUser> p = playUserRes.findAll(spec, pageable);

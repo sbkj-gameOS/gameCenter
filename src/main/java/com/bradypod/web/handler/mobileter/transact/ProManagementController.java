@@ -34,8 +34,9 @@ public class ProManagementController extends Handler {
 	@Autowired
 	private ProManagementRepository proManagementRepository;
 
-/*	@Autowired
-	private PresentAppRepository presentAppRepository;*/
+	/*
+	 * @Autowired private PresentAppRepository presentAppRepository;
+	 */
 
 	/**
 	 * @Title: findProManagementList
@@ -48,7 +49,7 @@ public class ProManagementController extends Handler {
 	public JSONObject findProManagementList(ProManagement proManagement, Integer page, Integer limit) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			Pageable pageable = new PageRequest(page, limit);
+			Pageable pageable = new PageRequest(page - 1, limit);
 			DefaultSpecification<ProManagement> spec = new DefaultSpecification<ProManagement>();
 			if (null != proManagement.getUserName()) spec.setParams("userName", "like", "%" + proManagement.getUserName() + "%");
 			if (null != proManagement.getInvitationCode()) spec.setParams("invitationCode", "eq", proManagement.getInvitationCode());
