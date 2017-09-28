@@ -44,9 +44,9 @@
                                     <label class="layui-form-label">状态</label>
                                     <div class="layui-input-inline">
                                         <select name="quiz1">
-                                            <option value="全部" selected="">全部</option>
-                                            <option value="审核">审核</option>
-                                            <option value="未审核">未审核</option>
+                                            <option value="3" selected="">全部</option>
+                                            <option value="1">审核</option>
+                                            <option value="0">未审核</option>
                                         </select><div class="layui-unselect layui-form-select"><div class="layui-select-title"><input type="text" placeholder="请选择" value="全部" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div><dl class="layui-anim layui-anim-upbit" style=""><dd lay-value="全部" class="layui-this">全部</dd><dd lay-value="审核" class="">审核</dd><dd lay-value="未审核" class="">未审核</dd></dl></div>
                                     </div>
                                 </div>
@@ -54,6 +54,9 @@
                                     <button class="layui-btn layui-btn-radius layui-btn-normal" onclick="queryTj();" type="button" style="display: block;width:70px;border-radius: 3px">
                                         查询
                                     </button>
+                                </div>
+                                <div class="layui-btn-group demoTable" style="margin-left: -50px; width: 70px">
+                                    <button class="layui-btn" data-type="getCheckLength">审核通过</button>
                                 </div>
                             </div>
                         </form>
@@ -87,6 +90,7 @@
             page:true,
             id:'test',
             cols:  [[ //标题栏
+                {checkbox: true, LAY_CHECKED: false},
                 {field:'id', width:220 , title:'编码'},
                 {field:'applicationNum',width:220 , title:'申请单号'},
                 {field:'userName',width:220 , title:'用户名'},
@@ -111,12 +115,14 @@
             }
         });
     });
-    function queryTj(){
-        var txt=$("#rechange_name").val();
+    function queryTj() {
+        var txt = $("#rechange_name").val();
+        var vs = $('select  option:selected').val();
         tableIns.reload({
-            url:'/presentapp/findPresentappList',
+            url: '/presentapp/findPresentappList',
             where: { //设定异步数据接口的额外参数，任意设
-                userName:txt,
+                userName: txt,
+                preState: vs
             }
         });
     }
