@@ -68,7 +68,7 @@ public class PresentAppController extends Handler {
 		try {
 			Pageable pageable = new PageRequest(page - 1, limit);
 			DefaultSpecification<PresentApp> spec = new DefaultSpecification<PresentApp>();
-			if (null != presentApp.getUserName()) spec.setParams("userName", "like", "%" + presentApp.getUserName() + "%");
+			if (null != presentApp.getUserName() && !presentApp.getUserName().equals("")) spec.setParams("userName", "like", "%" + presentApp.getUserName() + "%");
 
 			if (null != firstParms) spec.setParams("amountMoney", ">=", firstParms);
 

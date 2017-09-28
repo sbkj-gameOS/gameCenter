@@ -111,7 +111,7 @@ public class RegisterPlayerController extends Handler {
 		try {
 			Pageable pageable = new PageRequest(page - 1, limit);
 			DefaultSpecification<PlayUser> spec = new DefaultSpecification<PlayUser>();
-			if (null != playUser.getNickname()) spec.setParams("nickname", "like", "%" + playUser.getNickname() + "%");
+			if (null != playUser.getNickname() && !playUser.getNickname().equals("")) spec.setParams("nickname", "like", "%" + playUser.getNickname() + "%");
 			Page<PlayUser> p = playUserRes.findAll(spec, pageable);
 			List<PlayUserVo> puolist = new ArrayList<PlayUserVo>();
 			for (PlayUser pu : p.getContent()) {

@@ -51,8 +51,8 @@ public class ProManagementController extends Handler {
 		try {
 			Pageable pageable = new PageRequest(page - 1, limit);
 			DefaultSpecification<ProManagement> spec = new DefaultSpecification<ProManagement>();
-			if (null != proManagement.getUserName()) spec.setParams("userName", "like", "%" + proManagement.getUserName() + "%");
-			if (null != proManagement.getInvitationCode()) spec.setParams("invitationCode", "eq", proManagement.getInvitationCode());
+			if (null != proManagement.getUserName() && !proManagement.getUserName().equals("")) spec.setParams("userName", "like", "%" + proManagement.getUserName() + "%");
+			if (null != proManagement.getInvitationCode() && !proManagement.getInvitationCode().equals("")) spec.setParams("invitationCode", "eq", proManagement.getInvitationCode());
 			Page<ProManagement> p = proManagementRepository.findAll(spec, pageable);
 			dataMap.put("data", p.getContent());
 			dataMap.put("count", p.getTotalElements());
