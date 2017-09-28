@@ -18,8 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
 import com.bradypod.web.handler.Handler;
 import com.bradypod.web.model.ProManagement;
-import com.bradypod.web.service.repository.jpa.PresentAppRepository;
 import com.bradypod.web.service.repository.jpa.ProManagementRepository;
+import com.bradypod.web.service.repository.spec.DefaultSpecification;
 
 /**
  * @ClassName: ProManagementController
@@ -34,8 +34,8 @@ public class ProManagementController extends Handler {
 	@Autowired
 	private ProManagementRepository proManagementRepository;
 
-	@Autowired
-	private PresentAppRepository presentAppRepository;
+/*	@Autowired
+	private PresentAppRepository presentAppRepository;*/
 
 	/**
 	 * @Title: findProManagementList
@@ -49,8 +49,10 @@ public class ProManagementController extends Handler {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
 			Pageable pageable = new PageRequest(page, limit);
-			// Page<ProManagement> p = proManagementRepository.findByUserNameLikeAndInvitationCode(proManagement.getUserName(), proManagement.getInvitationCode(), Pageable);
-			Page<ProManagement> p = proManagementRepository.findAll(pageable);
+			DefaultSpecification<ProManagement> spec = new DefaultSpecification<ProManagement>();
+			if (null != proManagement.getUserName()) spec.setParams("userName", "like", "%" + proManagement.getUserName() + "%");
+			if (null != proManagement.getInvitationCode()) spec.setParams("invitationCode", "eq", proManagement.getInvitationCode());
+			Page<ProManagement> p = proManagementRepository.findAll(spec, pageable);
 			dataMap.put("data", p.getContent());
 			dataMap.put("count", p.getTotalElements());
 			dataMap.put("code", 0);
