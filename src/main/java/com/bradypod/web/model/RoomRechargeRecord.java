@@ -80,6 +80,12 @@ public class RoomRechargeRecord implements java.io.Serializable {
 	@Column(name = "is_Del")
 	private Integer isDel;
 
+	/**
+	 * 充值时间
+	 */
+	@Column(name = "rechange_times")
+	private String rechangeTimes;
+
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -162,5 +168,13 @@ public class RoomRechargeRecord implements java.io.Serializable {
 
 	public void setIsDel(Integer isDel) {
 		this.isDel = isDel;
+	}
+
+	public String getRechangeTimes() {
+		return rechangeTimes;
+	}
+
+	public void setRechangeTimes(String rechangeTimes) {
+		this.rechangeTimes = rechangeTimes;
 	}
 }

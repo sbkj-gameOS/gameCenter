@@ -27,6 +27,6 @@ public abstract interface RoomRechargeRecordRepository extends JpaRepository<Roo
      * @param invitationCode
      * @return
      */
-    @Query(value = "select * from bm_room_recharge_record where USER_NAME LIKE  CONCAT('%',:userName,'%') and INVITATION_CODE LIKE CONCAT('%',:invitationCode,'%')  limit :startData,:limit",nativeQuery = true)
+    @Query(value = "select *,DATE_FORMAT(RECHARGE_TIME,'%Y-%m-%d %H:%i:%S ') rechange_times from bm_room_recharge_record where USER_NAME LIKE  CONCAT('%',:userName,'%') and INVITATION_CODE LIKE CONCAT('%',:invitationCode,'%')  limit :startData,:limit",nativeQuery = true)
     public abstract List<RoomRechargeRecord> findByUserNameLikeOrInvitationCodeLike(@Param("userName") String userName, @Param("invitationCode") String invitationCode, @Param("startData")Integer startData, @Param("limit")Integer limit);
 }
