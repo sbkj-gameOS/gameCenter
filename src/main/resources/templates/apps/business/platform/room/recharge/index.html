@@ -46,7 +46,7 @@
                     </div>
                     <div class="row" style="padding:5px;">
                         <div class="col-lg-12">
-                            <table class="layui-table" lay-data="{height:640,url:'/roomCard/getRechargeJson?page=0&limit=20', page:true, id:'test'}" lay-filter="test">
+                            <table class="layui-table" lay-data="{height:640,url:'/roomCard/getRechargeJson', page:true, id:'test'}" lay-filter="test">
                                 <thead style="width: 100%">
                                 <tr>
                                     <th lay-data="{field:'id', width:180}">序号</th>
@@ -88,9 +88,10 @@
         document.getElementById("txtNames").value = userName;
         document.getElementById("search").value = invitationCode;
         var tablebox =document.getElementById("box").getAttribute("lay-data");
-        var tableboxUrl = "/roomCard/getToUseJson?page=0&limit=20&userName="+userName+"&invitationCode="+invitationCode;
+        var tableboxUrl = "/roomCard/getToUseJson?userName="+userName+"&invitationCode="+invitationCode;
         document.getElementById("box").setAttribute("lay-data","{height:640,url:'"+tableboxUrl+"', page:true, id:'test'}");
     }
+
 
     $(function(){
         $("button[type=button]").click(function(){

@@ -1,17 +1,12 @@
 package com.bradypod.web.handler.mobileter.transact;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bradypod.web.handler.Handler;
 import com.bradypod.web.model.RoomRechargeRecord;
 import com.bradypod.web.model.RoomTouseRecord;
 import com.bradypod.web.service.repository.jpa.RoomRechargeRecordRepository;
 import com.bradypod.web.service.repository.jpa.RoomTouseRecordRepository;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,7 +37,7 @@ public class RoomCardController extends Handler {
      * @return
      */
     @RequestMapping({"/rechargeRecord"})
-    public ModelAndView rechargeRecord(ModelMap map , HttpServletRequest request){
+    public ModelAndView rechargeRecord(ModelMap map, HttpServletRequest request){
         return request(super.createAppsTempletResponse("/apps/business/platform/room/recharge/index"));
     }
 
@@ -50,13 +47,31 @@ public class RoomCardController extends Handler {
      */
     @RequestMapping({"/getRechargeJson"})
     @ResponseBody
-    public JSONObject getRecharge(){
+    public JSONObject getRecharge(String userName,String invitationCode,Integer page,Integer limit){
         Map<Object,Object> dataMap = new HashMap<Object,Object>();
+        List<RoomRechargeRecord> recharge = new ArrayList<RoomRechargeRecord>();
         try{
-            Pageable Pageable = new PageRequest(1,30);
-            Page<RoomRechargeRecord> recharge = roomRechargeRecordRepository.findByUserNameLikeOrInvitationCodeLike("t","1",Pageable);
-            dataMap.put("data",recharge.getContent());
-            dataMap.put("count",recharge.getTotalElements());
+            int totalPage,startData;
+            int total = roomRechargeRecordRepository.findRechargeCount(userName,invitationCode);
+            if(page  < 1){
+                page = 1;
+            }
+            // 计算总页数,如果能整除，取整除；不能整除，取整除+1
+            if(total % limit ==0){
+                totalPage = total / limit;
+            }else{
+                totalPage = total / limit + 1;
+            }
+            if(totalPage == 0){
+                page = 0;
+                dataMap.put("data","");
+            }else {
+                // 开始条数
+                startData = (page-1) * limit;
+                recharge = roomRechargeRecordRepository.findByUserNameLikeOrInvitationCodeLike(userName,invitationCode,startData,limit);
+            }
+            dataMap.put("data",recharge);
+            dataMap.put("count",total);
             dataMap.put("code",0);
         }catch(Exception e){
             dataMap.put("code",1);
@@ -78,15 +93,33 @@ public class RoomCardController extends Handler {
      * 房卡使用记录数据
      * @return
      */
+
     @RequestMapping({"/getToUseJson"})
     @ResponseBody
-    public JSONObject getToUseJson(){
+    public JSONObject getToUseJson(String userName,String invitationCode,Integer page,Integer limit){
         Map<Object,Object> dataMap = new HashMap<Object,Object>();
+        List<RoomTouseRecord> toUse = new ArrayList<RoomTouseRecord>();
         try{
-            Pageable Pageable = new PageRequest(1,30);
-            Page<RoomTouseRecord> touse = roomTouseRecordRepository.findByUserNameLikeAndInvitationCodeLike("t","123",Pageable);
-            dataMap.put("data",touse.getContent());
-            dataMap.put("count",touse.getTotalElements());
+            int totalPage,startData;
+            int total = roomTouseRecordRepository.findToUseCount(userName,invitationCode);
+            if(page  < 1){
+                page = 1;
+            }
+            // 计算总页数,如果能整除，取整除；不能整除，取整除+1
+            if(total % limit ==0){
+                totalPage = total / limit;
+            }else{
+                totalPage = total / limit + 1;
+            }
+            if(totalPage == 0){
+                page = 0;
+            }else {
+                // 开始条数
+                startData = (page-1) * limit;
+                toUse = roomTouseRecordRepository.findByUserNameLikeOrInvitationCodeLike(userName,invitationCode,startData,limit);
+            }
+            dataMap.put("data",toUse);
+            dataMap.put("count",total);
             dataMap.put("code",0);
         }catch(Exception e){
             dataMap.put("code",1);
