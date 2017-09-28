@@ -106,13 +106,13 @@
                     //获取请求数据审核状态回显界面值
                     if(res.data[i].preState == 0){
                         //tr行元素 状态td位置  子元素内容
-                        tableTr[i].children[6].children[0].innerHTML = '未审核';
+                        tableTr[i].children[7].children[0].innerHTML = '未审核';
                     }else{
                         //tr行元素 状态td位置  子元素内容
-                        tableTr[i].children[6].children[0].innerHTML = '审核';
+                        tableTr[i].children[7].children[0].innerHTML = '审核';
                     }
                     //时间设置
-                    tableTr[i].children[4].children[0].innerHTML = formatDateTime(res.data[i].presentAppTime);
+                    tableTr[i].children[5].children[0].innerHTML = formatDateTime(res.data[i].presentAppTime);
                 }
             }
         });
