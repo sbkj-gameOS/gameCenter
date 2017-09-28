@@ -1,5 +1,7 @@
 package com.bradypod.web.handler.mobileter.transact;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,13 +16,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bradypod.web.handler.Handler;
+import com.bradypod.web.model.PlayUser;
 import com.bradypod.web.model.PresentApp;
+import com.bradypod.web.model.ProManagement;
+import com.bradypod.web.model.mobileter.murecharge.vo.PresentAppVo;
+import com.bradypod.web.service.repository.jpa.PlayUserRepository;
 import com.bradypod.web.service.repository.jpa.PresentAppRepository;
+import com.bradypod.web.service.repository.jpa.ProManagementRepository;
 import com.bradypod.web.service.repository.spec.DefaultSpecification;
+import com.google.gson.Gson;
 
 /**
  * @ClassName: PresentAppController
@@ -32,11 +41,14 @@ import com.bradypod.web.service.repository.spec.DefaultSpecification;
 @RequestMapping("/presentapp")
 public class PresentAppController extends Handler {
 
-/*	@Autowired
-	private ProManagementRepository proManagementRepository;*/
+	@Autowired
+	private ProManagementRepository proManagementRepository;
 
 	@Autowired
 	private PresentAppRepository presentAppRepository;
+
+	@Autowired
+	private PlayUserRepository playUserRes;
 
 	/**
 	 * 提现审批
@@ -65,9 +77,9 @@ public class PresentAppController extends Handler {
 	public JSONObject findPresentappList(PresentApp presentApp, Integer page, Integer limit, Double firstParms, Double endParms, Date startDate, Date endDate) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			Pageable pageable = new PageRequest(page, limit);
+			Pageable pageable = new PageRequest(page - 1, limit);
 			DefaultSpecification<PresentApp> spec = new DefaultSpecification<PresentApp>();
-			if (null != presentApp.getUserName()) spec.setParams("userName", "like", "%" + presentApp.getUserName() + "%");
+			if (null != presentApp.getUserName() && !presentApp.getUserName().equals("")) spec.setParams("userName", "like", "%" + presentApp.getUserName() + "%");
 
 			if (null != firstParms) spec.setParams("amountMoney", ">=", firstParms);
 
@@ -92,5 +104,77 @@ public class PresentAppController extends Handler {
 			dataMap.put("msg", "查询失败");
 		}
 		return (JSONObject) JSONObject.toJSON(dataMap);
+	}
+
+	/**
+	 * @Title: appForCash
+	 * @Description: TODO(申请提现)
+	 * @param presentApp 接收对象
+	 * @param playUser 缓存对象
+	 * @return 设定文件 JSONObject 返回类型
+	 */
+	@ResponseBody
+	@RequestMapping("/appForCash")
+	public JSONObject appForCash(PresentApp presentApp, @SessionAttribute("mgPlayUser") PlayUser playUser) {
+		Map<Object, Object> dataMap = new HashMap<Object, Object>();
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
+			String time = formatter.format(new Date());
+			presentApp.setApplicationNum(time);
+			presentApp.setUserName(playUser.getNickname());
+			presentApp.setInvitationCode(playUser.getInvitationcode());
+			presentApp.setPlayUserId(playUser.getId());
+			presentApp.setOpenid(playUser.getOpenid());
+			presentAppRepository.saveAndFlush(presentApp);
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataMap.put("success", false);
+			dataMap.put("msg", "申请失败");
+		}
+		return (JSONObject) JSONObject.toJSON(dataMap);
+	}
+
+	/**
+	 * @Title: cashWithdrawal
+	 * @Description: TODO(通过审批)
+	 * @param parms
+	 * @return 设定文件 JSONObject 返回类型
+	 */
+	@ResponseBody
+	@RequestMapping("/cashWithdrawal")
+	public JSONObject cashWithdrawal(String parms) {
+		Map<Object, Object> dataMap = new HashMap<Object, Object>();
+		try {
+			PresentAppVo presentAppVo = getPresentAppVoByJson(parms);
+			for (String id : presentAppVo.getId()) {
+				PresentApp presentApp = presentAppRepository.findById(id);
+				// 接下来要对挨个数据分润，然后更新数据库数据结构
+					//企业打钱接口。。。。。
+				
+				
+				
+				// 更新数据库数据结构
+				BigDecimal zjTrtProfit = playUserRes.findById(presentApp.getPlayUserId()).getTrtProfit();
+				zjTrtProfit = zjTrtProfit.subtract(presentApp.getAmountMoney());
+				playUserRes.setTrtProfitById(zjTrtProfit, presentApp.getPlayUserId());// 更新人员剩余分润总额度
+				// 生成提现历史
+				ProManagement pm = new ProManagement();
+				pm.setUserName(presentApp.getUserName());
+				pm.setInvitationCode(presentApp.getInvitationCode());
+				pm.setAmountMoney(presentApp.getAmountMoney());
+				pm.setTrtProfit(zjTrtProfit);
+				proManagementRepository.saveAndFlush(pm);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataMap.put("success", false);
+			dataMap.put("msg", "审批失败");
+		}
+		return (JSONObject) JSONObject.toJSON(dataMap);
+	}
+
+	private PresentAppVo getPresentAppVoByJson(String parms) {
+		Gson gson = new Gson();
+		return gson.fromJson(parms, PresentAppVo.class);
 	}
 }

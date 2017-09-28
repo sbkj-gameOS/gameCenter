@@ -11,9 +11,11 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.bradypod.util.UKTools;
+
 /**
  * @ClassName: ProManagement
- * @Description: TODO(分润管理)
+ * @Description: TODO(提现历史)
  * @author dave
  * @date 2017年9月25日 下午7:50:24
  */
@@ -23,10 +25,10 @@ public class ProManagement implements java.io.Serializable {
 
 	private static final long serialVersionUID = 130219713828003957L;
 	/**
-	 * 分润管理id
+	 * 提现历史id
 	 */
 	@Id
-	private String id;
+	private String id = UKTools.getUUID().toLowerCase();
 
 	/**
 	 * 用户名
@@ -41,28 +43,10 @@ public class ProManagement implements java.io.Serializable {
 	private String invitationCode;
 
 	/**
-	 * 获得分润金额
-	 */
-	@Column(name = "GET_PRO_AMOUNT")
-	private BigDecimal getProAmount;
-
-	/**
-	 * 获得时间
-	 */
-	@Column(name = "GAIN_TIME")
-	private Date gainTime;
-
-	/**
 	 * 提现金额
 	 */
 	@Column(name = "AMOUNT_MONEY")
 	private BigDecimal amountMoney;
-
-	/**
-	 * 来源人姓名
-	 */
-	@Column(name = "NICK_NAME")
-	private String nickName;
 
 	/**
 	 * 提现时间
@@ -116,22 +100,6 @@ public class ProManagement implements java.io.Serializable {
 		this.invitationCode = invitationCode;
 	}
 
-	public BigDecimal getGetProAmount() {
-		return getProAmount;
-	}
-
-	public void setGetProAmount(BigDecimal getProAmount) {
-		this.getProAmount = getProAmount;
-	}
-
-	public Date getGainTime() {
-		return gainTime;
-	}
-
-	public void setGainTime(Date gainTime) {
-		this.gainTime = gainTime;
-	}
-
 	public BigDecimal getAmountMoney() {
 		return amountMoney;
 	}
@@ -171,13 +139,4 @@ public class ProManagement implements java.io.Serializable {
 	public void setIsDel(int isDel) {
 		this.isDel = isDel;
 	}
-
-	public String getNickName() {
-		return nickName;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
 }

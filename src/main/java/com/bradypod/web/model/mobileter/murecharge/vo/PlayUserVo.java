@@ -69,7 +69,7 @@ public class PlayUserVo {
 	 */
 	private String sign;
 	private String supAccount;// 上级帐号
-	private Integer subCount;// 下家数量
+	private String subCount;// 下家数量
 
 	public String getId() {
 		return id;
@@ -511,11 +511,11 @@ public class PlayUserVo {
 		this.supAccount = supAccount;
 	}
 
-	public Integer getSubCount() {
+	public String getSubCount() {
 		return subCount;
 	}
 
-	public void setSubCount(Integer subCount) {
+	public void setSubCount(String subCount) {
 		this.subCount = subCount;
 	}
 }

@@ -23,7 +23,7 @@ import com.bradypod.web.service.repository.spec.DefaultSpecification;
 
 /**
  * @ClassName: ProManagementController
- * @Description: TODO(分润管理)
+ * @Description: TODO(提现历史)
  * @author dave
  * @date 2017年9月26日 上午9:38:18
  */
@@ -34,8 +34,9 @@ public class ProManagementController extends Handler {
 	@Autowired
 	private ProManagementRepository proManagementRepository;
 
-/*	@Autowired
-	private PresentAppRepository presentAppRepository;*/
+	/*
+	 * @Autowired private PresentAppRepository presentAppRepository;
+	 */
 
 	/**
 	 * @Title: findProManagementList
@@ -48,10 +49,10 @@ public class ProManagementController extends Handler {
 	public JSONObject findProManagementList(ProManagement proManagement, Integer page, Integer limit) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			Pageable pageable = new PageRequest(page, limit);
+			Pageable pageable = new PageRequest(page - 1, limit);
 			DefaultSpecification<ProManagement> spec = new DefaultSpecification<ProManagement>();
-			if (null != proManagement.getUserName()) spec.setParams("userName", "like", "%" + proManagement.getUserName() + "%");
-			if (null != proManagement.getInvitationCode()) spec.setParams("invitationCode", "eq", proManagement.getInvitationCode());
+			if (null != proManagement.getUserName() && !proManagement.getUserName().equals("")) spec.setParams("userName", "like", "%" + proManagement.getUserName() + "%");
+			if (null != proManagement.getInvitationCode() && !proManagement.getInvitationCode().equals("")) spec.setParams("invitationCode", "eq", proManagement.getInvitationCode());
 			Page<ProManagement> p = proManagementRepository.findAll(spec, pageable);
 			dataMap.put("data", p.getContent());
 			dataMap.put("count", p.getTotalElements());

@@ -109,9 +109,9 @@ public class RegisterPlayerController extends Handler {
 	public JSONObject findRegisterPlayerList(PlayUser playUser, Integer page, Integer limit) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			Pageable pageable = new PageRequest(page, limit);
+			Pageable pageable = new PageRequest(page - 1, limit);
 			DefaultSpecification<PlayUser> spec = new DefaultSpecification<PlayUser>();
-			if (null != playUser.getNickname()) spec.setParams("nickname", "like", "%" + playUser.getNickname() + "%");
+			if (null != playUser.getNickname() && !playUser.getNickname().equals("")) spec.setParams("nickname", "like", "%" + playUser.getNickname() + "%");
 			Page<PlayUser> p = playUserRes.findAll(spec, pageable);
 			List<PlayUserVo> puolist = new ArrayList<PlayUserVo>();
 			for (PlayUser pu : p.getContent()) {
@@ -122,7 +122,7 @@ public class RegisterPlayerController extends Handler {
 					puv.setSupAccount(supAccount);
 				}
 				int subCount = playUserRes.countByPinvitationcode(puv.getInvitationcode());
-				puv.setSubCount(subCount);
+				puv.setSubCount(String.valueOf(subCount));
 				puolist.add(puv);
 			}
 			dataMap.put("data", puolist);

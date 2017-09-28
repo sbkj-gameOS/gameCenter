@@ -11,6 +11,8 @@ import com.bradypod.web.model.PresentApp;
  * @author dave
  * @date 2017年9月25日 下午8:02:17
  */
-public interface PresentAppRepository extends JpaRepository<PresentApp, String>,JpaSpecificationExecutor<PresentApp> {
+public abstract interface PresentAppRepository extends JpaRepository<PresentApp, String>,JpaSpecificationExecutor<PresentApp> {
+
+	public abstract PresentApp findById(String id);
 
 }

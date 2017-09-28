@@ -11,7 +11,7 @@ import com.bradypod.web.model.ProManagement;
 
 /**
  * @ClassName: ProManagementRepository
- * @Description: TODO(分润管理)
+ * @Description: TODO(提现历史)
  * @author dave
  * @date 2017年9月25日 下午8:03:31
  */
