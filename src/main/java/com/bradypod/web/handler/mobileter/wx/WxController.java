@@ -206,17 +206,6 @@ public class WxController {
 	}
 
 	/**
-	 * 微信授权域名地址
-	 * 
-	 * @return
-	 */
-	@RequestMapping({ "/MP_verify_V4mcS82aXhi5ivFV.txt" })
-	@ResponseBody
-	public String wxCodeTxt() {
-		return "V4mcS82aXhi5ivFV";
-	}
-
-	/**
 	 * @Title: rechargeManagement
 	 * @Description: TODO(支付完成后调整数据库)
 	 * @param playUser 用户信息

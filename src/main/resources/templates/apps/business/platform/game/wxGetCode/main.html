@@ -65,17 +65,14 @@
                                     // 支付成功后 修改订单状态  2代发货
                                     mui.toast("支付成功！");
 
-                                    /*2016-10-13 15:23:44 已改为自动回调*/
-//									mui.post(baseURL +'/wxpay/wxpay_WXPayH5',{
-//											out_trade_no:orderNo,
-//											status:type,
-//											trans:trans
+                                    /*2017-09-28 15:23:44 已改为自动回调*/
+//									mui.post('/wxController/rechargeManagement',{
+//											userId:"",
+//                                            payAmount:0.01,
+//                                            roomCount:""
 //										},function(data){
 //											if(data.status=="200"){
 //												mui.toast("支付成功！");
-//												window.location.href = "paySuccess.html";
-//											}else{
-//												mui.toast("订单状态出现异常!请联系客服人员");
 //											}
 //										},'json'
 //									);
