@@ -32,14 +32,14 @@ public class GameUsersController extends Handler{
 	@Menu(type="platform", subtype="gameusers")
 	public ModelAndView gameusers(ModelMap map , HttpServletRequest request , @Valid String id){
 		map.addAttribute("playersList", playersRes.findByOrgi(super.getOrgi(request), new PageRequest(super.getP(request), super.getPs(request)))) ;
-		return request(super.createAppsTempletResponse("/apps/business/platform/game/data/index"));
+		return request(super.createAppsTempletResponse("/apps/business/platform/game/dataGame/index"));
 	}
 	
 	@RequestMapping({"/gameusers/online"})
 	@Menu(type="platform", subtype="onlinegameusers")
 	public ModelAndView online(ModelMap map , HttpServletRequest request , @Valid String id){
 		map.addAttribute("playersList", playersRes.findByOrgiAndOnline(super.getOrgi(request), true,new PageRequest(super.getP(request), super.getPs(request)))) ;
-		return request(super.createAppsTempletResponse("/apps/business/platform/game/data/online"));
+		return request(super.createAppsTempletResponse("/apps/business/platform/game/dataGame/online"));
 	}
 	
 	@RequestMapping({"/gameusers/edit"})
@@ -48,7 +48,7 @@ public class GameUsersController extends Handler{
 		
 		map.addAttribute("playUser", playersRes.findById(id)) ;
 		
-		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/data/edit"));
+		return request(super.createRequestPageTempletResponse("/apps/business/platform/game/dataGame/edit"));
 	}
 	
 	@RequestMapping("/gameusers/update")
