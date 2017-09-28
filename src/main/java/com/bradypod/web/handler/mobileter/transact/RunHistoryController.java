@@ -3,13 +3,17 @@ package com.bradypod.web.handler.mobileter.transact;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bradypod.web.handler.Handler;
@@ -29,6 +33,18 @@ public class RunHistoryController extends Handler {
 
 	@Autowired
 	private RunHistoryRepository runHistoryRepository;
+
+	/**
+	 * @Title: runHistoryUrl
+	 * @Description: TODO(分润历史调整路径)
+	 * @param map
+	 * @param request
+	 * @return 设定文件 ModelAndView 返回类型
+	 */
+	@RequestMapping({ "/runHistoryUrl" })
+	public ModelAndView runHistoryUrl(ModelMap map, HttpServletRequest request) {
+		return request(super.createAppsTempletResponse("/apps/business/platform/room/FenRun/index"));
+	}
 
 	/**
 	 * @Title: getRunHistoryList
