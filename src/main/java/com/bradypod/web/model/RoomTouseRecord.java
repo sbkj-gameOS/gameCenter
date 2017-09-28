@@ -62,6 +62,12 @@ public class RoomTouseRecord implements java.io.Serializable {
 	@Column(name = "is_Del")
 	private Integer isDel;
 
+	/**
+	 * 使用时间
+	 */
+	@Column(name = "use_times")
+	private String useTimes;
+
 	@Id
 	@Column(length = 32)
 	@GeneratedValue(generator = "system-uuid")
@@ -129,5 +135,13 @@ public class RoomTouseRecord implements java.io.Serializable {
 
 	public void setIsDel(Integer isDel) {
 		this.isDel = isDel;
+	}
+
+	public String getUseTimes() {
+		return useTimes;
+	}
+
+	public void setUseTimes(String useTimes) {
+		this.useTimes = useTimes;
 	}
 }
