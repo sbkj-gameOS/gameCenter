@@ -65,7 +65,14 @@
                 {field:'useTimes',width:260 , title:'使用时间'},
                 {field:'useRoomCount',width:260 , title:'使用房卡数量'},
                 {field:'surplusRoomCount',width:262 , title:'剩余房卡数量'},
-            ]]
+            ]],
+            done:  function(res, curr, count){
+                var tableTr = document.getElementsByClassName("layui-table")[1].children[0].getElementsByTagName("tr");
+                for(var i = 0; i < tableTr.length; i++){
+                    //编码
+                    tableTr[i].children[0].children[0].innerHTML = i+1;
+                }
+            }
         });
     });
     function queryTj(){

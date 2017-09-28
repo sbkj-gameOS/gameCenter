@@ -89,6 +89,8 @@
             done:  function(res, curr, count){
                 var tableTr = document.getElementsByClassName("layui-table")[1].children[0].getElementsByTagName("tr");
                 for(var i = 0; i < tableTr.length; i++){
+                    //编码
+                    tableTr[i].children[0].children[0].innerHTML = i+1;
                     tableTr[i].children[3].children[0].innerHTML = formatDateTime(res.data[i].rechargeTime);
                 }
             }
