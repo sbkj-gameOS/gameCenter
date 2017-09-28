@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.bradypod.util.UKTools;
+
 /**
  * @ClassName: RunHistory
  * @Description: TODO(分润历史实体类)
@@ -25,7 +27,7 @@ public class RunHistory implements java.io.Serializable {
 	 * 分润历史id
 	 */
 	@Id
-	private String id;
+	private String id = UKTools.getUUID().toLowerCase();
 
 	/**
 	 * 用户名
