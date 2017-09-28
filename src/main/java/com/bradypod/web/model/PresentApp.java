@@ -39,6 +39,12 @@ public class PresentApp implements java.io.Serializable {
 	private String applicationNum;
 
 	/**
+	 * 人员表主键id
+	 */
+	@Column(name = "PLAY_USER_ID")
+	private String playUserId;
+
+	/**
 	 * 用户名
 	 */
 	@Column(name = "USER_NAME")
@@ -103,6 +109,14 @@ public class PresentApp implements java.io.Serializable {
 
 	public void setApplicationNum(String applicationNum) {
 		this.applicationNum = applicationNum;
+	}
+
+	public String getPlayUserId() {
+		return playUserId;
+	}
+
+	public void setPlayUserId(String playUserId) {
+		this.playUserId = playUserId;
 	}
 
 	public String getUserName() {

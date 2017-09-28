@@ -23,7 +23,7 @@ import com.bradypod.web.service.repository.spec.DefaultSpecification;
 
 /**
  * @ClassName: ProManagementController
- * @Description: TODO(分润管理)
+ * @Description: TODO(提现历史)
  * @author dave
  * @date 2017年9月26日 上午9:38:18
  */
