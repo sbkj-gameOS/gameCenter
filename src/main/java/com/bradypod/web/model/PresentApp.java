@@ -45,6 +45,11 @@ public class PresentApp implements java.io.Serializable {
 	private String userName;
 
 	/**
+	 * 微信id
+	 */
+	private String openid;
+
+	/**
 	 * 邀请码
 	 */
 	@Column(name = "INVITATION_CODE")
@@ -54,7 +59,7 @@ public class PresentApp implements java.io.Serializable {
 	 * 申请提现时间
 	 */
 	@Column(name = "PRESENT_APP_TIME")
-	private String presentAppTime;
+	private Date presentAppTime = new Date();
 
 	/**
 	 * 提现金额
@@ -108,6 +113,14 @@ public class PresentApp implements java.io.Serializable {
 		this.userName = userName;
 	}
 
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
+	}
+
 	public String getInvitationCode() {
 		return invitationCode;
 	}
@@ -116,11 +129,11 @@ public class PresentApp implements java.io.Serializable {
 		this.invitationCode = invitationCode;
 	}
 
-	public String getPresentAppTime() {
+	public Date getPresentAppTime() {
 		return presentAppTime;
 	}
 
-	public void setPresentAppTime(String presentAppTime) {
+	public void setPresentAppTime(Date presentAppTime) {
 		this.presentAppTime = presentAppTime;
 	}
 

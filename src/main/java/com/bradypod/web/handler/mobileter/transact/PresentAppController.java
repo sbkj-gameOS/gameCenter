@@ -1,5 +1,6 @@
 package com.bradypod.web.handler.mobileter.transact;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +15,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bradypod.web.handler.Handler;
+import com.bradypod.web.model.PlayUser;
 import com.bradypod.web.model.PresentApp;
 import com.bradypod.web.service.repository.jpa.PresentAppRepository;
 import com.bradypod.web.service.repository.spec.DefaultSpecification;
@@ -94,4 +97,26 @@ public class PresentAppController extends Handler {
 		}
 		return (JSONObject) JSONObject.toJSON(dataMap);
 	}
+
+	/**
+	 * @Title: appForCash
+	 * @Description: TODO(申请提现)
+	 * @param presentApp 接收对象
+	 * @param playUser 缓存对象
+	 * @return 设定文件 JSONObject 返回类型
+	 */
+	@ResponseBody
+	@RequestMapping("/appForCash")
+	public JSONObject appForCash(PresentApp presentApp, @SessionAttribute("mgPlayUser") PlayUser playUser) {
+		Map<Object, Object> dataMap = new HashMap<Object, Object>();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
+		String time = formatter.format(new Date());
+		presentApp.setApplicationNum(time);
+		presentApp.setUserName(playUser.getNickname());
+		presentApp.setInvitationCode(playUser.getInvitationcode());
+		presentApp.setOpenid(playUser.getOpenid());
+		presentAppRepository.saveAndFlush(presentApp);
+		return (JSONObject) JSONObject.toJSON(dataMap);
+	}
+
 }

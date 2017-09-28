@@ -122,7 +122,7 @@ public class RegisterPlayerController extends Handler {
 					puv.setSupAccount(supAccount);
 				}
 				int subCount = playUserRes.countByPinvitationcode(puv.getInvitationcode());
-				puv.setSubCount(subCount);
+				puv.setSubCount(String.valueOf(subCount));
 				puolist.add(puv);
 			}
 			dataMap.put("data", puolist);
