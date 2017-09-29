@@ -259,6 +259,7 @@ public class WxController {
 	 * @return
      */
 	@RequestMapping("/wxTransfersAmount")
+	@ResponseBody
 	public Object wxTransfersAmount(HttpSession session, HttpServletRequest request){
 		SortedMap<Object, Object> signParams = new TreeMap<Object, Object>();
 		//获取付款用户id
