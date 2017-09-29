@@ -67,7 +67,7 @@ public class WxController {
 	@ResponseBody
 	public String getLoginCode() {
 		String oauth2 = ConfigUtil.OAUTH2_URL;
-		String appid = ConfigUtil.APPID;// 公众号appid
+		String appid = ConfigUtil.APPIDH5;// 公众号appid
 		String redirect_uri = ConfigUtil.CODE_URL;// 返回code值地址
 		String wxLogin = oauth2 + "?appid=" + appid + "&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 		return wxLogin;
@@ -104,45 +104,27 @@ public class WxController {
 	@ResponseBody
 	public Object getWXPayXmlH5(HttpSession session, HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "0") int orderprices) {
 		Map<String, Object> json = new HashMap<String, Object>();
+		//获取付款用户id
 		String openid = ((PlayUser) session.getAttribute("mgPlayUser")).getOpenid();// 获取用户id
-		logger.info("----------------------openid----------------------:" + openid);
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
+		//生成32位订单号
 		String out_trade_no = "YX" + formatter.format(new Date());// 充值订单号时间戳
 		out_trade_no += formatter.format(new Date());// 充值订单号时间戳
-		logger.info("out_trade_no=" + out_trade_no);
-		logger.info("total_fee=" + orderprices);
-		// logger.info("body=" + body);
-		logger.info("openid=" + openid);
 		// 金额转化为分为单位
 		int finalmoney = orderprices;
-
-		String appid = ConfigUtil.APPID;
-		String appsecret = ConfigUtil.APP_SECRECTH5;
-		String partner = ConfigUtil.MCH_IDH5;
-		String partnerkey = ConfigUtil.API_KEYH5;
-
 		request.getSession();
-		// 商户号
-		String mch_id = partner;
 		// 随机数
 		String nonce_str = PayCommonUtil.CreateNoncestr();
-
-		logger.info("----------------------nonce_str----------------------:" + nonce_str.length());
-		logger.info("----------------------out_trade_no----------------------:" + out_trade_no.length());
-
-		// 商品描述根据情况修改
+		//支付成功后显示的标题
 		String body = "测试";
-
 		// 订单生成的机器 IP
 		String spbill_create_ip = PayCommonUtil.getIpAddress(request);
 		spbill_create_ip = (spbill_create_ip.split(","))[0];
 		// 这里notify_url是 支付完成后微信发给该链接信息，可以判断会员是否支付成功，改变订单状态等。
 		String notify_url = ConfigUtil.NOTIFY_URL;
-		logger.info("wowowo====================" + notify_url);
 		String trade_type = "JSAPI";
-
 		SortedMap<Object, Object> signParams = new TreeMap<Object, Object>();
-		signParams.put("appid", ConfigUtil.APPID);// app_id
+		signParams.put("appid", ConfigUtil.APPIDH5);// app_id
 		signParams.put("body", body);// 商品参数信息
 		signParams.put("mch_id", ConfigUtil.MCH_IDH5);// 微信商户账号
 		signParams.put("nonce_str", nonce_str);// 32位不重复的编号
@@ -153,19 +135,11 @@ public class WxController {
 		signParams.put("total_fee", finalmoney + "");// 支付金额 单位为分
 		signParams.put("trade_type", trade_type);// 付款类型
 
-		// if("1".equals(status)){
-		// // 附件属性,原样返回
-		// packageParams.put("attach", "clear");
-		// }else {
-		// // 附件属性,原样返回
-		// packageParams.put("attach", "trade");
-		// }
-
 		RequestHandler reqHandler = new RequestHandler(request, response);
-		reqHandler.init(appid, appsecret, partnerkey);
+		reqHandler.init(ConfigUtil.APPIDH5, ConfigUtil.APP_SECRECTH5, ConfigUtil.API_KEYH5);
 
 		String sign = PayCommonUtil.createSign("UTF-8", signParams);// 生成签名
-		String xml = "<xml>" + "<appid>" + appid + "</appid>" + "<body><![CDATA[" + body + "]]></body>" + "<mch_id>" + mch_id + "</mch_id>" + "<nonce_str>" + nonce_str
+		String xml = "<xml>" + "<appid>" + ConfigUtil.APPIDH5 + "</appid>" + "<body><![CDATA[" + body + "]]></body>" + "<mch_id>" + ConfigUtil.MCH_IDH5 + "</mch_id>" + "<nonce_str>" + nonce_str
 				+ "</nonce_str>" + "<notify_url>" + notify_url + "</notify_url>" + "<openid>" + openid + "</openid>" + "<out_trade_no>" + out_trade_no + "</out_trade_no>"
 				+ "<spbill_create_ip>" + spbill_create_ip + "</spbill_create_ip>" + "<total_fee>" + finalmoney + "</total_fee>" + "<trade_type>" + trade_type + "</trade_type>"
 				+ "<sign>" + sign + "</sign>" + "</xml>";
@@ -183,7 +157,7 @@ public class WxController {
 			e1.printStackTrace();
 		}
 		SortedMap<String, String> finalpackage = new TreeMap<String, String>();
-		String appid2 = appid;
+		String appid2 = ConfigUtil.APPIDH5;
 		String timestamp = Sha1Util.getTimeStamp();
 		String nonceStr2 = nonce_str;
 		String prepay_id2 = "prepay_id=" + prepay_id;
@@ -192,7 +166,7 @@ public class WxController {
 		finalpackage.put("timeStamp", timestamp);
 		finalpackage.put("nonceStr", nonceStr2);
 		finalpackage.put("package", packages);
-		finalpackage.put("signType", "MD5");
+		finalpackage.put("signType", ConfigUtil.SIGN_TYPE);
 		String finalsign = reqHandler.createSign(finalpackage);
 
 		json.put("appid", appid2);
@@ -277,5 +251,67 @@ public class WxController {
 			dataMap.put("msg", "存档失败");
 		}
 		return (JSONObject) JSONObject.toJSON(dataMap);
+	}
+
+
+	/**
+	 * 企业向个人打款
+	 * @return
+     */
+	@RequestMapping("/wxTransfersAmount")
+	public Object wxTransfersAmount(HttpSession session, HttpServletRequest request){
+		SortedMap<Object, Object> signParams = new TreeMap<Object, Object>();
+		//获取付款用户id
+		String openid = ((PlayUser) session.getAttribute("mgPlayUser")).getOpenid();// 获取用户id
+		//生成32位订单号
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
+		String partner_trade_no = "YX" + formatter.format(new Date()) + formatter.format(new Date());// 充值订单号时间戳
+		//随机字符串
+		String nonce_str = PayCommonUtil.CreateNoncestr();
+		//订单生成的机器IP
+		String spbill_create_ip = PayCommonUtil.getIpAddress(request).split(",")[0];
+		int amount = 1;
+		signParams.put("amount", amount);//金额 企业付款金额，单位为分
+		signParams.put("check_name", "NO_CHECK");//校验用户姓名选项 NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名
+		signParams.put("desc", "测试");//企业付款描述信息
+		signParams.put("mchid", ConfigUtil.MCH_IDH5);//商户号
+		signParams.put("mch_appid", ConfigUtil.APPIDH5);//商户账号appid
+		signParams.put("nonce_str", nonce_str);//随机字符串
+		signParams.put("openid", openid);//用户openid
+		signParams.put("partner_trade_no", partner_trade_no);//商户订单号
+		signParams.put("spbill_create_ip", spbill_create_ip);//调用接口的机器Ip地址
+		String sign = PayCommonUtil.createSign("UTF-8", signParams);// 生成签名
+		signParams.put("sign", sign);//签名
+
+		String xml = "<xml>"
+						+ "<amount>" + amount + "</amount>"
+						+ "<check_name>NO_CHECK</check_name>"
+						+ "<desc><![CDATA[测试]]></desc>"
+						+ "<mchid>" + ConfigUtil.MCH_IDH5 + "</mchid>"
+						+ "<mch_appid>" + ConfigUtil.APPIDH5 + "</mch_appid>"
+						+ "<nonce_str>" + nonce_str+ "</nonce_str>"
+						+ "<openid>" + openid + "</openid>"
+						+ "<partner_trade_no>" + partner_trade_no + "</partner_trade_no>"
+						+ "<spbill_create_ip>" + spbill_create_ip + "</spbill_create_ip>"
+						+ "<sign>" + sign + "</sign>"
+					+ "</xml>";
+		logger.info("xml=" + xml);
+		Map<String, Object> json = new HashMap<String, Object>();
+		String returnCode = "";
+		try{
+			returnCode = new GetWxOrderno().getTransfersAmount(ConfigUtil.WX_TRANSFERS_AMOUNT_URL, xml);
+			if(returnCode.equals("SUCCESS")){
+				json.put("code",true);
+				json.put("msg","已打款");
+			}else{
+				json.put("code",false);
+				json.put("msg","打款异常");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			json.put("code",false);
+			json.put("msg","打款异常");
+		}
+		return json;
 	}
 }

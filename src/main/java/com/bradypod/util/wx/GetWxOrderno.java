@@ -57,6 +57,32 @@ public class GetWxOrderno
 	}
 	return prepay_id;
   }
+
+	/**
+	 * 发送企业向个人打款请求
+	 * @param url
+	 * @param xmlParam
+     * @return
+     */
+	public static String getTransfersAmount(String url,String xmlParam){
+		DefaultHttpClient client = new DefaultHttpClient();
+		client.getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
+		HttpPost httpost= HttpClientConnectionManager.getPostMethod(url);
+		String return_code = null;
+		try {
+			httpost.setEntity(new StringEntity(xmlParam, "UTF-8"));
+			HttpResponse response = httpclient.execute(httpost);
+			String jsonStr = EntityUtils.toString(response.getEntity(), "UTF-8");
+			logger.info("json是:"+jsonStr);
+			Map map = doXMLParse(jsonStr);
+			return_code = (String) map.get("return_code");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return return_code;
+	}
+
   /**
 	 * 解析xml,返回第一级元素键值对。如果第一级元素有子节点，则此节点的值是子节点的xml数据。
 	 * @param strxml

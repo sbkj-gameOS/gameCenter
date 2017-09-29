@@ -36,9 +36,9 @@ public class WxPayUtil {
 		// 请求参数
 		SortedMap<Object, Object> parameters = new TreeMap<Object, Object>();
 		// 应用ID
-		parameters.put("appid", ConfigUtil.APPID);
+		parameters.put("appid", ConfigUtil.APPIDH5);
 		// 商户号
-		parameters.put("mch_id", ConfigUtil.MCH_ID);
+		parameters.put("mch_id", ConfigUtil.MCH_IDH5);
 		// 随机字符串
 		parameters.put("nonce_str", PayCommonUtil.CreateNoncestr());
 		if (transaction_id != null && !transaction_id.isEmpty()) {
@@ -82,9 +82,9 @@ public class WxPayUtil {
 		// 请求参数
 		SortedMap<Object, Object> parameters = new TreeMap<Object, Object>();
 		// 应用ID
-		parameters.put("appid", ConfigUtil.APPID);
+		parameters.put("appid", ConfigUtil.APPIDH5);
 		// 商户号
-		parameters.put("mch_id", ConfigUtil.MCH_ID);
+		parameters.put("mch_id", ConfigUtil.MCH_IDH5);
 		// 随机字符串
 		parameters.put("nonce_str", PayCommonUtil.CreateNoncestr());
 		// 商户订单号
