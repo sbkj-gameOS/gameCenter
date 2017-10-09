@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -183,24 +184,27 @@ public class RegisterPlayerController extends Handler {
 		return (JSONObject) JSONObject.toJSON(dataMap);
 	}
 
+	/**
+	 * @Title: deductRoomCard
+	 * @Description: TODO(扣除房卡)
+	 * @param playUser
+	 * @return 设定文件 JSONObject 返回类型
+	 */
 	@ResponseBody
-	@RequestMapping("/test")
-	public JSONObject test(PlayUser playUser) {
+	@RequestMapping("/deductRoomCard")
+	public JSONObject deductRoomCard(@SessionAttribute("mgPlayUser") PlayUser playUser) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			if (null == playUser.getNickname()) {
-				playUser.setNickname("");
+			PlayUser newPlayUser = playUserRes.findByOpenid(playUser.getOpenid());
+			int cards = newPlayUser.getCards() - 3;
+			if (cards < 0) {
+				throw new Exception("扣卡失败");
 			}
-			List<PlayUser> list = playUserRes.findByNickname(playUser.getNickname(), 0, 20);
-
-			PageInfo<PlayUser> pageInfo = new PageInfo<PlayUser>(list);
-			dataMap.put("data", list);
-			dataMap.put("count", pageInfo.getPages());
-			dataMap.put("code", 0);
+			playUserRes.setCardsById(cards, newPlayUser.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 			dataMap.put("success", false);
-			dataMap.put("msg", "添加邀请码失败");
+			dataMap.put("msg", e.getMessage());
 		}
 		return (JSONObject) JSONObject.toJSON(dataMap);
 	}

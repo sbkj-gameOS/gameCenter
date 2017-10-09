@@ -54,4 +54,9 @@ public abstract interface PlayUserRepository extends JpaRepository<PlayUser, Str
 
 	@Query(value = "select * from bm_playuser where 1 = 1 and NICKNAME like %:nickname% limit :page,:limit", nativeQuery = true)
 	public abstract List<PlayUser> findByNickname(@Param("nickname") String nickname, @Param("page") int page, @Param("limit") int limit);
+
+	@Query(value = "update bm_playuser set cards = :cards,UPDATETIME = now() where id = :id", nativeQuery = true)
+	@Modifying
+	@Transactional
+	public abstract void setCardsById(@Param("cards") int cards, @Param("id") String id);
 }
