@@ -59,6 +59,12 @@ public class WxController {
 		return "/apps/business/platform/game/wxGetCode/main";
 	}
 
+	@RequestMapping(value = "/wxLoginHtml1")
+	public String wxMain1(ModelMap map) {
+		map.addAttribute("userName", "");
+		return "/apps/business/platform/game/wxGetCode/main1";
+	}
+
 	/**
 	 * 微信授权用户信息返回code地址拼接
 	 * 
