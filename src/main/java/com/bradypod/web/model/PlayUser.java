@@ -22,7 +22,7 @@ import com.bradypod.util.event.UserEvent;
 @Entity
 @Table(name = "bm_playuser")
 @org.hibernate.annotations.Proxy(lazy = false)
-public class  PlayUser implements UserEvent, java.io.Serializable {
+public class PlayUser implements UserEvent, java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -94,6 +94,7 @@ public class  PlayUser implements UserEvent, java.io.Serializable {
 
 	@Column(name = "TRT_PROFIT")
 	private BigDecimal trtProfit;// 分润剩余总额
+	private String token;// 识别码
 
 	/**
 	 * 对金币+房卡+id进行RSA签名 ， 任何对ID,cards ， goldcoins 进行修改之前，都需要做签名验证， 签名验证通过后才能进行修改，修改之后，重新签名
@@ -538,4 +539,13 @@ public class  PlayUser implements UserEvent, java.io.Serializable {
 	public void setTrtProfit(BigDecimal trtProfit) {
 		this.trtProfit = trtProfit;
 	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 }

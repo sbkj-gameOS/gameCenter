@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bradypod.util.BeanUtils;
+import com.bradypod.util.UKTools;
 import com.bradypod.util.wx.WxUserInfo;
 import com.bradypod.web.handler.Handler;
 import com.bradypod.web.model.PlayUser;
@@ -31,7 +32,6 @@ import com.bradypod.web.model.mobileter.murecharge.vo.PlayUserVo;
 import com.bradypod.web.service.repository.jpa.PlayUserRepository;
 import com.bradypod.web.service.repository.jpa.RoomRechargeRecordRepository;
 import com.bradypod.web.service.repository.spec.DefaultSpecification;
-import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 
 /**
@@ -52,8 +52,6 @@ public class RegisterPlayerController extends Handler {
 
 	@RequestMapping("/wxLogin")
 	public String wxLogin(ModelMap map, String code, HttpSession session) {
-		System.out.println("-------------------code-------------------:" + code);
-		Map<String, Object> dataMap = new HashMap<String, Object>();
 		/** 请求结果 */
 		String result = WxUserInfo.getWxUserInfo(code);// 根据code获取微信用户信息
 		JSONObject jsonObject = (JSONObject) JSON.parse(result);
@@ -61,8 +59,6 @@ public class RegisterPlayerController extends Handler {
 		try {
 			if (null != jsonObject.get("openid")) {
 				PlayUser playUser = gson.fromJson(result, PlayUser.class);
-				map.addAttribute("userName", playUser.getNickname());// 回显用户名
-				map.addAttribute("userId", playUser.getNickname());// 回显用户名
 				PlayUser newPlayUser = playUserRes.findByOpenid(playUser.getOpenid());
 				if (null == newPlayUser) {
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHHmmssSSS");
@@ -78,23 +74,17 @@ public class RegisterPlayerController extends Handler {
 					roomRechargeRecord.setDirectlyTheLastAmount(BigDecimal.valueOf(0.00));
 					roomRechargeRecord.setIndirectTheLastAmount(BigDecimal.valueOf(0.00));
 					playUser.setTrtProfit(BigDecimal.valueOf(0.00));
+					playUser.setToken(UKTools.getUUID());
 					playUserRes.saveAndFlush(playUser);
 					roomRechargeRecordRepository.saveAndFlush(roomRechargeRecord);
 					session.setAttribute("mgPlayUser", playUser);
-					dataMap.put("mgPlayUser", playUser);
+
 				} else {
 					session.setAttribute("mgPlayUser", newPlayUser);
-					dataMap.put("mgPlayUser", newPlayUser);
 				}
-				dataMap.put("success", true);
-			} else {
-				dataMap.put("success", false);
-				dataMap.put("msg", "授权失败");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			dataMap.put("success", false);
-			dataMap.put("msg", "授权失败");
 		}
 		return "/apps/business/platform/game/wxGetCode/main";
 	}
