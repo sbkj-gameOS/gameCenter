@@ -34,5 +34,5 @@ public class ConfigUtil {
 	public final static String CLOSE_ORDER_URL = "https://api.mch.weixin.qq.com/pay/closeorder";
 
 	/** 跳转游戏界面地址 */
-	public final static String GAME_URL = "http://192.168.199.203:7456/";
+	public final static String GAME_URL = "http://192.168.1.87:7456/";
 }
