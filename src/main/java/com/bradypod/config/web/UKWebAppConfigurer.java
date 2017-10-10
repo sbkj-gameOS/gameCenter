@@ -18,6 +18,7 @@ public class UKWebAppConfigurer extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(new UserInterceptorHandler()).addPathPatterns("/**")
 			.excludePathPatterns(
 					"/login.html", 
+					"/api/**", 
 					"/tokens", 
 					"/registerPlayer/**", 
 					"/presentapp/**",
