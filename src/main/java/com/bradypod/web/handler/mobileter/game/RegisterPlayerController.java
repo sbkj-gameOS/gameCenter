@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.bradypod.util.wx.ConfigUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -78,10 +79,13 @@ public class RegisterPlayerController extends Handler {
 					playUserRes.saveAndFlush(playUser);
 					roomRechargeRecordRepository.saveAndFlush(roomRechargeRecord);
 					session.setAttribute("mgPlayUser", playUser);
-
+					map.addAttribute("token",playUser.getToken());
 				} else {
 					session.setAttribute("mgPlayUser", newPlayUser);
+					map.addAttribute("token",newPlayUser.getToken());
 				}
+				//跳转游戏界面路径
+				map.addAttribute("url", ConfigUtil.GAME_URL);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
