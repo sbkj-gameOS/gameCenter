@@ -100,6 +100,27 @@ public class RegisterPlayerController extends Handler {
 	}
 
 	/**
+	 * @Title: findPlayUserInfo
+	 * @Description: TODO(获取回显用户信息)
+	 * @param id
+	 * @return 设定文件 JSONObject 返回类型
+	 */
+	@ResponseBody
+	@RequestMapping("/findPlayUserInfo")
+	public JSONObject findPlayUserInfo(String id) {
+		Map<Object, Object> dataMap = new HashMap<Object, Object>();
+		try {
+			PlayUser playUser = playUserRes.findById(id);
+			dataMap.put("playUser", playUser);
+		} catch (Exception e) {
+			e.printStackTrace();
+			dataMap.put("success", false);
+			dataMap.put("msg", "查询失败");
+		}
+		return (JSONObject) JSONObject.toJSON(dataMap);
+	}
+
+	/**
 	 * @Title: findRegisterPlayerList
 	 * @Description: TODO(查询玩家信息)
 	 * @param playUser
