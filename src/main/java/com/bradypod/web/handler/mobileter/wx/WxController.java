@@ -81,6 +81,19 @@ public class WxController {
 	}
 
 	/**
+	 * 获取当前用户token
+	 * wxController/getWxUserToken
+	 * @param session
+	 * @return
+     */
+	@RequestMapping(value = "/getWxUserToken")
+	@ResponseBody
+	public String getWxUserToken(HttpSession session){
+		PlayUser playUser = (PlayUser)session.getAttribute("mgPlayUser");
+		return playUser.getToken();
+	}
+
+	/**
 	 * 方法描述: 跳转到h5微信支付<br>
 	 * 作者：田帅 <br>
 	 * 创建时间：2017-09-16 <br>

@@ -82,7 +82,6 @@ public class RegisterPlayerController extends Handler {
 					map.addAttribute("token", playUser.getToken());
 				} else {
 					session.setAttribute("mgPlayUser", newPlayUser);
-					map.addAttribute("token", newPlayUser.getToken());
 				}
 				// 跳转游戏界面路径
 				map.addAttribute("url", ConfigUtil.GAME_URL);
