@@ -88,14 +88,22 @@ public class WxController {
      */
 	@RequestMapping(value = "/getWxUserToken")
 	@ResponseBody
-	public String getWxUserToken(HttpSession session){
-		PlayUser playUser = (PlayUser)session.getAttribute("mgPlayUser");
-		return playUser.getToken();
+	public Object getWxUserToken(HttpSession session){
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		try{
+			PlayUser playUser = (PlayUser)session.getAttribute("mgPlayUser");
+			dataMap.put("token", playUser.getToken());
+			dataMap.put("success", true);
+		}catch(Exception e){
+			dataMap.put("success", false);
+			dataMap.put("msg", "当前用户信息已失效！");
+		}
+		return dataMap;
 	}
 
 	/**
 	 * 方法描述: 跳转到h5微信支付<br>
-	 * 作者：田帅 <br>
+	 * 作者：田帅 <br>测试
 	 * 创建时间：2017-09-16 <br>
 	 * 版本：V1.0
 	 */
@@ -125,7 +133,7 @@ public class WxController {
 	@ResponseBody
 	public Object getWxConfig(String url){
 		Map<String, String> ret = new HashMap<String, String>();
-		String jsapi_ticket = "sM4AOVdWfPE4DxkXGEs8VCuqn0piiMbaXTtIkEmwNfsUdp1knxGL_mfs4GxiiIAOqna87-YoGTOnasQjGoukDQ";
+		String jsapi_ticket = "sM4AOVdWfPE4DxkXGEs8VCuqn0piiMbaXTtIkEmwNfuRTc9RdcuLhzZfRBoHhzD0BOEmPNm-gemqgQRgMGedzw";
 		String signature = "";
 		//注意这里参数名必须全部小写，且必须有序
 		String nonce_str = create_nonce_str();
