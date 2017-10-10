@@ -125,7 +125,7 @@ public class WxController {
 	@ResponseBody
 	public Object getWxConfig(String url){
 		Map<String, String> ret = new HashMap<String, String>();
-		String jsapi_ticket = "sM4AOVdWfPE4DxkXGEs8VCuqn0piiMbaXTtIkEmwNfsUdp1knxGL_mfs4GxiiIAOqna87-YoGTOnasQjGoukDQ";
+		String jsapi_ticket = "sM4AOVdWfPE4DxkXGEs8VCuqn0piiMbaXTtIkEmwNfuRTc9RdcuLhzZfRBoHhzD0BOEmPNm-gemqgQRgMGedzw";
 		String signature = "";
 		//注意这里参数名必须全部小写，且必须有序
 		String nonce_str = create_nonce_str();
