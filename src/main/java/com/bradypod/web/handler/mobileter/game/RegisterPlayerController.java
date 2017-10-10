@@ -52,7 +52,7 @@ public class RegisterPlayerController extends Handler {
 	private RoomRechargeRecordRepository roomRechargeRecordRepository;
 
 	@RequestMapping("/wxLogin")
-	public String wxLogin(ModelMap map, String code, HttpSession session) {
+	public String wxLogin(ModelMap map, String code, HttpSession session, String invitationcode) {
 		/** 请求结果 */
 		String result = WxUserInfo.getWxUserInfo(code);// 根据code获取微信用户信息
 		JSONObject jsonObject = (JSONObject) JSON.parse(result);
@@ -66,7 +66,6 @@ public class RegisterPlayerController extends Handler {
 					String time = formatter.format(new Date());
 					playUser.setInvitationcode(time);
 					playUser.setCards(10);
-					;
 					RoomRechargeRecord roomRechargeRecord = new RoomRechargeRecord();
 					roomRechargeRecord.setUserName(playUser.getNickname());
 					roomRechargeRecord.setInvitationCode(playUser.getInvitationcode());
@@ -76,15 +75,16 @@ public class RegisterPlayerController extends Handler {
 					roomRechargeRecord.setIndirectTheLastAmount(BigDecimal.valueOf(0.00));
 					playUser.setTrtProfit(BigDecimal.valueOf(0.00));
 					playUser.setToken(UKTools.getUUID());
+					playUser.setPinvitationcode(invitationcode);
 					playUserRes.saveAndFlush(playUser);
 					roomRechargeRecordRepository.saveAndFlush(roomRechargeRecord);
 					session.setAttribute("mgPlayUser", playUser);
-					map.addAttribute("token",playUser.getToken());
+					map.addAttribute("token", playUser.getToken());
 				} else {
 					session.setAttribute("mgPlayUser", newPlayUser);
-					map.addAttribute("token",newPlayUser.getToken());
+					map.addAttribute("token", newPlayUser.getToken());
 				}
-				//跳转游戏界面路径
+				// 跳转游戏界面路径
 				map.addAttribute("url", ConfigUtil.GAME_URL);
 			}
 		} catch (Exception e) {
