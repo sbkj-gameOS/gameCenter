@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -92,6 +93,45 @@ public class WxController {
 		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" + "appid=" + ConfigUtil.APPIDH5 + "&redirect_uri=" + backUri
 				+ "&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
 		return "redirect:" + url;
+	}
+
+	/**
+	 * 方法描述: 获取微信配置信息<br>
+	 * 作者：田帅 <br>
+	 * 创建时间：2017-09-16 <br>
+	 * 版本：V1.0
+	 * wxController/getWxConfig
+	 */
+	@RequestMapping(value = "/getWxConfig")
+	@ResponseBody
+	public Object getWxConfig(String url){
+		Map<String, String> ret = new HashMap<String, String>();
+		String jsapi_ticket = "sM4AOVdWfPE4DxkXGEs8VCuqn0piiMbaXTtIkEmwNfsUdp1knxGL_mfs4GxiiIAOqna87-YoGTOnasQjGoukDQ";
+		String signature = "";
+		//注意这里参数名必须全部小写，且必须有序
+		String nonce_str = create_nonce_str();
+		String timestamp = create_timestamp();
+		String string1 = "jsapi_ticket=" + jsapi_ticket +
+		"&noncestr=" + nonce_str +
+		"&timestamp=" + timestamp +
+		"&url=" + url;
+		try
+		{
+			MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+			crypt.reset();
+			crypt.update(string1.getBytes("UTF-8"));
+			signature = byteToHex(crypt.digest());
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+		ret.put("url", url);
+		ret.put("jsapi_ticket", jsapi_ticket);
+		ret.put("nonceStr", nonce_str);
+		ret.put("timestamp", timestamp);
+		ret.put("signature", signature);
+		ret.put("appId",ConfigUtil.APPIDH5);
+		return ret;
 	}
 
 	/**
@@ -314,5 +354,24 @@ public class WxController {
 			json.put("msg","打款异常");
 		}
 		return json;
+	}
+
+	private static String create_nonce_str() {
+		return UUID.randomUUID().toString();
+	}
+
+	private static String create_timestamp() {
+		return Long.toString(System.currentTimeMillis() / 1000);
+	}
+
+	private static String byteToHex(final byte[] hash) {
+		Formatter formatter = new Formatter();
+		for (byte b : hash)
+		{
+			formatter.format("%02x", b);
+		}
+		String result = formatter.toString();
+		formatter.close();
+		return result;
 	}
 }
