@@ -89,9 +89,15 @@ public class WxController {
 	@RequestMapping(value = "/getWxUserToken")
 	@ResponseBody
 	public Object getWxUserToken(HttpSession session){
-		Map<String, String> dataMap = new HashMap<String, String>();
-		PlayUser playUser = (PlayUser)session.getAttribute("mgPlayUser");
-		dataMap.put("token", playUser.getToken());
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		try{
+			PlayUser playUser = (PlayUser)session.getAttribute("mgPlayUser");
+			dataMap.put("token", playUser.getToken());
+			dataMap.put("success", true);
+		}catch(Exception e){
+			dataMap.put("success", false);
+			dataMap.put("msg", "当前用户信息已失效！");
+		}
 		return dataMap;
 	}
 
