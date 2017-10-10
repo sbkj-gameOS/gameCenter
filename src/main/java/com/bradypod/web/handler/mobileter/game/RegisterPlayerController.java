@@ -96,15 +96,15 @@ public class RegisterPlayerController extends Handler {
 	/**
 	 * @Title: findPlayUserInfo
 	 * @Description: TODO(获取回显用户信息)
-	 * @param id
+	 * @param token
 	 * @return 设定文件 JSONObject 返回类型
 	 */
 	@ResponseBody
 	@RequestMapping("/findPlayUserInfo")
-	public JSONObject findPlayUserInfo(String id) {
+	public JSONObject findPlayUserInfo(String token) {
 		Map<Object, Object> dataMap = new HashMap<Object, Object>();
 		try {
-			PlayUser playUser = playUserRes.findById(id);
+			PlayUser playUser = playUserRes.findByToken(token);
 			dataMap.put("playUser", playUser);
 		} catch (Exception e) {
 			e.printStackTrace();
