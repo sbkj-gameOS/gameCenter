@@ -59,4 +59,6 @@ public abstract interface PlayUserRepository extends JpaRepository<PlayUser, Str
 	@Modifying
 	@Transactional
 	public abstract void setCardsById(@Param("cards") int cards, @Param("id") String id);
+
+	public abstract PlayUser findByToken(String token);
 }
