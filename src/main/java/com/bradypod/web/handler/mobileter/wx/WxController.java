@@ -88,10 +88,11 @@ public class WxController {
      */
 	@RequestMapping(value = "/getWxUserToken")
 	@ResponseBody
-	public Object getWxUserToken(ModelMap map,HttpSession session){
+	public Object getWxUserToken(HttpSession session){
+		Map<String, String> dataMap = new HashMap<String, String>();
 		PlayUser playUser = (PlayUser)session.getAttribute("mgPlayUser");
-		map.addAttribute("token", playUser.getToken());
-		return map;
+		dataMap.put("token", playUser.getToken());
+		return dataMap;
 	}
 
 	/**
