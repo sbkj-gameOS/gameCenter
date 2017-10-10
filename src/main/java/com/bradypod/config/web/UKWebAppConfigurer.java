@@ -20,7 +20,8 @@ public class UKWebAppConfigurer
     	.excludePathPatterns("/login.html")
     	.excludePathPatterns("/tokens")
     	.excludePathPatterns("/registerPlayer/**")
-    	.excludePathPatterns("/presentapp/**");
+    	.excludePathPatterns("/presentapp/**")
+    	.excludePathPatterns("/wxController/**");
     	registry.addInterceptor(new CrossInterceptorHandler()).addPathPatterns("/**");
         super.addInterceptors(registry);
     }
