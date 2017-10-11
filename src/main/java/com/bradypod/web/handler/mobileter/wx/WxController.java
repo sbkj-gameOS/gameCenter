@@ -6,10 +6,12 @@ import com.bradypod.util.wx.*;
 import com.bradypod.web.model.PlayUser;
 import com.bradypod.web.model.RoomRechargeRecord;
 import com.bradypod.web.model.RunHistory;
+import com.bradypod.web.model.WxConfig;
 import com.bradypod.web.service.repository.jpa.PlayUserRepository;
 import com.bradypod.web.service.repository.jpa.RoomRechargeRecordRepository;
 import com.bradypod.web.service.repository.jpa.RunHistoryRepository;
 
+import com.bradypod.web.service.repository.jpa.WxConfigRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,6 +49,9 @@ public class WxController {
 
 	@Autowired
 	private RunHistoryRepository runHistoryRepository;
+
+	@Autowired
+	private WxConfigRepository wxConfigRepository;
 
 	/**
 	 * 跳转微信 wxController/wxLoginHtml
@@ -133,7 +138,8 @@ public class WxController {
 	@ResponseBody
 	public Object getWxConfig(String url){
 		Map<String, String> ret = new HashMap<String, String>();
-		String jsapi_ticket = "sM4AOVdWfPE4DxkXGEs8VCuqn0piiMbaXTtIkEmwNfuRTc9RdcuLhzZfRBoHhzD0BOEmPNm-gemqgQRgMGedzw";
+		WxConfig ticket = wxConfigRepository.selectTicket("2");
+		String jsapi_ticket = ticket.getTypevalue();
 		String signature = "";
 		//注意这里参数名必须全部小写，且必须有序
 		String nonce_str = create_nonce_str();

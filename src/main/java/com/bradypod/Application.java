@@ -9,10 +9,12 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import com.bradypod.config.web.StartedEventListener;
 import com.bradypod.core.BMDataContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @EnableAutoConfiguration
 @SpringBootApplication
+@EnableScheduling
 @EnableAsync
 @EnableJpaRepositories("com.bradypod.web.service.repository.jpa")
 @EnableElasticsearchRepositories("com.bradypod.web.service.repository.es")
